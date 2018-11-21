@@ -3,6 +3,8 @@ import fire from '../firebase/Fire';
 import { auth } from '../firebase/Fire';
 import { Link } from 'react-router-dom'
 import DocumentInput from './DocumentInput';
+import Map from '../components/Map'
+
 class UploadFolders extends Component {
     constructor(props) {
         super(props);
@@ -14,7 +16,7 @@ class UploadFolders extends Component {
             folderN: '',
         }
         this.logout = this.logout.bind(this);
-        this.renderFolder = this.renderFolder.bind(this);
+        this.renderMap = this.renderMap.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.sendDTB = this.sendDTB.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -84,15 +86,20 @@ class UploadFolders extends Component {
             console.log(rows)
         });
     }
-    renderFolder() {
+    
+
+    
+    renderMap() {
         var _this = this
         if (this.state.user) {
-          const {rows,user} = this.state
+            const { rows, user } = this.state
             return (
                 <div>
                     <p>Hi ♥ {this.state.user.displayName || this.state.user.email}</p>
                     <Link to="/" ><button className="loginBtn--N" onClick={this.logout}>Logout</button></Link>
-                    <form onSubmit={this.handleSubmit}>
+
+                    <h3>My Google Maps Demo</h3>
+                     <form onSubmit={this.handleSubmit}>
                         Name:
                         <input type="text" value={this.state.value} name="name" onChange={this.handleChange} />
                         <input type="submit" value="Submit" />
@@ -100,7 +107,9 @@ class UploadFolders extends Component {
                     <DocumentInput
                      rows={rows}
                      user={user}
-                    />
+                    />  
+
+                    <Map/>
                 </div>
             )
 
@@ -111,7 +120,7 @@ class UploadFolders extends Component {
     render() {
         return (
             <div>
-                {this.renderFolder()}
+                {this.renderMap()}
             </div>
         )
 

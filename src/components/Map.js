@@ -2,6 +2,13 @@
 import '../App.css';
 import React, { Component } from 'react';
 
+
+
+
+
+
+  
+
 class Map extends Component {
     constructor(props) {
         super(props);
@@ -18,6 +25,7 @@ class Map extends Component {
         window.map = new window.google.maps.Map(document.getElementById("map"), {
             center: this.state.center,
             zoom: this.state.zoom,
+            
             //clickableIcons: false,
             // mapTypeControl: false,
             // streetViewControl: false,
@@ -27,31 +35,34 @@ class Map extends Component {
         this.setState({
             isLoad: true
         })
-        // var marker = new window.google.maps.Marker({
-        //     map: window.map,
-        //     position: { lat: 13.7648, lng: 100.5381 },
-        //     clickable: true,
-        //     draggable: true,
-
-        // })
-        // window.google.maps.event.addListener(window.map, 'click', function (event) {
-        //     console.log(event.latLng)
-        //     marker.setOptions({ position: event.latLng })
-        // })
-    }
-btnmarker = () => {
-       var marker = new window.google.maps.Marker({
+        console.log("kddsad")
+        var marker = new window.google.maps.Marker({
             map: window.map,
             position: { lat: 13.7648, lng: 100.5381 },
             clickable: true,
             draggable: true,
-
+            
         })
         window.google.maps.event.addListener(window.map, 'click', function (event) {
-            console.log(event.latLng)
+            console.log("This last lat",event.latLng.lat())
+            console.log("This last lng",event.latLng.lng())
             marker.setOptions({ position: event.latLng })
         })
-}
+        
+    }
+// btnmarker = () => {
+//        var marker = new window.google.maps.Marker({
+//             map: window.map,
+//             position: { lat: 13.7648, lng: 100.5381 },
+//             clickable: true,
+//             draggable: true,
+
+//         })
+//         window.google.maps.event.addListener(window.map, 'click', function (event) {
+//             console.log(event.latLng)
+//             marker.setOptions({ position: event.latLng })
+//         })
+// }
     render() {
         var childrenOutput = null;
         if (this.state.isLoad === true) {
@@ -65,7 +76,7 @@ btnmarker = () => {
                 className="Map"
                 id="map"
             >
-            <button onClick={this.btnmarker()}>Click me </button>
+            {/* <button onClick={this.btnmarker()}>Click me </button> */}
                 {childrenOutput}
             </div>
         );
