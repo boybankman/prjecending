@@ -49,8 +49,6 @@ class Register extends Component {
               </div><br/>
               <button type="submit" onClick={this.registerU} class="loginBtn loginBtn--L">Register</button>      
                       <br /> <br />
-                      <Link to="/" >Back     
-                      </Link> 
                 <br /> <br />     
                   </div>
   

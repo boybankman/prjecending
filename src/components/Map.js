@@ -35,7 +35,6 @@ class Map extends Component {
         this.setState({
             isLoad: true
         })
-        console.log("kddsad")
         var marker = new window.google.maps.Marker({
             map: window.map,
             position: { lat: 13.7648, lng: 100.5381 },
@@ -48,7 +47,6 @@ class Map extends Component {
             console.log("This last lng",event.latLng.lng())
             marker.setOptions({ position: event.latLng })
         })
-        
     }
 // btnmarker = () => {
 //        var marker = new window.google.maps.Marker({
