@@ -27,20 +27,7 @@ class Map extends Component {
         this.setState({
             isLoad: true
         })
-        // var marker = new window.google.maps.Marker({
-        //     map: window.map,
-        //     position: { lat: 13.7648, lng: 100.5381 },
-        //     clickable: true,
-        //     draggable: true,
-
-        // })
-        // window.google.maps.event.addListener(window.map, 'click', function (event) {
-        //     console.log(event.latLng)
-        //     marker.setOptions({ position: event.latLng })
-        // })
-    }
-btnmarker = () => {
-       var marker = new window.google.maps.Marker({
+        var marker = new window.google.maps.Marker({
             map: window.map,
             position: { lat: 13.7648, lng: 100.5381 },
             clickable: true,
@@ -51,7 +38,20 @@ btnmarker = () => {
             console.log(event.latLng)
             marker.setOptions({ position: event.latLng })
         })
-}
+    }
+// btnmarker = () => {
+//        var marker = new window.google.maps.Marker({
+//             map: window.map,
+//             position: { lat: 13.7648, lng: 100.5381 },
+//             clickable: true,
+//             draggable: true,
+
+//         })
+//         window.google.maps.event.addListener(window.map, 'click', function (event) {
+//             console.log(event.latLng)
+//             marker.setOptions({ position: event.latLng })
+//         })
+// }
     render() {
         var childrenOutput = null;
         if (this.state.isLoad === true) {
@@ -65,7 +65,7 @@ btnmarker = () => {
                 className="Map"
                 id="map"
             >
-            <button onClick={this.btnmarker()}>Click me </button>
+            {/* <button onClick={this.btnmarker()}>Click me </button> */}
                 {childrenOutput}
             </div>
         );

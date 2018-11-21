@@ -7,15 +7,17 @@ class UploadFolders extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: '',
-            keyDtb: '',
+            value1: 0,
+            value2: 0,
+            center: {lat: 18.796143, lng: 98.979263 },
             documents: [],
             rows: [],
             folderN: '',
         }
         this.logout = this.logout.bind(this);
         this.renderFolder = this.renderFolder.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleChange1 = this.handleChange1.bind(this);
+        this.handleChange2 = this.handleChange2.bind(this);
         this.sendDTB = this.sendDTB.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -44,18 +46,24 @@ class UploadFolders extends Component {
         this.setState({ keyDtb: keyDtb })
         console.log(keyDtb)
     }
-    handleChange(event) {
-        this.setState({ value: event.target.value })
+    handleChange1(event) {
+        this.setState({ value1: event.target.value })
+    }
+    handleChange2(event) {
+        this.setState({ value2: event.target.value })
     }
     handleSubmit(event) {
-        const folderName = this.state.value
+        const lat = this.state.value1
+        const long = this.state.value2
         event.preventDefault();
-        this.setState({ folderName: folderName })
-        const documents = this.state.documents.concat(DocumentInput);
+        this.setState({ lat : lat })
+        this.setState({ long : long })
+        console.log(lat,long)
+        // const documents = this.state.documents.concat(DocumentInput);
 
-        this.setState({ documents }, () => console.log(this.state.documents));
-        this.sendDTB(folderName)
-        this.setState({ folderN: folderName })
+        // this.setState({ documents }, () => console.log(this.state.documents));
+        // this.sendDTB(folderName)
+        // this.setState({ folderN: folderName })
 
     }
     componentWillMount() {
@@ -84,8 +92,28 @@ class UploadFolders extends Component {
             console.log(rows)
         });
     }
+    btnMarker =() => {
+        console.log(this.state.lat)
+        
+           
+          
+            var map = new window.google.maps.Map(document.getElementById('map'), {
+              zoom: 4,
+              center: {lat: this.state.lat , lng: this.state.long }
+            });
+          
+            // var marker = new window.google.maps.Marker({
+            //   position: {lat: this.state.lat, lng: this.state.long},
+            //   map: map,
+            //   title: 'Hello World!',
+            //   clickable: true,
+
+            // });
+          
+    }
     renderFolder() {
         var _this = this
+
         if (this.state.user) {
           const {rows,user} = this.state
             return (
@@ -94,24 +122,27 @@ class UploadFolders extends Component {
                     <Link to="/" ><button className="loginBtn--N" onClick={this.logout}>Logout</button></Link>
                     <form onSubmit={this.handleSubmit}>
                         Name:
-                        <input type="text" value={this.state.value} name="name" onChange={this.handleChange} />
+                        <input type="number" value={this.state.value1} name="name" onChange={this.handleChange1} />
+                        <input type="number" value={this.state.value2} name="name" onChange={this.handleChange2} />
                         <input type="submit" value="Submit" />
                     </form>
                     <DocumentInput
                      rows={rows}
                      user={user}
                     />
+                          <button onClick={this.btnMarker}>WTF This</button>
                 </div>
             )
 
 
-
+            
         }
     }
     render() {
         return (
             <div>
                 {this.renderFolder()}
+      
             </div>
         )
 

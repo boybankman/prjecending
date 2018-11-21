@@ -41,36 +41,36 @@ class Marker extends Component {
             anchor: new window.google.maps.Point(15, 15),
             //scaledSize: new window.google.maps.Size(25, 25)
         };
-        // if (this.marker === false) {
-        //     this.marker = new window.google.maps.Marker({
-        //         //map: window.map,
-        //         position: { lat: 13.7648, lng: 100.5381 },
-        //         // overlayId,
-        //         // overlayType,
-        //         // overlayDrawType,
-        //         // icon: image,
-        //         clickable: true,
-        //         draggable: true,
-        //         // overlayName,
-        //         // overlayDetail,
-        //         // zIndex,
-        //         // undoCoords,
-        //         // redoCoords,
-        //         // overlaySource,
-        //     })
-        //     //this.props.addMarkerListener(this.marker)
-        // } else {
-        //     this.marker.setOptions({
-        //         position: { lat: 13.7648, lng: 100.5381 },
-        //         //icon: image,
-        //         // overlayName,
-        //         // overlayDetail,
-        //         // zIndex,
-        //         // undoCoords,
-        //         // redoCoords,
-        //         // overlaySource,
-        //     })
-        // }
+        if (this.marker === false) {
+            this.marker = new window.google.maps.Marker({
+                //map: window.map,
+                position: { lat: 13.7648, lng: 100.5381 },
+                // overlayId,
+                // overlayType,
+                // overlayDrawType,
+                // icon: image,
+                clickable: true,
+                draggable: true,
+                // overlayName,
+                // overlayDetail,
+                // zIndex,
+                // undoCoords,
+                // redoCoords,
+                // overlaySource,
+            })
+            //this.props.addMarkerListener(this.marker)
+        } else {
+            this.marker.setOptions({
+                position: { lat: 13.7648, lng: 100.5381 },
+                //icon: image,
+                // overlayName,
+                // overlayDetail,
+                // zIndex,
+                // undoCoords,
+                // redoCoords,
+                // overlaySource,
+            })
+        }
     }
 
 

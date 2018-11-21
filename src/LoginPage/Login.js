@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import firebase from '../firebase/Fire';
 import {provider,auth,provider2} from '../firebase/Fire';
 import { Link } from 'react-router-dom';
+import Map from '../components/Map'
+import Upload from '../UploadPage/Upload'
 class Login extends Component {
     
   constructor() {
@@ -81,7 +83,9 @@ renderLoginButon() {
         <br/><br/>
         <button type="submit" onClick={this.logout} class="loginBtn loginBtn--L">logout</button>
         <br/><br/><br/><br/><br/><br/>
-        <Link to="/Upload" >Go to Upload</Link> 
+        <Upload/>
+        
+        {/* <Link to="/Upload" >Go to Upload</Link>  */}
       
 </div>
 <div class="form-group">
@@ -114,6 +118,7 @@ renderLoginButon() {
             <Link to="/Reset" >ลืมรหัสผ่าน</Link>       &nbsp;&nbsp;&nbsp;&nbsp;
           
             <br/><br/>
+          
             </div>
                    
                 </div>
@@ -127,7 +132,7 @@ render() {
   return (
       <div className="App">
           {this.renderLoginButon()}
-        
+         
       </div>
   );
 }

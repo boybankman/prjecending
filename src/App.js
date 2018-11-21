@@ -46,10 +46,29 @@ class App extends Component {
         <Route exact path="/Register" component={Register} />
         <Route exact path="/Upload" component={Upload} />
           </Switch>
-      
+      <Map>
+        <Marker/>
+      </Map>
         </div> 
       );
     }
   }
    
 export default App;
+
+function new_script(src) {
+  return new Promise(function (resolve, reject) {
+    var script = document.createElement('script');
+    script.src = src;
+    script.addEventListener('load', function () {
+      resolve();
+    });
+    script.addEventListener('error', function (e) {
+      reject(e);
+    });
+    document.body.appendChild(script);
+  })
+};
+// Promise Interface can ensure load the script only once
+var my_script = new_script('https://maps.googleapis.com/maps/api/js?&libraries=geometry,drawing,places,visualization&key=&callback=initMap');
+
