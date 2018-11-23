@@ -69,7 +69,7 @@ class Map extends Component {
         return (
             <div style={{
                 //left: this.props.left,
-                height: "500px"
+                height: "100vh"
             }}
                 className="Map"
                 id="map"
