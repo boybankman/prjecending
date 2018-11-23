@@ -83,7 +83,7 @@ renderLoginButon() {
         <br/><br/>
         <button type="submit" onClick={this.logout} class="loginBtn loginBtn--L">logout</button>
         <br/><br/><br/><br/><br/><br/>
-        <Upload/>
+       
         
         {/* <Link to="/Upload" >Go to Upload</Link>  */}
       
@@ -123,7 +123,7 @@ renderLoginButon() {
                    
                 </div>
             )
-
+    }}
 render() {
   return (
       <div className="App">

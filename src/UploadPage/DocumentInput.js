@@ -9,16 +9,17 @@ class DocumentInput extends React.Component {
     const user = this.props.user;
     //console.log(user.email)
     let messageNodes = this.props.rows.map((r) => {
-        if(user.email === r.UserId){
-        return (
+        console.log("tesss")
+        // if(user.email === r.UserId){
+        // return (
             
-            <tr key={r.no + r.name}>
-                 <th >{r.key}</th>
-                <th >{r.name}</th>
-                <th>{r.UserId} </th>   
+        //     <tr key={r.no + r.name}>
+        //          <th >{r.key}</th>
+        //         <th >{r.name}</th>
+        //         <th>{r.UserId} </th>   
                                     
-            </tr>
-        )}
+        //     </tr>
+        // )}
     });
     return (
         
