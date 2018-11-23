@@ -17,7 +17,7 @@ class Marker extends Component {
             // url: icon,
             //size: new window.google.maps.Size(71, 71),
             //origin: new window.google.maps.Point(0, 0),
-            anchor: new window.google.maps.Point(15, 15),
+            //anchor: new window.google.maps.Point(15, 15),
             //scaledSize: new window.google.maps.Size(25, 25)
         };
         if (this.marker === false) {
