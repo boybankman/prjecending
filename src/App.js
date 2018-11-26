@@ -21,6 +21,10 @@ class App extends Component {
     componentDidMount(){
       this.authListener();
     }
+
+    componentWillMount(){
+      this.getMarker()
+    }
   
     authListener() {
       fire.auth().onAuthStateChanged((user) => {
@@ -37,19 +41,19 @@ class App extends Component {
     }
     btnmarker = () => {
       var _this = this
-      window.map = new window.google.maps.Map(document.getElementById("map"), {
-          center: this.state.center,
-          zoom: this.state.zoom,
+      // window.map = new window.google.maps.Map(document.getElementById("map"), {
+      //     center: this.state.center,
+      //     zoom: this.state.zoom,
 
-          //clickableIcons: false,
-          // mapTypeControl: false,
-          // streetViewControl: false,
-          // fullscreenControl: false,
-          mapTypeId: 'satellite',
-      })
-      this.setState({
-          isLoad: true
-      })
+      //     //clickableIcons: false,
+      //     // mapTypeControl: false,
+      //     // streetViewControl: false,
+      //     // fullscreenControl: false,
+      //     mapTypeId: 'satellite',
+      // })
+      // this.setState({
+      //     isLoad: true
+      // })
 
       window.google.maps.event.addListener(window.map, 'click', function (event) {
           var marker = new window.google.maps.Marker({
@@ -79,8 +83,6 @@ class App extends Component {
     this.setState({ keyMarker: keyMarker })
     console.log(keyMarker)
 }
-    
-    
   
     render() {
       
@@ -92,7 +94,7 @@ class App extends Component {
         <Route exact path="/Upload" component={Upload} />
           </Switch>
       <Map>
-      <Button variant="contained" onClick={this.btnmarker}>456</Button>
+      <Button variant="contained" onClick={this.btnmarker}>Test Database</Button>
       
       </Map>
         </div> 

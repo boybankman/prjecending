@@ -17,7 +17,17 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 
+///////////Phornkrit Import///////////////////
+import Input from '@material-ui/core/Input';
+
+/////////////////////////////////////////////
+
 const styles = theme => ({
+
+  input: {
+    margin: theme.spacing.unit,
+
+  },
   button: {
     margin: theme.spacing.unit,
   },
@@ -26,6 +36,9 @@ const styles = theme => ({
   },
   fullList: {
     width: 'auto',
+    display: 'flex',
+    flexWrap: 'wrap',
+    textAlign: 'right',
   },
 });
 
@@ -118,65 +131,53 @@ class Login extends Component {
       [side]: open,
     });
   };
-  
+
   renderLoginButon() {
     const { classes } = this.props;
 
-    const sideList = (
-      <div className={classes.list}>
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </div>
-    );
-
     const fullList = (
       <div className={classes.fullList}>
-         
-        
-                    {/* <img src={logo} className="App-logo" alt="logo" /> */}
-                    <br />
-                    <p class="sansserif">Log in</p>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <br />
-                        <input value={this.state.email} onChange={this.handleChange} type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" /><br /><br /><br />
 
-                        <label for="exampleInputPassword1">Password</label>
-                        <br />
-                        <input value={this.state.password} onChange={this.handleChange} type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-                        <br />
-                        <br />
-                        <button type="submit" onClick={this.loginE} class="loginBtn--L">Login</button>
+        <br />
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <tab /> <p class="sansserif">Log in</p>
+        <br /> <br />
+        <div class="form-group">
+          <br />    <br />
+          <label for="exampleInputEmail1">Email address: </label>
 
-                        <button className="loginBtn loginBtn--facebook" onClick={this.login}>Log in with Facebook</button>
-                        <button className="loginBtn loginBtn--google" onClick={this.login2}>Log in with Google</button><br /><br />
-                        <Link to="/Register" >สมัครสมาชิค</Link>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-            <Link to="/Reset" >ลืมรหัสผ่าน</Link>       &nbsp;&nbsp;&nbsp;&nbsp;
-          
-            <br/><br/>
-          
-         
-                   
-                </div>
-        
+          <Input
+            value={this.state.email}
+            onChange={this.handleChange}
+            type="email"
+            name="email"
+            id="exampleInputEmail1" aria-describedby="emailHelp"
+            placeholder="Enter email" /><br
+            className={classes.input}
+            inputProps={{ 'aria-label': 'Description', }} />
+
+          <label for="exampleInputPassword1">Password: </label>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <Input
+            value={this.state.password}
+            onChange={this.handleChange}
+            type="password"
+            name="password"
+            id="exampleInputEmail1" aria-describedby="emailHelp"
+            placeholder="Enter Password" /><br
+            className={classes.input}
+            inputProps={{ 'aria-label': 'Description', }} />
+
+          <Button type="submit" onClick={this.loginE} variant="contained" className={classes.button}>Login</Button>
+          <Button onClick={this.login} variant="contained" color="primary" className={classes.button}> Log in with Facebook </Button>
+          <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button>
+          <br /><br /><Link to="/Register" >สมัครสมาชิค</Link>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+                    <Link to="/Reset" >ลืมรหัสผ่าน</Link>       &nbsp;&nbsp;&nbsp;&nbsp;
+                    <br /><br />
+        </div>
       </div>
-      );
+    );
     if (this.state.user) {
       return (
         <div>
@@ -197,21 +198,21 @@ class Login extends Component {
       return (
 
         <div>
-         <br />
-        <Button variant="contained" color="secondary" onClick={this.toggleDrawer('top', true)}>LOGIN</Button>
-        <br />
-        <Drawer anchor="top" open={this.state.top} onClose={this.toggleDrawer('top', false)}>
-          <div
-            tabIndex={0}
-            role="button"
+          <br />
+          <Button variant="contained" color="secondary" onClick={this.toggleDrawer('top', true)}>LOGIN</Button>
+          <br /><br />
+          <Drawer anchor="top" open={this.state.top} onClose={this.toggleDrawer('top', false)}>
+            <div
+              tabIndex={0}
+              role="button"
             // onClick={this.toggleDrawer('top', false)}
             // onKeyDown={this.toggleDrawer('top', false)}
-          >
-            {fullList}
-          </div>
-        </Drawer>
-        
-      </div>
+            >
+              {fullList}
+            </div>
+          </Drawer>
+
+        </div>
       )
     }
   }

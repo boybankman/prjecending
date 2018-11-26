@@ -5,10 +5,6 @@ import fire from '../firebase/Fire'
 import Testmark from './Marker'
 
 
-
-
-
-
 class Map extends Component {
     constructor(props) {
         super(props);
@@ -29,36 +25,17 @@ class Map extends Component {
      
     }
     initMap = () => {
-        var _this = this
         window.map = new window.google.maps.Map(document.getElementById("map"), {
             center: this.state.center,
             zoom: this.state.zoom,
-
-            //clickableIcons: false,
-            // mapTypeControl: false,
-            // streetViewControl: false,
-            // fullscreenControl: false,
             mapTypeId: 'satellite',
         })
         this.setState({
             isLoad: true
         })
 
-        // var marker = new window.google.maps.Marker({
-        //     map: window.map,
-        //     position: { lat: 13.7648, lng: 100.5381 },
-        //     clickable: true,
-        //     draggable: true,
-
-        // })
-        // window.google.maps.event.addListener(window.map, 'click', function (event) {
-        //     console.log("This last lat", event.latLng.lat())
-        //     console.log("This last lng", event.latLng.lng())
-        //     marker.setOptions({ position: event.latLng })
-        //     //  _this.sendPosition(event.latLng)
-        // })
+    
     }
-    //******************************************************************************************************************** */
     sendPosition(latLng) {
         let sendToP = {
             lat: latLng.lat(),
@@ -72,17 +49,11 @@ class Map extends Component {
         this.setState({ keyMarker: keyMarker })
         console.log(keyMarker)
     }
-    //*********************************************************************************************************************** */
     btnmarker = () => {
         var _this = this
         window.map = new window.google.maps.Map(document.getElementById("map"), {
             center: this.state.center,
             zoom: this.state.zoom,
-
-            //clickableIcons: false,
-            // mapTypeControl: false,
-            // streetViewControl: false,
-            // fullscreenControl: false,
             mapTypeId: 'satellite',
         })
         this.setState({
@@ -101,9 +72,13 @@ class Map extends Component {
             console.log("This last lng", event.latLng.lng())
             marker.setOptions({ position: event.latLng })
             _this.sendPosition(event.latLng)
+   
         })
-
+      
     }
+
+    
+
     getMarker() {
         const dataref = fire.database().ref('Marker')
         dataref.on('value', (snapshot) => {
@@ -126,7 +101,7 @@ class Map extends Component {
                     map: window.map,
                     position: { lat: m.lat, lng: m.lng },
                     clickable: true,
-                    draggable: true,
+                    draggable: false,
                 })
             })
         })
