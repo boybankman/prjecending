@@ -11,65 +11,97 @@ import { Switch, Route } from 'react-router-dom'
 
 
 class App extends Component {
-  constructor(props){
-      super(props);
-      this.state = {
-        user: null ,
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null,
+    }
+    this.getMarker = this.getMarker.bind(this)
+  }
+
+  componentDidMount() {
+    this.authListener();
+  }
+
+  componentWillMount(){
+    this.getMarker()
+  }
+  authListener() {
+    fire.auth().onAuthStateChanged((user) => {
+      //console.log(user);
+      if (user) {
+        this.setState({ user });
+        // localStorage.setItem('user', user.uid);
       }
-    }
-  
-    componentDidMount(){
-      this.authListener();
-    }
-  
-    authListener() {
-      fire.auth().onAuthStateChanged((user) => {
-        //console.log(user);
-        if (user) {
-          this.setState({user});
-         // localStorage.setItem('user', user.uid);
-        }
-        else {
-          this.setState({user : null});
-         // localStorage.removeItem('user');
-        }
-      });
-    }
-    btnmarker = () => {
-      var _this = this
-      // window.map = new window.google.maps.Map(document.getElementById("map"), {
-      //     center: this.state.center,
-      //     zoom: this.state.zoom,
+      else {
+        this.setState({ user: null });
+        // localStorage.removeItem('user');
+      }
+    });
+  }
+  getMarker() {
+    const dataref = fire.database().ref('Marker')
+    dataref.on('value', (snapshot) => {
+        let marks = [];
 
-      //     //clickableIcons: false,
-      //     // mapTypeControl: false,
-      //     // streetViewControl: false,
-      //     // fullscreenControl: false,
-      //     mapTypeId: 'satellite',
-      // })
-      // this.setState({
-      //     isLoad: true
-      // })
+        snapshot.forEach(function (childSnapshot) {
+            marks.push({
+                key: childSnapshot.key,
+                lat: childSnapshot.val().sendToP.lat,
+                lng: childSnapshot.val().sendToP.lng
 
-      window.google.maps.event.addListener(window.map, 'click', function (event) {
-          var marker = new window.google.maps.Marker({
-              map: window.map,
-              position: { lat: event.latLng.lat(), lng: event.latLng.lng() },
-              clickable: true,
-              draggable: true,
+            })
+        })
+        this.setState({
+            marks: marks
+        });
+        console.log(marks)
+        marks.map((m) => {
+            var marker = new window.google.maps.Marker({
+                map: window.map,
+                position: { lat: m.lat, lng: m.lng },
+                clickable: true,
+                draggable: false,
+            })
+        })
+    })
 
-          })
-          console.log("This last lat", event.latLng.lat())
-          console.log("This last lng", event.latLng.lng())
-          marker.setOptions({ position: event.latLng })
-          _this.sendPosition(event.latLng)
+}
+  btnmarker = () => {
+    var _this = this
+    // window.map = new window.google.maps.Map(document.getElementById("map"), {
+    //     center: this.state.center,
+    //     zoom: this.state.zoom,
+
+    //     //clickableIcons: false,
+    //     // mapTypeControl: false,
+    //     // streetViewControl: false,
+    //     // fullscreenControl: false,
+    //     mapTypeId: 'satellite',
+    // })
+    // this.setState({
+    //     isLoad: true
+    // })
+
+    window.google.maps.event.addListener(window.map, 'click', function (event) {
+      var marker = new window.google.maps.Marker({
+        map: window.map,
+        position: event.latLng,
+        clickable: true,
+        draggable: true,
+
       })
+      console.log("This last lat", event.latLng.lat())
+      console.log("This last lng", event.latLng.lng())
+      _this.sendPosition(event.latLng)
+      window.google.maps.event.clearListeners(window.map,'click')
+    })
 
   }
   sendPosition(latLng) {
     let sendToP = {
-        lat: latLng.lat(),
-        lng: latLng.lng()
+      lat: latLng.lat(),
+      lng: latLng.lng()
     }
 
     const databaseRef = fire.database().ref('/Marker');
@@ -78,28 +110,28 @@ class App extends Component {
     const keyMarker = MarkerPoint.key
     this.setState({ keyMarker: keyMarker })
     console.log(keyMarker)
-}
-    
-    
-  
-    render() {
-      
-      return (
-        <div className="App">
-            <Switch>
-        <Route exact path="/" component={Login} />
-        <Route exact path="/Register" component={Register} />
-        <Route exact path="/Upload" component={Upload} />
-          </Switch>
-      <Map>
-      <Button variant="contained" onClick={this.btnmarker}>test database</Button>
-      
-      </Map>
-        </div> 
-      );
-    }
   }
-   
+
+
+
+  render() {
+
+    return (
+      <div className="App">
+        <Switch>
+          <Route exact path="/" component={Login} />
+          <Route exact path="/Register" component={Register} />
+          <Route exact path="/Upload" component={Upload} />
+        </Switch>
+        <Map>
+          <Button variant="contained" onClick={this.btnmarker}>test database</Button>
+
+        </Map>
+      </div>
+    );
+  }
+}
+
 export default App;
 
 function new_script(src) {
