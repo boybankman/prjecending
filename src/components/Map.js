@@ -69,7 +69,10 @@ class Map extends Component {
         return (
             <div style={{
                 //left: this.props.left,
-                height: "100vh"
+                height: "768px",
+                weight: "1280px"
+
+
             }}
                 className="Map"
                 id="map"
