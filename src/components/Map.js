@@ -126,7 +126,7 @@ class Map extends Component {
                     map: window.map,
                     position: { lat: m.lat, lng: m.lng },
                     clickable: true,
-                    draggable: true,
+                    draggable: false,
                 })
             })
         })
