@@ -17,15 +17,15 @@ class Map extends Component {
             zoom: 15,
             center: { lat: 13.7648, lng: 100.5381 }
         }
-       
+
         this.initMap = this.initMap.bind(this);
 
-      
+
     }
     componentWillMount() {
 
         window.initMap = this.initMap
-     
+
     }
     initMap = () => {
         var _this = this
@@ -42,7 +42,7 @@ class Map extends Component {
         this.setState({
             isLoad: true
         })
-
+        
         // var marker = new window.google.maps.Marker({
         //     map: window.map,
         //     position: { lat: 13.7648, lng: 100.5381 },
@@ -58,11 +58,11 @@ class Map extends Component {
         // })
     }
     //*********************************************************************************************************************** */
-   
+
 
     render() {
         var childrenOutput = null;
-       const {marks} =  this.state
+        const { marks } = this.state
         if (this.state.isLoad === true) {
             childrenOutput = this.props.children;
         }
@@ -77,7 +77,7 @@ class Map extends Component {
                 className="Map"
                 id="map"
             >
-            {/* <button onClick={this.btnmarker()}>Click me </button> */}
+                {/* <button onClick={this.btnmarker()}>Click me </button> */}
                 {childrenOutput}
             </div>
         );

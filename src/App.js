@@ -142,6 +142,7 @@ class App extends Component {
         </Switch>
         <Formup
           handleDrawerClose={this.handleDrawerClose}
+          handleDrawerOpen={this.handleDrawerOpen}
           {...this.state}
         >
 
