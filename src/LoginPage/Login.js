@@ -122,35 +122,14 @@ class Login extends Component {
   renderLoginButon() {
     const { classes } = this.props;
 
-    const sideList = (
-      <div className={classes.list}>
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </div>
-    );
-
+  
     const fullList = (
       <div className={classes.fullList}>
          
         
                     {/* <img src={logo} className="App-logo" alt="logo" /> */}
                     <br />
-                    <p class="sansserif">Log in</p>
+                    <p>Log in</p>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Email address</label>
                         <br />
@@ -160,8 +139,8 @@ class Login extends Component {
                         <br />
                         <input value={this.state.password} onChange={this.handleChange} type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
                         <br />
-                        <br />
                         <button type="submit" onClick={this.loginE} class="loginBtn--L">Login</button>
+                        <br />
 
                         <button className="loginBtn loginBtn--facebook" onClick={this.login}>Log in with Facebook</button>
                         <button className="loginBtn loginBtn--google" onClick={this.login2}>Log in with Google</button><br /><br />
@@ -199,7 +178,8 @@ class Login extends Component {
         <div>
          <br />
         <Button variant="contained" color="secondary" onClick={this.toggleDrawer('top', true)}>LOGIN</Button>
-        <br />
+         <br />
+         <br />
         <Drawer anchor="top" open={this.state.top} onClose={this.toggleDrawer('top', false)}>
           <div
             tabIndex={0}
