@@ -26,29 +26,20 @@ import Input from '@material-ui/core/Input';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase/Fire';
 import { provider, auth, provider2 } from '../firebase/Fire';
+import TextField from '@material-ui/core/TextField';
+import { createMuiTheme } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 
 
 
 const drawerWidth = 240;
 
-///////////start////////////////////
-// function rand() {
-//     return Math.round(Math.random() * 20) - 10;
-//   }
 
-function getModalStyle() {
-    const top = 50 ;
-    const left = 50 ;
-  
-    return {
-      top: `${top}%`,
-      left: `${left}%`,
-      transform: `translate(-${top}%, -${left}%)`,
-    };
-  }
-/////////////N///////////////////////
-
+const theme = createMuiTheme({
+    typography: {
+      useNextVariants: true,
+    },
+  });
 const styles = theme => ({
     root: {
         display: 'flex',
@@ -97,6 +88,13 @@ const styles = theme => ({
         }),
         marginLeft: -drawerWidth,
     },
+    paper: {
+        position: 'absolute',
+        width: theme.spacing.unit * 50,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing.unit * 4,
+      },
     contentShift: {
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.easeOut,
@@ -123,7 +121,7 @@ class Formup extends React.Component {
     constructor() {
         super();
         this.state = {
-            open: false,
+
             email: '',
             password: '',
 
@@ -135,16 +133,16 @@ class Formup extends React.Component {
     }
     componentDidMount() {
         auth.onAuthStateChanged((user) => {
-          if (user) {
-            this.setState({ user });
-          }
+            if (user) {
+                this.setState({ user });
+            }
         });
-      }
+    }
 
     logout() {
         firebase.auth().signOut();
         this.setState({ user: null });
-      }
+    }
 
     loginE(e) {
         e.preventDefault();
@@ -224,290 +222,234 @@ class Formup extends React.Component {
         console.log(keyMarker)
     }
 
-    loginE(e) {
-        e.preventDefault();
-        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u) => {
-        }).catch((error) => {
-          console.log(error);
-          alert("incorrect id or password");
-        });
-      }
-      verifyEmail(e) {
-        e.preventDefault();
-        firebase.auth().currentUser.sendEmailVerification().then((u) => {
-          alert("Please Check Your Mail");
-        }).catch((error) => {
-          console.log(error);
-          alert("Error");
-        });
-      }
+    getModalStyle = () => {
+        const top = 50;
+        const left = 50;
     
-    
-      login = () => {
-        var that = this;
-        const result = auth.signInWithPopup(provider).then(function (result) {
-          var user = result.user;
-          console.log(user);
-          that.setState({ user: user });
-        }).catch(function (error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-        });
+        return {
+          top: `${top}%`,
+          left: `${left}%`,
+          transform: `translate(-${top}%, -${left}%)`,
+        };
       }
-      login2 = () => {
-        var that = this;
-        const result = auth.signInWithPopup(provider2).then(function (result) {
-          var user = result.user;
-          console.log(user);
-          that.setState({ user: user });
-        }).catch(function (error) {
-          var errorCode = error.code;
-          var errorMessage = error.message;
-        });
-      }
-      componentDidMount() {
-        auth.onAuthStateChanged((user) => {
-          if (user) {
-            this.setState({ user });
-          }
-        });
-      }
-      logout() {
-        firebase.auth().signOut();
-        this.setState({ user: null });
-      }
-    
-      toggleDrawer = (side, open) => () => {
-        this.setState({
-          [side]: open,
-        });
+      handleOpen = () => {
+        this.setState({ open: true });
       };
     
-      renderLoginButon() {
-        const { classes } = this.props;}
-
-        // //////////////////////////////////////////////////////////
-        handleOpen = () => {
-            this.setState({ open: true });
-          };
-        
-          handleClose = () => {
-            this.setState({ open: false });
-          };
-        //////////////////////////////////////////////////////////////////
-    
-
+      handleClose = () => {
+        this.setState({ open: false });
+      };
     render() {
-        const { classes, theme } = this.props;
-        const { open } = this.state;
+        window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
+        const { classes, theme, open } = this.props;
+
         var _this = this
         if (this.state.user) {
             return (
                 <div className={classes.root}>
-                <CssBaseline />
-                <AppBar
-                    position="fixed"
-                    className={classNames(classes.appBar, {
-                        [classes.appBarShift]: open,
-                    })}
-                >
-                    <Toolbar disableGutters={!open}>
-                        <IconButton
-                            color="inherit"
-                            aria-label="Open drawer"
-                            onClick={this.props.handleDrawerOpen}
-                            className={classNames(classes.menuButton, open && classes.hide)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" color="inherit" noWrap>
-                            Upload Image System For Storage About Groundwaterdrilling On The Map
+                    <CssBaseline />
+                    <AppBar
+                        position="fixed"
+                        className={classNames(classes.appBar, {
+                            [classes.appBarShift]: open,
+                        })}
+                    >
+                        <Toolbar disableGutters={!open}>
+                            <IconButton
+                                color="inherit"
+                                aria-label="Open drawer"
+                                onClick={this.props.handleDrawerOpen}
+                                className={classNames(classes.menuButton, open && classes.hide)}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography className={classes.typography} variant="h6" color="inherit" noWrap>
+                            BKB Upload Image System
             </Typography>
-                    </Toolbar>
-                </AppBar>
-                <Drawer
-                    className={classes.drawer}
-                    variant="persistent"
-                    anchor="left"
-                    open={this.props.open}
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
-                >
-                    <div className={classes.drawerHeader}>
-                        <IconButton onClick={this.props.handleDrawerClose}>
-                            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                        </IconButton>
-                    </div>
-                    <Divider />
-                    <div className={classes.fullList}>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer
+                        className={classes.drawer}
+                        variant="persistent"
+                        anchor="left"
+                        open={this.props.open}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                    >
+                        <div className={classes.drawerHeader}>
+                            <IconButton onClick={this.props.handleDrawerClose}>
+                                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        <div className={classes.fullList}>
 
+                            <br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                       <p className="sansserif">{this.state.user.email}</p>
+                            <br />
+
+                        </div>
+
+                        {this.props.keym.key}
                         <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <tab /> <p class="sansserif">{this.state.user.email}</p>
-                        <br /> 
-
-                    </div>
-
-                     <List>
-                       <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
-                    </List>
-                    
-                    <Divider />
-                    {this.props.keym.key}
-                    <br />
-                    {this.props.keym.lat}
-                    <br />
-                    {this.props.keym.lng}
-
-                      
-         <Button onClick={this.handleOpen} >อัพโหลดข้อมูล</Button>
+                        {this.props.keym.lat}
+                        <br />
+                        {this.props.keym.lng}
+                        <Button onClick={this.handleOpen}>Open Modal</Button>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
           open={this.state.open}
           onClose={this.handleClose}
-          
         >
-          <div style={getModalStyle()} className={classes.paper}>
+          <div style={this.getModalStyle()} className={classes.paper}>
             <Typography variant="h6" id="modal-title">
-             กรอกข้อมูลพื้นที่
+              Text in a modal
             </Typography>
+            <TextField
+          id="standard-name"
+          label="Name"
+          className={classes.textField}
+          value={this.state.info}
+          onChange={this.handleChange}
+          margin="normal"
+        />
             <Typography variant="subtitle1" id="simple-modal-description">
-              รายละเอียด     <br /> 
-              
-
+              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
             </Typography>
             <withStyles />
           </div>
         </Modal>
-                        
-                      
-                </Drawer>
-                <main
-                    className={classNames(classes.content, {
-                        [classes.contentShift]: open,
-                    })}
-                >
-                    <div className={classes} />
-                    <Login />
-                    <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
-                </main>
-            </div >
-      
+                        <Divider />
+                        <List>
+                            <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
+                        </List>
+                    </Drawer>
+                    <main
+                        className={classNames(classes.content, {
+                            [classes.contentShift]: open,
+                        })}
+                    >
+                        <div className={classes} />
+                        <Login />
+                        <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
+                    </main>
+                </div >
+
             )
-          }else{
+        } else {
 
-          
-        return (
-            <div className={classes.root}>
-                <CssBaseline />
-                <AppBar
-                    position="fixed"
-                    className={classNames(classes.appBar, {
-                        [classes.appBarShift]: open,
-                    })}
-                >
-                    <Toolbar disableGutters={!open}>
-                        <IconButton
-                            color="inherit"
-                            aria-label="Open drawer"
-                            onClick={this.props.handleDrawerOpen}
-                            className={classNames(classes.menuButton, open && classes.hide)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" color="inherit" noWrap>
-                            Upload Image System For Storage About Groundwaterdrilling On The Map
+
+            return (
+                <div className={classes.root}>
+                    <CssBaseline />
+                    <AppBar
+                        position="fixed"
+                        className={classNames(classes.appBar, {
+                            [classes.appBarShift]: open,
+                        })}
+                    >
+                        <Toolbar disableGutters={!open}>
+                            <IconButton
+                                color="inherit"
+                                aria-label="Open drawer"
+                                onClick={this.props.handleDrawerOpen}
+                                className={classNames(classes.menuButton, open && classes.hide)}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography className={classes.typography} variant="h6" color="inherit" noWrap>
+                               BKB Upload Image System 
             </Typography>
-                    </Toolbar>
-                </AppBar>
-                <Drawer
-                    className={classes.drawer}
-                    variant="persistent"
-                    anchor="left"
-                    open={this.props.open}
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
-                >
-                    <div className={classes.drawerHeader}>
-                        <IconButton onClick={this.props.handleDrawerClose}>
-                            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                        </IconButton>
-                    </div>
-                    <Divider />
-                    <div className={classes.fullList}>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer
+                        className={classes.drawer}
+                        variant="persistent"
+                        anchor="left"
+                        open={this.props.open}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                    >
+                        <div className={classes.drawerHeader}>
+                            <IconButton onClick={this.props.handleDrawerClose}>
+                                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        <div className={classes.fullList}>
 
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <tab /> <p class="sansserif">Log in</p>
-                        <br /> <br />
-                        <div class="form-group">
-                            <br />    <br />
-                            <label for="exampleInputEmail1">Email address: </label>
+                            <br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <p className="sansserif">Log in</p>
+                            <br /> <br />
+                            <div className="form-group">
+                                <br />    <br />
+                                <label >Email address: </label>
 
-                            <Input
-                                value={this.state.email}
-                                onChange={_this.handleChange}
-                                type="email"
-                                name="email"
-                                id="exampleInputEmail1" aria-describedby="emailHelp"
-                                placeholder="Enter email" /><br
-                                className={classes.input}
-                                inputProps={{ 'aria-label': 'Description', }} />
+                                <TextField
+                                    value={this.state.email}
+                                    onChange={_this.handleChange}
+                                    type="email"
+                                    name="email"
+                                    id="exampleInputEmail2" aria-describedby="emailHelp"
+                                    placeholder="Enter email"
+                                    className={classes.input}
+                                />
 
-                            <label for="exampleInputPassword1">Password: </label>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <Input
-                                value={this.state.password}
-                                onChange={_this.handleChange}
-                                type="password"
-                                name="password"
-                                id="exampleInputEmail1" aria-describedby="emailHelp"
-                                placeholder="Enter Password" /><br
-                                className={classes.input}
-                                inputProps={{ 'aria-label': 'Description', }} />
-                                <br/>
+                                <label>Password: </label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               <TextField
+                                    value={this.state.password}
+                                    onChange={_this.handleChange}
+                                    type="password"
+                                    name="password"
+                                    id="exampleInputEmail1" aria-describedby="emailHelp"
+                                    placeholder="Enter Password"
+                                    className={classes.input}
+                                />
 
-                            <Button type="submit" onClick={this.loginE} variant="contained" className={classes.button}>Login</Button> <br/>
-                            <Button onClick={this.login} variant="contained" color="primary" className={classes.button}> Log in with Facebook </Button><br/>
-                            <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button><br/>
-                            <br /><br /><Link to="/Register" >Regis</Link>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                <Button type="submit" onClick={this.loginE} variant="contained" className={classes.button}>Login</Button>
+                                <Button onClick={this.login} variant="contained" color="primary" className={classes.button}> Log in with Facebook </Button>
+                                <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button>
+                                <br /><br /><Link to="/Register" >Regis</Link>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
                       <Link to="/Reset" >Reset</Link>       &nbsp;&nbsp;&nbsp;&nbsp;
                       <br /><br />
+                            </div>
                         </div>
-                    </div>
 
-                    {this.props.keym.key}
-                    <br />
-                    {this.props.keym.lat}
-                    <br />
-                    {this.props.keym.lng}
+                        {this.props.keym.key}
+                        <br />
+                        {this.props.keym.lat}
+                        <br />
+                        {this.props.keym.lng}
 
-                    <Divider />
-                    <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
-                    </List>
-                </Drawer>
-                <main
-                    className={classNames(classes.content, {
-                        [classes.contentShift]: open,
-                    })}
-                >
-                    <div className={classes} />
-                    <Login />
-                    <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
-                </main>
-            </div >
-        );
-    }
+                        <Divider />
+                        <List>
+                            {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                                <ListItem button key={text}>
+                                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Drawer>
+                    <main
+                        className={classNames(classes.content, {
+                            [classes.contentShift]: open,
+                        })}
+                    >
+                        <div className={classes} />
+                        <Login />
+                        <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
+                    </main>
+                </div >
+            );
+        }
     }
 }
 Formup.propTypes = {

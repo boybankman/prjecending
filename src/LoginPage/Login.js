@@ -205,14 +205,14 @@ class Login extends Component {
       return (
         <div>
           {/* <img src={logo} className="App-logo" alt="logo" />   */}
-          <div class="form-group">
-            <br />
+          <div className="form-group">
+            
             {/* <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button> */}
             <br />
             {/* <Link to="/Upload" >Go to Upload</Link>  */}
 
           </div>
-          <div class="form-group">
+          <div className="form-group">
           </div><br />
         </div>
 
