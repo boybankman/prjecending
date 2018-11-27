@@ -16,7 +16,6 @@ class Map extends Component {
        
         this.initMap = this.initMap.bind(this);
 
-      
     }
     componentWillMount() {
 
@@ -35,8 +34,6 @@ class Map extends Component {
 
     
     }
-    //*********************************************************************************************************************** */
-   
 
     render() {
         var childrenOutput = null;

@@ -63,6 +63,11 @@ class App extends Component {
                 clickable: true,
                 draggable: false,
             })
+        window.google.maps.event.addListener(marker, 'click', function(event){
+          
+        })
+
+          
         })
     })
 
