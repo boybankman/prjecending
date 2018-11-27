@@ -26,8 +26,20 @@ import Input from '@material-ui/core/Input';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase/Fire';
 import { provider, auth, provider2 } from '../firebase/Fire';
+import TextField from '@material-ui/core/TextField';
+import { createMuiTheme } from '@material-ui/core/styles';
+
+
+
+
 const drawerWidth = 240;
 
+
+const theme = createMuiTheme({
+    typography: {
+      useNextVariants: true,
+    },
+  });
 const styles = theme => ({
     root: {
         display: 'flex',
@@ -90,7 +102,7 @@ class Formup extends React.Component {
     constructor() {
         super();
         this.state = {
-            open: false,
+
             email: '',
             password: '',
 
@@ -102,16 +114,16 @@ class Formup extends React.Component {
     }
     componentDidMount() {
         auth.onAuthStateChanged((user) => {
-          if (user) {
-            this.setState({ user });
-          }
+            if (user) {
+                this.setState({ user });
+            }
         });
-      }
+    }
 
     logout() {
         firebase.auth().signOut();
         this.setState({ user: null });
-      }
+    }
 
     loginE(e) {
         e.preventDefault();
@@ -192,191 +204,192 @@ class Formup extends React.Component {
     }
 
     render() {
-        const { classes, theme } = this.props;
-        const { open } = this.state;
+        window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
+        const { classes, theme, open } = this.props;
+
         var _this = this
         if (this.state.user) {
             return (
                 <div className={classes.root}>
-                <CssBaseline />
-                <AppBar
-                    position="fixed"
-                    className={classNames(classes.appBar, {
-                        [classes.appBarShift]: open,
-                    })}
-                >
-                    <Toolbar disableGutters={!open}>
-                        <IconButton
-                            color="inherit"
-                            aria-label="Open drawer"
-                            onClick={this.props.handleDrawerOpen}
-                            className={classNames(classes.menuButton, open && classes.hide)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" color="inherit" noWrap>
-                            Upload Image System For Storage About Groundwaterdrilling On The Map
+                    <CssBaseline />
+                    <AppBar
+                        position="fixed"
+                        className={classNames(classes.appBar, {
+                            [classes.appBarShift]: open,
+                        })}
+                    >
+                        <Toolbar disableGutters={!open}>
+                            <IconButton
+                                color="inherit"
+                                aria-label="Open drawer"
+                                onClick={this.props.handleDrawerOpen}
+                                className={classNames(classes.menuButton, open && classes.hide)}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography className={classes.typography} variant="h6" color="inherit" noWrap>
+                                Upload Image System For Storage About Groundwaterdrilling On The Map
             </Typography>
-                    </Toolbar>
-                </AppBar>
-                <Drawer
-                    className={classes.drawer}
-                    variant="persistent"
-                    anchor="left"
-                    open={this.props.open}
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
-                >
-                    <div className={classes.drawerHeader}>
-                        <IconButton onClick={this.props.handleDrawerClose}>
-                            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                        </IconButton>
-                    </div>
-                    <Divider />
-                    <div className={classes.fullList}>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer
+                        className={classes.drawer}
+                        variant="persistent"
+                        anchor="left"
+                        open={this.props.open}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                    >
+                        <div className={classes.drawerHeader}>
+                            <IconButton onClick={this.props.handleDrawerClose}>
+                                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        <div className={classes.fullList}>
 
+                            <br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                       <p className="sansserif">{this.state.user.email}</p>
+                            <br />
+
+                        </div>
+
+                        {this.props.keym.key}
                         <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <tab /> <p class="sansserif">{this.state.user.email}</p>
-                        <br /> 
-                        
-                    </div>
+                        {this.props.keym.lat}
+                        <br />
+                        {this.props.keym.lng}
 
-                    {this.props.keym.key}
-                    <br />
-                    {this.props.keym.lat}
-                    <br />
-                    {this.props.keym.lng}
+                        <Divider />
+                        <List>
+                            <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
+                        </List>
+                    </Drawer>
+                    <main
+                        className={classNames(classes.content, {
+                            [classes.contentShift]: open,
+                        })}
+                    >
+                        <div className={classes} />
+                        <Login />
+                        <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
+                    </main>
+                </div >
 
-                    <Divider />
-                    <List>
-                       <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
-                    </List>
-                </Drawer>
-                <main
-                    className={classNames(classes.content, {
-                        [classes.contentShift]: open,
-                    })}
-                >
-                    <div className={classes} />
-                    <Login />
-                    <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
-                </main>
-            </div >
-      
             )
-          }else{
+        } else {
 
-          
-        return (
-            <div className={classes.root}>
-                <CssBaseline />
-                <AppBar
-                    position="fixed"
-                    className={classNames(classes.appBar, {
-                        [classes.appBarShift]: open,
-                    })}
-                >
-                    <Toolbar disableGutters={!open}>
-                        <IconButton
-                            color="inherit"
-                            aria-label="Open drawer"
-                            onClick={this.props.handleDrawerOpen}
-                            className={classNames(classes.menuButton, open && classes.hide)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" color="inherit" noWrap>
-                            Upload Image System For Storage About Groundwaterdrilling On The Map
+
+            return (
+                <div className={classes.root}>
+                    <CssBaseline />
+                    <AppBar
+                        position="fixed"
+                        className={classNames(classes.appBar, {
+                            [classes.appBarShift]: open,
+                        })}
+                    >
+                        <Toolbar disableGutters={!open}>
+                            <IconButton
+                                color="inherit"
+                                aria-label="Open drawer"
+                                onClick={this.props.handleDrawerOpen}
+                                className={classNames(classes.menuButton, open && classes.hide)}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography className={classes.typography} variant="h6" color="inherit" noWrap>
+                                Upload Image System For Storage About Groundwaterdrilling On The Map
             </Typography>
-                    </Toolbar>
-                </AppBar>
-                <Drawer
-                    className={classes.drawer}
-                    variant="persistent"
-                    anchor="left"
-                    open={this.props.open}
-                    classes={{
-                        paper: classes.drawerPaper,
-                    }}
-                >
-                    <div className={classes.drawerHeader}>
-                        <IconButton onClick={this.props.handleDrawerClose}>
-                            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                        </IconButton>
-                    </div>
-                    <Divider />
-                    <div className={classes.fullList}>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer
+                        className={classes.drawer}
+                        variant="persistent"
+                        anchor="left"
+                        open={this.props.open}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                    >
+                        <div className={classes.drawerHeader}>
+                            <IconButton onClick={this.props.handleDrawerClose}>
+                                {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                            </IconButton>
+                        </div>
+                        <Divider />
+                        <div className={classes.fullList}>
 
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <tab /> <p class="sansserif">Log in</p>
-                        <br /> <br />
-                        <div class="form-group">
-                            <br />    <br />
-                            <label for="exampleInputEmail1">Email address: </label>
+                            <br />
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <p className="sansserif">Log in</p>
+                            <br /> <br />
+                            <div className="form-group">
+                                <br />    <br />
+                                <label >Email address: </label>
 
-                            <Input
-                                value={this.state.email}
-                                onChange={_this.handleChange}
-                                type="email"
-                                name="email"
-                                id="exampleInputEmail1" aria-describedby="emailHelp"
-                                placeholder="Enter email" /><br
-                                className={classes.input}
-                                inputProps={{ 'aria-label': 'Description', }} />
+                                <TextField
+                                    value={this.state.email}
+                                    onChange={_this.handleChange}
+                                    type="email"
+                                    name="email"
+                                    id="exampleInputEmail2" aria-describedby="emailHelp"
+                                    placeholder="Enter email"
+                                    className={classes.input}
+                                />
 
-                            <label for="exampleInputPassword1">Password: </label>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <Input
-                                value={this.state.password}
-                                onChange={_this.handleChange}
-                                type="password"
-                                name="password"
-                                id="exampleInputEmail1" aria-describedby="emailHelp"
-                                placeholder="Enter Password" /><br
-                                className={classes.input}
-                                inputProps={{ 'aria-label': 'Description', }} />
+                                <label>Password: </label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               <TextField
+                                    value={this.state.password}
+                                    onChange={_this.handleChange}
+                                    type="password"
+                                    name="password"
+                                    id="exampleInputEmail1" aria-describedby="emailHelp"
+                                    placeholder="Enter Password"
+                                    className={classes.input}
+                                />
 
-                            <Button type="submit" onClick={this.loginE} variant="contained" className={classes.button}>Login</Button>
-                            <Button onClick={this.login} variant="contained" color="primary" className={classes.button}> Log in with Facebook </Button>
-                            <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button>
-                            <br /><br /><Link to="/Register" >Regis</Link>
-                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                <Button type="submit" onClick={this.loginE} variant="contained" className={classes.button}>Login</Button>
+                                <Button onClick={this.login} variant="contained" color="primary" className={classes.button}> Log in with Facebook </Button>
+                                <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button>
+                                <br /><br /><Link to="/Register" >Regis</Link>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
                       <Link to="/Reset" >Reset</Link>       &nbsp;&nbsp;&nbsp;&nbsp;
                       <br /><br />
+                            </div>
                         </div>
-                    </div>
 
-                    {this.props.keym.key}
-                    <br />
-                    {this.props.keym.lat}
-                    <br />
-                    {this.props.keym.lng}
+                        {this.props.keym.key}
+                        <br />
+                        {this.props.keym.lat}
+                        <br />
+                        {this.props.keym.lng}
 
-                    <Divider />
-                    <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
-                    </List>
-                </Drawer>
-                <main
-                    className={classNames(classes.content, {
-                        [classes.contentShift]: open,
-                    })}
-                >
-                    <div className={classes} />
-                    <Login />
-                    <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
-                </main>
-            </div >
-        );
-    }
+                        <Divider />
+                        <List>
+                            {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                                <ListItem button key={text}>
+                                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    </Drawer>
+                    <main
+                        className={classNames(classes.content, {
+                            [classes.contentShift]: open,
+                        })}
+                    >
+                        <div className={classes} />
+                        <Login />
+                        <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
+                    </main>
+                </div >
+            );
+        }
     }
 }
 
