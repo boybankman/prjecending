@@ -16,6 +16,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Input from '@material-ui/core/Input';
 
 const styles = theme => ({
   button: {
@@ -123,46 +124,91 @@ class Login extends Component {
     const { classes } = this.props;
 
   
-    const fullList = (
-      <div className={classes.fullList}>
+    // const fullList = (
+    //   <div className={classes.fullList}>
          
         
-                    {/* <img src={logo} className="App-logo" alt="logo" /> */}
-                    <br />
-                    <p>Log in</p>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <br />
-                        <input value={this.state.email} onChange={this.handleChange} type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" /><br /><br /><br />
+    //                 {/* <img src={logo} className="App-logo" alt="logo" /> */}
+    //                 <br />
+    //                 <p>Log in</p>
+    //                 <div class="form-group">
+    //                     <label for="exampleInputEmail1">Email address</label>
+    //                     <br />
+    //                     <input value={this.state.email} onChange={this.handleChange} type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" /><br /><br /><br />
 
-                        <label for="exampleInputPassword1">Password</label>
-                        <br />
-                        <input value={this.state.password} onChange={this.handleChange} type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-                        <br />
-                        <button type="submit" onClick={this.loginE} class="loginBtn--L">Login</button>
-                        <br />
+    //                     <label for="exampleInputPassword1">Password</label>
+    //                     <br />
+    //                     <input value={this.state.password} onChange={this.handleChange} type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
+    //                     <br />
+    //                     <button type="submit" onClick={this.loginE} class="loginBtn--L">Login</button>
+    //                     <br />
 
-                        <button className="loginBtn loginBtn--facebook" onClick={this.login}>Log in with Facebook</button>
-                        <button className="loginBtn loginBtn--google" onClick={this.login2}>Log in with Google</button><br /><br />
-                        <Link to="/Register" >สมัครสมาชิค</Link>
-                        &nbsp;&nbsp;&nbsp;&nbsp;
-            <Link to="/Reset" >ลืมรหัสผ่าน</Link>       &nbsp;&nbsp;&nbsp;&nbsp;
+    //                     <button className="loginBtn loginBtn--facebook" onClick={this.login}>Log in with Facebook</button>
+    //                     <button className="loginBtn loginBtn--google" onClick={this.login2}>Log in with Google</button><br /><br />
+    //                     <Link to="/Register" >สมัครสมาชิค</Link>
+    //                     &nbsp;&nbsp;&nbsp;&nbsp;
+    //         <Link to="/Reset" >ลืมรหัสผ่าน</Link>       &nbsp;&nbsp;&nbsp;&nbsp;
           
-            <br/><br/>
+    //         <br/><br/>
           
          
                    
-                </div>
+    //             </div>
         
-      </div>
+    //   </div>
+    //   );
+      const fullList = (
+        <div className={classes.fullList}>
+  
+          <br />
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <tab /> <p class="sansserif">Log in</p>
+          <br /> <br />
+          <div class="form-group">
+            <br />    <br />
+            <label for="exampleInputEmail1">Email address: </label>
+  
+            <Input
+              value={this.state.email}
+              onChange={this.handleChange}
+              type="email"
+              name="email"
+              id="exampleInputEmail1" aria-describedby="emailHelp"
+              placeholder="Enter email" /><br
+              className={classes.input}
+              inputProps={{ 'aria-label': 'Description', }} />
+  
+            <label for="exampleInputPassword1">Password: </label>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <Input
+              value={this.state.password}
+              onChange={this.handleChange}
+              type="password"
+              name="password"
+              id="exampleInputEmail1" aria-describedby="emailHelp"
+              placeholder="Enter Password" /><br
+              className={classes.input}
+              inputProps={{ 'aria-label': 'Description', }} />
+  
+            <Button type="submit" onClick={this.loginE} variant="contained" className={classes.button}>Login</Button>
+            <Button onClick={this.login} variant="contained" color="primary" className={classes.button}> Log in with Facebook </Button>
+            <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button>
+            <br /><br /><Link to="/Register" >Regis</Link>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+                      <Link to="/Reset" >Reset</Link>       &nbsp;&nbsp;&nbsp;&nbsp;
+                      <br /><br />
+          </div>
+        </div>
       );
+     
+
     if (this.state.user) {
       return (
         <div>
           {/* <img src={logo} className="App-logo" alt="logo" />   */}
           <div class="form-group">
             <br />
-            <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
+            {/* <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button> */}
             <br />
             {/* <Link to="/Upload" >Go to Upload</Link>  */}
 
@@ -176,8 +222,8 @@ class Login extends Component {
       return (
 
         <div>
-         <br />
-        <Button variant="contained" color="secondary" onClick={this.toggleDrawer('top', true)}>LOGIN</Button>
+         
+        {/* <Button variant="contained" color="secondary" onClick={this.toggleDrawer('top', true)}>LOGIN</Button> */}
          <br />
          <br />
         <Drawer anchor="top" open={this.state.top} onClose={this.toggleDrawer('top', false)}>
@@ -212,3 +258,4 @@ Login.propTypes = {
 };
 
 export default withStyles(styles)(Login);
+//kmanbanboy@hotmail.com

@@ -55,7 +55,7 @@ class App extends Component {
               marks: marks
           });
           console.log(marks)
-          marks.map((m) => {
+          marks.map((m) => {ป
               var marker = new window.google.maps.Marker({
                   map: window.map,
                   position: { lat: m.lat, lng: m.lng },
@@ -94,6 +94,7 @@ class App extends Component {
           console.log("This last lng", event.latLng.lng())
           marker.setOptions({ position: event.latLng })
           _this.sendPosition(event.latLng)
+          window.google.maps.event.clearinstan
       })
 
   }
