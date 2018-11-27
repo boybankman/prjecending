@@ -199,23 +199,7 @@ class Login extends Component {
           </div>
         </div>
       );
-      if (this.state.user) {
-        return (
-          <div>
-            {/* <img src={logo} className="App-logo" alt="logo" />   */}
-            <div class="form-group">
-              <br />
-              <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
-              <br />
-              {/* <Link to="/Upload" >Go to Upload</Link>  */}
-  
-            </div>
-            <div class="form-group">
-            </div><br />
-          </div>
-  
-        )
-      }
+     
 
     if (this.state.user) {
       return (
@@ -223,7 +207,7 @@ class Login extends Component {
           {/* <img src={logo} className="App-logo" alt="logo" />   */}
           <div class="form-group">
             <br />
-            <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
+            {/* <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button> */}
             <br />
             {/* <Link to="/Upload" >Go to Upload</Link>  */}
 
@@ -238,7 +222,7 @@ class Login extends Component {
 
         <div>
          
-        <Button variant="contained" color="secondary" onClick={this.toggleDrawer('top', true)}>LOGIN</Button>
+        {/* <Button variant="contained" color="secondary" onClick={this.toggleDrawer('top', true)}>LOGIN</Button> */}
          <br />
          <br />
         <Drawer anchor="top" open={this.state.top} onClose={this.toggleDrawer('top', false)}>
@@ -273,3 +257,4 @@ Login.propTypes = {
 };
 
 export default withStyles(styles)(Login);
+//kmanbanboy@hotmail.com
