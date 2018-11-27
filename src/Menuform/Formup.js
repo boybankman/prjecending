@@ -22,6 +22,8 @@ import Map from '../components/Map'
 import Button from '@material-ui/core/Button';
 import fire from '../firebase/Fire';
 import Login from '../LoginPage/Login'
+import { Link } from 'react-router-dom';
+import Input from '@material-ui/core/Input';
 
 const drawerWidth = 240;
 
@@ -132,6 +134,69 @@ class Formup extends React.Component {
         console.log(keyMarker)
     }
 
+    loginE(e) {
+        e.preventDefault();
+        firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u) => {
+        }).catch((error) => {
+          console.log(error);
+          alert("incorrect id or password");
+        });
+      }
+      verifyEmail(e) {
+        e.preventDefault();
+        firebase.auth().currentUser.sendEmailVerification().then((u) => {
+          alert("Please Check Your Mail");
+        }).catch((error) => {
+          console.log(error);
+          alert("Error");
+        });
+      }
+    
+    
+      login = () => {
+        var that = this;
+        const result = auth.signInWithPopup(provider).then(function (result) {
+          var user = result.user;
+          console.log(user);
+          that.setState({ user: user });
+        }).catch(function (error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+        });
+      }
+      login2 = () => {
+        var that = this;
+        const result = auth.signInWithPopup(provider2).then(function (result) {
+          var user = result.user;
+          console.log(user);
+          that.setState({ user: user });
+        }).catch(function (error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+        });
+      }
+      componentDidMount() {
+        auth.onAuthStateChanged((user) => {
+          if (user) {
+            this.setState({ user });
+          }
+        });
+      }
+      logout() {
+        firebase.auth().signOut();
+        this.setState({ user: null });
+      }
+    
+      toggleDrawer = (side, open) => () => {
+        this.setState({
+          [side]: open,
+        });
+      };
+    
+      renderLoginButon() {
+        const { classes } = this.props;}
+    
+
     render() {
         const { classes, theme } = this.props;
         const { open } = this.state;
@@ -174,6 +239,48 @@ class Formup extends React.Component {
                         </IconButton>
                     </div>
                     <Divider />
+
+                     <div className={classes.fullList}>
+  
+  <br />
+ 
+              <tab /> <p class="sansserif">Log in</p>
+  <br /> <br />
+  <div class="form-group">
+    <br />    <br />
+    <label for="exampleInputEmail1">Email address: </label>
+
+    <Input
+      value={this.state.email}
+      onChange={this.handleChange}
+      type="email"
+      name="email"
+      id="exampleInputEmail1" aria-describedby="emailHelp"
+      placeholder="Enter email" /><br
+      className={classes.input}
+      inputProps={{ 'aria-label': 'Description', }} />
+
+    <label for="exampleInputPassword1">Password: </label>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <Input
+      value={this.state.password}
+      onChange={this.handleChange}
+      type="password"
+      name="password"
+      id="exampleInputEmail1" aria-describedby="emailHelp"
+      placeholder="Enter Password" /><br
+      className={classes.input}
+      inputProps={{ 'aria-label': 'Description', }} />
+
+    <Button type="submit" onClick={this.loginE} variant="contained" className={classes.button}>Login</Button>
+    <Button onClick={this.login} variant="contained" color="primary" className={classes.button}> Log in with Facebook </Button>
+    <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button>
+    <br /><br /><Link to="/Register" >Regis</Link>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+              <Link to="/Reset" >Reset</Link>       &nbsp;&nbsp;&nbsp;&nbsp;
+              <br /><br />
+  </div>
+</div>
                     
                     {this.props.keym.key} 
                     <br/>

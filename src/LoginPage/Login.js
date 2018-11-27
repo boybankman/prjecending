@@ -6,13 +6,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+
 import Input from '@material-ui/core/Input';
 
 const styles = theme => ({
@@ -55,13 +49,13 @@ class Login extends Component {
     this.loginE = this.loginE.bind(this);
   }
 
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
-  };
+  // handleDrawerOpen = () => {
+  //   this.setState({ open: true });
+  // };
 
-  handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
+  // handleDrawerClose = () => {
+  //   this.setState({ open: false });
+  // };
 
   handleChange(e) {
     this.setState({ [e.target.name]: e.target.value });
@@ -166,7 +160,7 @@ class Login extends Component {
         <div className={classes.fullList}>
   
           <br />
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         
                       <tab /> <p class="sansserif">Log in</p>
           <br /> <br />
           <div class="form-group">
