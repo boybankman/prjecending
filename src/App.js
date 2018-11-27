@@ -78,12 +78,20 @@ class App extends Component {
         window.google.maps.event.addListener(marker, 'click', function (event) {
           var keym = m;
           self.setState({ open: true, keym });
+          this.marker.setAnimation(window.google.maps.Animation.BOUNCE);
         })
 
       })
     })
 
   }
+  // toggleBounce = () =>{
+  //   if (this.marker.getAnimation() !== null) {
+  //     this.marker.setAnimation(null);
+  //   } else {
+  //     this.marker.setAnimation(window.google.maps.Animation.BOUNCE);
+  //   }
+  // }
   // btnmarker = () => {
   //   var _this = this
   //   // window.map = new window.google.maps.Map(document.getElementById("map"), {

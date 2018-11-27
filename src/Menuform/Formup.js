@@ -26,7 +26,28 @@ import Input from '@material-ui/core/Input';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase/Fire';
 import { provider, auth, provider2 } from '../firebase/Fire';
+import Modal from '@material-ui/core/Modal';
+
+
+
 const drawerWidth = 240;
+
+///////////start////////////////////
+// function rand() {
+//     return Math.round(Math.random() * 20) - 10;
+//   }
+
+function getModalStyle() {
+    const top = 50 ;
+    const left = 50 ;
+  
+    return {
+      top: `${top}%`,
+      left: `${left}%`,
+      transform: `translate(-${top}%, -${left}%)`,
+    };
+  }
+/////////////N///////////////////////
 
 const styles = theme => ({
     root: {
@@ -83,6 +104,18 @@ const styles = theme => ({
         }),
         marginLeft: 0,
     },
+
+    //////////////////Start///////////////////////////////////
+    paper: {
+        position: 'absolute',
+        width: theme.spacing.unit * 50,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing.unit * 4,
+      },
+    ///////////////////N//////////////////////////////////////
+
+
 });
 
 class Formup extends React.Component {
@@ -252,6 +285,16 @@ class Formup extends React.Component {
     
       renderLoginButon() {
         const { classes } = this.props;}
+
+        // //////////////////////////////////////////////////////////
+        handleOpen = () => {
+            this.setState({ open: true });
+          };
+        
+          handleClose = () => {
+            this.setState({ open: false });
+          };
+        //////////////////////////////////////////////////////////////////
     
 
     render() {
@@ -303,19 +346,43 @@ class Formup extends React.Component {
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <tab /> <p class="sansserif">{this.state.user.email}</p>
                         <br /> 
-                        
+
                     </div>
 
+                     <List>
+                       <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
+                    </List>
+                    
+                    <Divider />
                     {this.props.keym.key}
                     <br />
                     {this.props.keym.lat}
                     <br />
                     {this.props.keym.lng}
 
-                    <Divider />
-                    <List>
-                       <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
-                    </List>
+                      
+         <Button onClick={this.handleOpen} >อัพโหลดข้อมูล</Button>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.open}
+          onClose={this.handleClose}
+          
+        >
+          <div style={getModalStyle()} className={classes.paper}>
+            <Typography variant="h6" id="modal-title">
+             กรอกข้อมูลพื้นที่
+            </Typography>
+            <Typography variant="subtitle1" id="simple-modal-description">
+              รายละเอียด     <br /> 
+              
+
+            </Typography>
+            <withStyles />
+          </div>
+        </Modal>
+                        
+                      
                 </Drawer>
                 <main
                     className={classNames(classes.content, {
@@ -401,10 +468,11 @@ class Formup extends React.Component {
                                 placeholder="Enter Password" /><br
                                 className={classes.input}
                                 inputProps={{ 'aria-label': 'Description', }} />
+                                <br/>
 
-                            <Button type="submit" onClick={this.loginE} variant="contained" className={classes.button}>Login</Button>
-                            <Button onClick={this.login} variant="contained" color="primary" className={classes.button}> Log in with Facebook </Button>
-                            <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button>
+                            <Button type="submit" onClick={this.loginE} variant="contained" className={classes.button}>Login</Button> <br/>
+                            <Button onClick={this.login} variant="contained" color="primary" className={classes.button}> Log in with Facebook </Button><br/>
+                            <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button><br/>
                             <br /><br /><Link to="/Register" >Regis</Link>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                       <Link to="/Reset" >Reset</Link>       &nbsp;&nbsp;&nbsp;&nbsp;
@@ -442,7 +510,6 @@ class Formup extends React.Component {
     }
     }
 }
-
 Formup.propTypes = {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
