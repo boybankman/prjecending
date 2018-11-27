@@ -28,7 +28,7 @@ import firebase from '../firebase/Fire';
 import { provider, auth, provider2 } from '../firebase/Fire';
 import TextField from '@material-ui/core/TextField';
 import { createMuiTheme } from '@material-ui/core/styles';
-
+import Modal from '@material-ui/core/Modal';
 
 
 
@@ -88,6 +88,13 @@ const styles = theme => ({
         }),
         marginLeft: -drawerWidth,
     },
+    paper: {
+        position: 'absolute',
+        width: theme.spacing.unit * 50,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing.unit * 4,
+      },
     contentShift: {
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.easeOut,
@@ -203,6 +210,23 @@ class Formup extends React.Component {
         console.log(keyMarker)
     }
 
+    getModalStyle = () => {
+        const top = 50;
+        const left = 50;
+    
+        return {
+          top: `${top}%`,
+          left: `${left}%`,
+          transform: `translate(-${top}%, -${left}%)`,
+        };
+      }
+      handleOpen = () => {
+        this.setState({ open: true });
+      };
+    
+      handleClose = () => {
+        this.setState({ open: false });
+      };
     render() {
         window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
         const { classes, theme, open } = this.props;
@@ -228,7 +252,7 @@ class Formup extends React.Component {
                                 <MenuIcon />
                             </IconButton>
                             <Typography className={classes.typography} variant="h6" color="inherit" noWrap>
-                                Upload Image System For Storage About Groundwaterdrilling On The Map
+                            BKB Upload Image System
             </Typography>
                         </Toolbar>
                     </AppBar>
@@ -261,7 +285,31 @@ class Formup extends React.Component {
                         {this.props.keym.lat}
                         <br />
                         {this.props.keym.lng}
-
+                        <Button onClick={this.handleOpen}>Open Modal</Button>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.open}
+          onClose={this.handleClose}
+        >
+          <div style={this.getModalStyle()} className={classes.paper}>
+            <Typography variant="h6" id="modal-title">
+              Text in a modal
+            </Typography>
+            <TextField
+          id="standard-name"
+          label="Name"
+          className={classes.textField}
+          value={this.state.info}
+          onChange={this.handleChange}
+          margin="normal"
+        />
+            <Typography variant="subtitle1" id="simple-modal-description">
+              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            </Typography>
+            <withStyles />
+          </div>
+        </Modal>
                         <Divider />
                         <List>
                             <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
@@ -301,7 +349,7 @@ class Formup extends React.Component {
                                 <MenuIcon />
                             </IconButton>
                             <Typography className={classes.typography} variant="h6" color="inherit" noWrap>
-                                Upload Image System For Storage About Groundwaterdrilling On The Map
+                               BKB Upload Image System 
             </Typography>
                         </Toolbar>
                     </AppBar>
