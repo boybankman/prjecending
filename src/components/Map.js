@@ -17,14 +17,12 @@ class Map extends Component {
             zoom: 15,
             center: { lat: 13.7648, lng: 100.5381 }
         }
-        this.sendPosition = this.sendPosition.bind(this);
         this.initMap = this.initMap.bind(this);
-        this.btnmarker = this.btnmarker.bind(this);
-        this.getMarker = this.getMarker.bind(this);
+    
       
     }
     componentWillMount() {
-        this.getMarker()
+       
         window.initMap = this.initMap
      
     }
@@ -58,80 +56,7 @@ class Map extends Component {
         //     //  _this.sendPosition(event.latLng)
         // })
     }
-    //******************************************************************************************************************** */
-    sendPosition(latLng) {
-        let sendToP = {
-            lat: latLng.lat(),
-            lng: latLng.lng()
-        }
-
-        const databaseRef = fire.database().ref('/Marker');
-        const MarkerPoint = databaseRef.push({ sendToP })
-        console.log(MarkerPoint)
-        const keyMarker = MarkerPoint.key
-        this.setState({ keyMarker: keyMarker })
-        console.log(keyMarker)
-    }
-    //*********************************************************************************************************************** */
-    btnmarker = () => {
-        var _this = this
-        window.map = new window.google.maps.Map(document.getElementById("map"), {
-            center: this.state.center,
-            zoom: this.state.zoom,
-
-            //clickableIcons: false,
-            // mapTypeControl: false,
-            // streetViewControl: false,
-            // fullscreenControl: false,
-            mapTypeId: 'satellite',
-        })
-        this.setState({
-            isLoad: true
-        })
-
-        window.google.maps.event.addListener(window.map, 'click', function (event) {
-            var marker = new window.google.maps.Marker({
-                map: window.map,
-                position: { lat: event.latLng.lat(), lng: event.latLng.lng() },
-                clickable: true,
-                draggable: true,
-
-            })
-            console.log("This last lat", event.latLng.lat())
-            console.log("This last lng", event.latLng.lng())
-            marker.setOptions({ position: event.latLng })
-            _this.sendPosition(event.latLng)
-        })
-
-    }
-    getMarker() {
-        const dataref = fire.database().ref('Marker')
-        dataref.on('value', (snapshot) => {
-            let marks = [];
-
-            snapshot.forEach(function (childSnapshot) {
-                marks.push({
-                    key: childSnapshot.key,
-                    lat: childSnapshot.val().sendToP.lat,
-                    lng: childSnapshot.val().sendToP.lng
-
-                })
-            })
-            this.setState({
-                marks: marks
-            });
-            console.log(marks)
-            marks.map((m) => {
-                var marker = new window.google.maps.Marker({
-                    map: window.map,
-                    position: { lat: m.lat, lng: m.lng },
-                    clickable: true,
-                    draggable: false,
-                })
-            })
-        })
-  
-    }
+    
     render() {
         var childrenOutput = null;
        const {marks} =  this.state

@@ -16,12 +16,15 @@ class App extends Component {
       this.state = {
         user: null ,
       }
+      this.getMarker = this.getMarker.bind(this)
     }
   
     componentDidMount(){
       this.authListener();
     }
-  
+    componentWillMount(){
+      this.getMarker();
+    }
     authListener() {
       fire.auth().onAuthStateChanged((user) => {
         //console.log(user);
@@ -35,6 +38,34 @@ class App extends Component {
         }
       });
     }
+    getMarker() {
+      const dataref = fire.database().ref('Marker')
+      dataref.on('value', (snapshot) => {
+          let marks = [];
+
+          snapshot.forEach(function (childSnapshot) {
+              marks.push({
+                  key: childSnapshot.key,
+                  lat: childSnapshot.val().sendToP.lat,
+                  lng: childSnapshot.val().sendToP.lng
+
+              })
+          })
+          this.setState({
+              marks: marks
+          });
+          console.log(marks)
+          marks.map((m) => {
+              var marker = new window.google.maps.Marker({
+                  map: window.map,
+                  position: { lat: m.lat, lng: m.lng },
+                  clickable: true,
+                  draggable: false,
+              })
+          })
+      })
+
+  }
     btnmarker = () => {
       var _this = this
       // window.map = new window.google.maps.Map(document.getElementById("map"), {
