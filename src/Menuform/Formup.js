@@ -233,7 +233,7 @@ class Formup extends React.Component {
     };
     render() {
         window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
-        const { classes, theme, open } = this.props;
+        const { classes, theme } = this.props;
         const { open, user, oopen, slatlong, uploadFilesObj } = this.state;
         var _this = this
         if (this.state.user) {
