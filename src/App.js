@@ -61,6 +61,7 @@ class App extends Component {
       snapshot.forEach(function (childSnapshot) {
         marks.push({
           key: childSnapshot.key,
+          name: childSnapshot.val().sendToP.name,
           lat: childSnapshot.val().sendToP.lat,
           lng: childSnapshot.val().sendToP.lng
 
@@ -90,6 +91,7 @@ class App extends Component {
     })
 
   }
+  
 
 
   // btnmarker = () => {
@@ -151,10 +153,11 @@ class App extends Component {
         <Formup
           handleDrawerClose={this.handleDrawerClose}
           handleDrawerOpen={this.handleDrawerOpen}
+          
           {...this.state}
         >
 
-          <Button variant="contained" onClick={this.btnmarker}>test database</Button>
+        
 
         </Formup>
       </div>
