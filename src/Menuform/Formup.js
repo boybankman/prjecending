@@ -110,7 +110,7 @@ class Formup extends React.Component {
     constructor() {
         super();
         this.state = {
-        
+
             oopen: false,
 
             email: '',
@@ -124,7 +124,6 @@ class Formup extends React.Component {
         this.loginE = this.loginE.bind(this);
         this.btnmarker = this.btnmarker.bind(this);
         this.btncancel = this.btncancel.bind(this);
-        this.sendPosition = this.sendPosition.bind(this);
     }
     componentDidMount() {
         auth.onAuthStateChanged((user) => {
@@ -190,27 +189,7 @@ class Formup extends React.Component {
         })
 
     }
-    sendPosition(e, fname) {
-        const { slatlong } = this.state
-        console.log(slatlong.lng())
-        let sendToP = {
-            name: fname,
-            lat: slatlong.lat(),
-            lng: slatlong.lng()
-        }
 
-        const databaseRef = fire.database().ref('/Marker');
-        const MarkerPoint = databaseRef.push({ sendToP })
-        console.log(MarkerPoint)
-        this.setState({ oopen: false })
-
-        // const databaseRef = fire.database().ref('/Marker');
-        // const MarkerPoint = databaseRef.push({ sendToP })
-        // console.log(MarkerPoint)
-        // const keyMarker = MarkerPoint.key
-        // this.setState({ keyMarker: keyMarker })
-        // console.log(keyMarker)
-    }
     btncancel() {
         this.setState({ oopen: false })
     }
@@ -233,11 +212,11 @@ class Formup extends React.Component {
     };
     render() {
         window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
-        const { classes, theme,open } = this.props;
-        const {  user, oopen, slatlong, uploadFilesObj } = this.state;
+        const { classes, theme, open } = this.props;
+        const { slatlong} = this.state;
         var _this = this
         if (this.state.user) {
-            if(this.state.oopen){
+            if (this.state.oopen) {
                 return (
                     <div className={classes.root}>
                         <CssBaseline />
@@ -277,34 +256,30 @@ class Formup extends React.Component {
                             </div>
                             <Divider />
                             <div className={classes.fullList}>
-    
+
                                 <br />
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                            <p className="sansserif">{this.state.user.email}</p>
                                 <br />
-    
+
                             </div>
-    
-                            
-                            <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>upload</Button>
-    
-    
+
+
+                            <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>Logout</Button>
+
+
                             {/* /* ****************************************************************************************************************************************************************** */}
-    
+
                             <Divider />
                             <List>
-                                {this.state.slatlong.lng()}
-                                {this.state.slatlong.lat()}
-                                {/* {this.props.keym.key}
-                                <br />
-                                {this.props.keym.name}
-                                <br /> */}
-                                {/* {this.props.keym.lat}
-                                <br />
-                                {this.props.keym.lng} */}
-    
+                                    {/* {this.state.slatlong.lng()}
+                                    {this.state.slatlong.lat()} */}
+                                    <UploadForm
+                                    btncancel = {this.btncancel}
+                                    slatlong = {slatlong}
+                                    />
                             </List>
-    
+
                         </Drawer>
                         <main
                             className={classNames(classes.content, {
@@ -315,91 +290,12 @@ class Formup extends React.Component {
                             <Login />
                             <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
                         </main>
-                        {/* /* ****************************************************************************************************************************************************************** */
-                    /* ****************************************************************************************************************************************************************** */}
-                        {/* <div>
-                            <Drawer
-                                className={classes.drawer}
-                                variant="persistent"
-                                anchor="left"
-                                open={this.state.oopen}
-                                classes={{
-                                    paper: classes.drawerPaper,
-                                }}
-                            >
-                                <div className={classes.drawerHeader}>
-                                    <IconButton onClick={this.props.handleDrawerClose}>
-                                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                                    </IconButton>
-                                </div>
-                                <Divider />
-                                <div className={classes.fullList}>
-    
-                                    <br />
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          <tab /> <p class="sansserif">{this.state.user.email}</p>
-                                    <br />
-                                    <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
-                                </div>
-    
-                                <Divider />
-                                <List>
-                                    <UploadForm
-                                        user={user}
-                                        btncancel={this.btncancel}
-                                        sendPosition={this.sendPosition}
-                                        uploadFilesObj={uploadFilesObj}
-                                    />
-                                </List>
-                                {this.props.keym.lng}
-                                < Button onClick={this.handleOpen} > Open Modal</Button >
-                                <Modal
-                                    aria-labelledby="simple-modal-title"
-                                    aria-describedby="simple-modal-description"
-                                    open={this.state.open}
-                                    onClose={this.handleClose}
-                                >
-                                    <div style={this.getModalStyle()} className={classes.paper}>
-                                        <Typography variant="h6" id="modal-title">
-                                            Text in a modal
-    </Typography>
-                                        <TextField
-                                            id="standard-name"
-                                            label="Name"
-                                            className={classes.textField}
-                                            value={this.state.info}
-                                            onChange={this.handleChange}
-                                            margin="normal"
-                                        />
-                                        <Typography variant="subtitle1" id="simple-modal-description">
-                                            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-    </Typography>
-                                        <withStyles />
-                                    </div>
-                                </Modal>
-                                <Divider />
-                                <List>
-                                    <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
-                                </List>
-    
-                                <main
-                                    className={classNames(classes.content, {
-                                        [classes.contentShift]: open,
-                                    })}
-                                >
-                                    <div className={classes} />
-                                    <Login />
-                                    <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
-                                </main>
-    
-                            </Drawer>
-    
-                        </div > */}
-    
+
+
                     </div >
-    
-    
-    
+
+
+
                 )
             }
             return (
@@ -449,7 +345,7 @@ class Formup extends React.Component {
 
                         </div>
 
-                        
+
                         <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
 
 
@@ -464,7 +360,7 @@ class Formup extends React.Component {
                             {this.props.keym.lat}
                             <br />
                             {this.props.keym.lng}
-
+                            <img src = {this.props.keym.pic} alt = "pic64*64" />
                         </List>
 
                     </Drawer>
@@ -477,86 +373,7 @@ class Formup extends React.Component {
                         <Login />
                         <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
                     </main>
-                    {/* /* ****************************************************************************************************************************************************************** */
-                /* ****************************************************************************************************************************************************************** */}
-                    {/* <div>
-                        <Drawer
-                            className={classes.drawer}
-                            variant="persistent"
-                            anchor="left"
-                            open={this.state.oopen}
-                            classes={{
-                                paper: classes.drawerPaper,
-                            }}
-                        >
-                            <div className={classes.drawerHeader}>
-                                <IconButton onClick={this.props.handleDrawerClose}>
-                                    {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                                </IconButton>
-                            </div>
-                            <Divider />
-                            <div className={classes.fullList}>
 
-                                <br />
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <tab /> <p class="sansserif">{this.state.user.email}</p>
-                                <br />
-                                <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
-                            </div>
-
-                            <Divider />
-                            <List>
-                                <UploadForm
-                                    user={user}
-                                    btncancel={this.btncancel}
-                                    sendPosition={this.sendPosition}
-                                    uploadFilesObj={uploadFilesObj}
-                                />
-                            </List>
-                            {this.props.keym.lng}
-                            < Button onClick={this.handleOpen} > Open Modal</Button >
-                            <Modal
-                                aria-labelledby="simple-modal-title"
-                                aria-describedby="simple-modal-description"
-                                open={this.state.open}
-                                onClose={this.handleClose}
-                            >
-                                <div style={this.getModalStyle()} className={classes.paper}>
-                                    <Typography variant="h6" id="modal-title">
-                                        Text in a modal
-</Typography>
-                                    <TextField
-                                        id="standard-name"
-                                        label="Name"
-                                        className={classes.textField}
-                                        value={this.state.info}
-                                        onChange={this.handleChange}
-                                        margin="normal"
-                                    />
-                                    <Typography variant="subtitle1" id="simple-modal-description">
-                                        Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-</Typography>
-                                    <withStyles />
-                                </div>
-                            </Modal>
-                            <Divider />
-                            <List>
-                                <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
-                            </List>
-
-                            <main
-                                className={classNames(classes.content, {
-                                    [classes.contentShift]: open,
-                                })}
-                            >
-                                <div className={classes} />
-                                <Login />
-                                <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
-                            </main>
-
-                        </Drawer>
-
-                    </div > */}
 
                 </div >
 
