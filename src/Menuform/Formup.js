@@ -110,7 +110,7 @@ class Formup extends React.Component {
     constructor() {
         super();
         this.state = {
-            open: false,
+        
             oopen: false,
 
             email: '',
@@ -233,10 +233,175 @@ class Formup extends React.Component {
     };
     render() {
         window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
-        const { classes, theme } = this.props;
-        const { open, user, oopen, slatlong, uploadFilesObj } = this.state;
+        const { classes, theme,open } = this.props;
+        const {  user, oopen, slatlong, uploadFilesObj } = this.state;
         var _this = this
         if (this.state.user) {
+            if(this.state.oopen){
+                return (
+                    <div className={classes.root}>
+                        <CssBaseline />
+                        <AppBar
+                            position="fixed"
+                            className={classNames(classes.appBar, {
+                                [classes.appBarShift]: open,
+                            })}
+                        >
+                            <Toolbar disableGutters={!open}>
+                                <IconButton
+                                    color="inherit"
+                                    aria-label="Open drawer"
+                                    onClick={this.props.handleDrawerOpen}
+                                    className={classNames(classes.menuButton, open && classes.hide)}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                                <Typography className={classes.typography} variant="h6" color="inherit" noWrap>
+                                    BKB Upload Image System
+                </Typography>
+                            </Toolbar>
+                        </AppBar>
+                        <Drawer
+                            className={classes.drawer}
+                            variant="persistent"
+                            anchor="left"
+                            open={this.state.oopen}
+                            classes={{
+                                paper: classes.drawerPaper,
+                            }}
+                        >
+                            <div className={classes.drawerHeader}>
+                                <IconButton onClick={this.props.handleDrawerClose}>
+                                    {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                                </IconButton>
+                            </div>
+                            <Divider />
+                            <div className={classes.fullList}>
+    
+                                <br />
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                           <p className="sansserif">{this.state.user.email}</p>
+                                <br />
+    
+                            </div>
+    
+                            
+                            <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>upload</Button>
+    
+    
+                            {/* /* ****************************************************************************************************************************************************************** */}
+    
+                            <Divider />
+                            <List>
+                                {this.state.slatlong.lng()}
+                                {this.state.slatlong.lat()}
+                                {/* {this.props.keym.key}
+                                <br />
+                                {this.props.keym.name}
+                                <br /> */}
+                                {/* {this.props.keym.lat}
+                                <br />
+                                {this.props.keym.lng} */}
+    
+                            </List>
+    
+                        </Drawer>
+                        <main
+                            className={classNames(classes.content, {
+                                [classes.contentShift]: open,
+                            })}
+                        >
+                            <div className={classes} />
+                            <Login />
+                            <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
+                        </main>
+                        {/* /* ****************************************************************************************************************************************************************** */
+                    /* ****************************************************************************************************************************************************************** */}
+                        {/* <div>
+                            <Drawer
+                                className={classes.drawer}
+                                variant="persistent"
+                                anchor="left"
+                                open={this.state.oopen}
+                                classes={{
+                                    paper: classes.drawerPaper,
+                                }}
+                            >
+                                <div className={classes.drawerHeader}>
+                                    <IconButton onClick={this.props.handleDrawerClose}>
+                                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                                    </IconButton>
+                                </div>
+                                <Divider />
+                                <div className={classes.fullList}>
+    
+                                    <br />
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <tab /> <p class="sansserif">{this.state.user.email}</p>
+                                    <br />
+                                    <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
+                                </div>
+    
+                                <Divider />
+                                <List>
+                                    <UploadForm
+                                        user={user}
+                                        btncancel={this.btncancel}
+                                        sendPosition={this.sendPosition}
+                                        uploadFilesObj={uploadFilesObj}
+                                    />
+                                </List>
+                                {this.props.keym.lng}
+                                < Button onClick={this.handleOpen} > Open Modal</Button >
+                                <Modal
+                                    aria-labelledby="simple-modal-title"
+                                    aria-describedby="simple-modal-description"
+                                    open={this.state.open}
+                                    onClose={this.handleClose}
+                                >
+                                    <div style={this.getModalStyle()} className={classes.paper}>
+                                        <Typography variant="h6" id="modal-title">
+                                            Text in a modal
+    </Typography>
+                                        <TextField
+                                            id="standard-name"
+                                            label="Name"
+                                            className={classes.textField}
+                                            value={this.state.info}
+                                            onChange={this.handleChange}
+                                            margin="normal"
+                                        />
+                                        <Typography variant="subtitle1" id="simple-modal-description">
+                                            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+    </Typography>
+                                        <withStyles />
+                                    </div>
+                                </Modal>
+                                <Divider />
+                                <List>
+                                    <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
+                                </List>
+    
+                                <main
+                                    className={classNames(classes.content, {
+                                        [classes.contentShift]: open,
+                                    })}
+                                >
+                                    <div className={classes} />
+                                    <Login />
+                                    <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
+                                </main>
+    
+                            </Drawer>
+    
+                        </div > */}
+    
+                    </div >
+    
+    
+    
+                )
+            }
             return (
                 <div className={classes.root}>
                     <CssBaseline />
@@ -284,13 +449,7 @@ class Formup extends React.Component {
 
                         </div>
 
-                        {this.props.keym.key}
-                        <br />
-                        {this.props.keym.lat}
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                      <tab /> <p class="sansserif">{this.state.user.email}</p>
-                        <br />
+                        
                         <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
 
 
@@ -320,7 +479,7 @@ class Formup extends React.Component {
                     </main>
                     {/* /* ****************************************************************************************************************************************************************** */
                 /* ****************************************************************************************************************************************************************** */}
-                    <div>
+                    {/* <div>
                         <Drawer
                             className={classes.drawer}
                             variant="persistent"
@@ -397,7 +556,7 @@ class Formup extends React.Component {
 
                         </Drawer>
 
-                    </div >
+                    </div > */}
 
                 </div >
 
