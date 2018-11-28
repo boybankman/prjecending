@@ -1,12 +1,42 @@
 import React, { Component } from 'react';
 import firebase from '../firebase/Fire';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import Modal from '@material-ui/core/Modal';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
+
+function getModalStyle() {
+    const top = 50;
+    const left = 50;
+  
+    return {
+      top: `${top}%`,
+      left: `${left}%`,
+      transform: `translate(-${top}%, -${left}%)`,
+    };
+  }
+
+  
+const styles = theme => ({
+    paper: {
+      position: 'absolute',
+      width: theme.spacing.unit * 50,
+      backgroundColor: theme.palette.background.paper,
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing.unit * 4,
+    },
+  });
+  
+
 class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
+            open:false
         }
         this.handleChange = this.handleChange.bind(this);
         this.registerU = this.registerU.bind(this);
@@ -21,19 +51,24 @@ class Register extends Component {
             alert('Register Complete');
         }).catch((error) => {
             console.log(error);
-          });
-        
-        
+          });     
     }
+    handleOpen = () => {
+        this.setState({ open: true });
+      };    
+    handleClose = () => {
+        this.setState({ open: false });
+      };
 
-    
-      
 
-    
     
   render() {
+
+    const { classes } = this.props;
     return (
         <div className="App">
+
+
              <div className="loading container wrapper">
                      
                       <br />
@@ -50,14 +85,20 @@ class Register extends Component {
               <button type="submit" onClick={this.registerU} class="loginBtn loginBtn--L">Register</button>   
               <br/>
               <Link to="/" >BACK</Link>
-                      
-                      <br /> <br />
+                <br /> <br />
                 <br /> <br />     
                   </div>
-  
-        </div>
+          <div>
+      </div>
+
+ 
+ 
+    </div>
+    
     );
   }
   }
-
-export default Register;
+  Register.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
+export default withStyles(styles, { withTheme: true })(Register);

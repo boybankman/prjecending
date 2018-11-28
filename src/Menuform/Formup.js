@@ -297,7 +297,7 @@ class Formup extends React.Component {
                         {this.props.keym.lat}
                         <br />
                         {this.props.keym.lng}
-                        <Button onClick={this.handleOpen}>Open Modal</Button>
+        <Button onClick={this.handleOpen}>Open Modal</Button>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
@@ -310,7 +310,7 @@ class Formup extends React.Component {
             </Typography>
             <TextField
           id="standard-name"
-          label="Name"
+          label="Descriptions"
           className={classes.textField}
           value={this.state.info}
           onChange={this.handleChange}
@@ -415,7 +415,9 @@ class Formup extends React.Component {
                                 <Button type="submit" onClick={this.loginE} variant="contained" className={classes.button}>Login</Button>
                                 <Button onClick={this.login} variant="contained" color="primary" className={classes.button}> Log in with Facebook </Button>
                                 <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button>
-                                <br /><br /><Link to="/Register" >Regis</Link>
+                                <br /><br />
+                                <Link to="/Register" >Register</Link>
+                                
                                 &nbsp;&nbsp;&nbsp;&nbsp;
                       <Link to="/Reset" >Reset</Link>       &nbsp;&nbsp;&nbsp;&nbsp;
                       <br /><br />
