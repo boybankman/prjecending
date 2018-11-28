@@ -78,16 +78,12 @@ class App extends Component {
           draggable: false,
         })
 
-        marker.setAnimation(null);
+        
         window.google.maps.event.addListener(marker, 'click', function (event) {
           var keym = m;
 
           self.setState({ open: true, keym });
-          if (marker.getAnimation() !== null) {
-            marker.setAnimation(null);
-          } else {
-            marker.setAnimation(window.google.maps.Animation.BOUNCE);
-          }
+          
         })
 
       })
