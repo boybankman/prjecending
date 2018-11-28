@@ -26,6 +26,7 @@ import Input from '@material-ui/core/Input';
 import { Link } from 'react-router-dom';
 import firebase from '../firebase/Fire';
 import { provider, auth, provider2 } from '../firebase/Fire';
+import UploadForm from '../Menuform/UploadForm';
 const drawerWidth = 240;
 
 const styles = theme => ({
@@ -91,14 +92,19 @@ class Formup extends React.Component {
         super();
         this.state = {
             open: false,
+            oopen: false,
             email: '',
             password: '',
+            uploadFilesObj: {}
 
         };
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.loginE = this.loginE.bind(this);
+        this.btnmarker = this.btnmarker.bind(this);
+        this.btncancel = this.btncancel.bind(this);
+        this.sendPosition = this.sendPosition.bind(this);
     }
     componentDidMount() {
         auth.onAuthStateChanged((user) => {
@@ -146,54 +152,51 @@ class Formup extends React.Component {
     handleChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
-    btnmarker = () => {
+    btnmarker() {
         var _this = this
-        // window.map = new window.google.maps.Map(document.getElementById("map"), {
-        //     center: this.state.center,
-        //     zoom: this.state.zoom,
-
-        //     //clickableIcons: false,
-        //     // mapTypeControl: false,
-        //     // streetViewControl: false,
-        //     // fullscreenControl: false,
-        //     mapTypeId: 'satellite',
-        // })
-        // this.setState({
-        //     isLoad: true
-        // })
-
         window.google.maps.event.addListener(window.map, 'click', function (event) {
             var marker = new window.google.maps.Marker({
                 map: window.map,
                 position: event.latLng,
                 clickable: true,
                 draggable: true,
-
+                
             })
             console.log("This last lat", event.latLng.lat())
             console.log("This last lng", event.latLng.lng())
-            _this.sendPosition(event.latLng)
+            _this.setState({slatlong : event.latLng})
             window.google.maps.event.clearListeners(window.map, 'click')
+            _this.setState({ oopen: true });
         })
 
     }
-    sendPosition(latLng) {
+    sendPosition(e ,fname) {
+        const {slatlong} = this.state
+        console.log(slatlong.lng())
         let sendToP = {
-            lat: latLng.lat(),
-            lng: latLng.lng()
+            name: fname,
+            lat: slatlong.lat(),
+            lng: slatlong.lng()
         }
 
         const databaseRef = fire.database().ref('/Marker');
         const MarkerPoint = databaseRef.push({ sendToP })
         console.log(MarkerPoint)
-        const keyMarker = MarkerPoint.key
-        this.setState({ keyMarker: keyMarker })
-        console.log(keyMarker)
-    }
+        this.setState({ oopen : false })
 
+        // const databaseRef = fire.database().ref('/Marker');
+        // const MarkerPoint = databaseRef.push({ sendToP })
+        // console.log(MarkerPoint)
+        // const keyMarker = MarkerPoint.key
+        // this.setState({ keyMarker: keyMarker })
+        // console.log(keyMarker)
+    }
+   btncancel(){
+       this.setState({oopen : false})
+   }
     render() {
         const { classes, theme } = this.props;
-        const { open } = this.state;
+        const { open,user,oopen,slatlong,uploadFilesObj } = this.state;
         var _this = this
         if (this.state.user) {
             return (
@@ -240,19 +243,23 @@ class Formup extends React.Component {
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <tab /> <p class="sansserif">{this.state.user.email}</p>
                         <br /> 
-                        
+                        <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
                     </div>
 
+{/* ****************************************************************************************************************************************************************** */}
+
+                    <Divider />
+                    <List>
                     {this.props.keym.key}
+                    <br/>
+                    {this.props.keym.name}
                     <br />
                     {this.props.keym.lat}
                     <br />
                     {this.props.keym.lng}
-
-                    <Divider />
-                    <List>
-                       <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
+                   
                     </List>
+
                 </Drawer>
                 <main
                     className={classNames(classes.content, {
@@ -263,6 +270,45 @@ class Formup extends React.Component {
                     <Login />
                     <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
                 </main>
+{/* ****************************************************************************************************************************************************************** */}
+{/* ****************************************************************************************************************************************************************** */}
+                <div>
+                <Drawer
+                    className={classes.drawer}
+                    variant="persistent"
+                    anchor="left"
+                    open={this.state.oopen}
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                >
+                    <div className={classes.drawerHeader}>
+                        <IconButton onClick={this.props.handleDrawerClose}>
+                            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                        </IconButton>
+                    </div>
+                    <Divider />
+                    <div className={classes.fullList}>
+
+                        <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <tab /> <p class="sansserif">{this.state.user.email}</p>
+                        <br /> 
+                        <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
+                    </div>
+
+                    <Divider />
+                    <List>
+                    <UploadForm 
+                    user={user}
+                    btncancel={this.btncancel}
+                    sendPosition={this.sendPosition}
+                    uploadFilesObj={uploadFilesObj}
+                    />
+                    </List>
+
+                </Drawer>
+                </div>
             </div >
       
             )
