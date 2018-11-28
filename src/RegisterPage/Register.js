@@ -48,6 +48,7 @@ class Register extends Component {
                 <input  value={this.state.password} onChange={this.handleChange} type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
               </div><br/>
               <button type="submit" onClick={this.registerU} class="loginBtn loginBtn--L">Register</button>   
+              <br/>
               <Link to="/" >BACK</Link>
                       
                       <br /> <br />

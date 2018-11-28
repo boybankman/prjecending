@@ -50,6 +50,8 @@ class App extends Component {
   handleDrawerClose = () => {
     this.setState({ open: false });
   };
+ 
+  
   getMarker() {
     var self = this
     const dataref = fire.database().ref('Marker')
@@ -76,9 +78,17 @@ class App extends Component {
           clickable: true,
           draggable: false,
         })
+
+        marker.setAnimation(null);
         window.google.maps.event.addListener(marker, 'click', function (event) {
           var keym = m;
+
           self.setState({ open: true, keym });
+          if (marker.getAnimation() !== null) {
+            marker.setAnimation(null);
+          } else {
+            marker.setAnimation(window.google.maps.Animation.BOUNCE);
+          }
         })
 
       })
@@ -86,6 +96,8 @@ class App extends Component {
 
   }
   
+
+
   // btnmarker = () => {
   //   var _this = this
   //   // window.map = new window.google.maps.Map(document.getElementById("map"), {
