@@ -63,7 +63,8 @@ class App extends Component {
           key: childSnapshot.key,
           name: childSnapshot.val().sendToP.name,
           lat: childSnapshot.val().sendToP.lat,
-          lng: childSnapshot.val().sendToP.lng
+          lng: childSnapshot.val().sendToP.lng,
+          pic: childSnapshot.val().sendToP.pic
 
         })
       })
