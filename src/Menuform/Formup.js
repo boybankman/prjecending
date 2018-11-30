@@ -39,7 +39,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import classnames from 'classnames';
 import Popup from "reactjs-popup";
-
+import UploadForm from "../Menuform/UploadForm"
 
 const drawerWidth = 240;
 
@@ -251,7 +251,12 @@ class Formup extends React.Component {
     handleChange2(e) {
         this.setState({ [e.target.name2]: e.target.value2 });
     }
-
+    handleOpen = () => {
+        this.setState({ open: true });
+    };
+    handleClose = () => {
+        this.setState({ open: false });
+    };
     btnmarker() {
         var _this = this
         window.google.maps.event.addListener(window.map, 'click', function (event) {
@@ -353,8 +358,7 @@ class Formup extends React.Component {
                             </div>
 
 
-                            {/* <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>Logout</Button> */}
-
+                      
 
 
                             <Divider />
@@ -389,6 +393,7 @@ class Formup extends React.Component {
                 // ******************************************************************************************************************************************************
             }
             if (this.props.openLog) {
+                var {keym} = this.props
                 return (
                     <div className={classes.root}>
                         <CssBaseline />
@@ -459,7 +464,74 @@ class Formup extends React.Component {
                                     )}</Popup>
 
                             </List>
+                            <Button onClick={(e) => { this.handleOpen(e) }}>Open Modal</Button>
+                            <Modal
+                                aria-labelledby="simple-modal-title"
+                                aria-describedby="simple-modal-description"
+                                open={this.state.open}
+                                onClose={this.handleClose}
+                            >
+                                <div style={getModalStyle()} className={classes.paper}>
+                        {/* <img src={keym.pic}/> */}
+                        <Card className={classes.card}>
+        <CardHeader
+          avatar={
+            <Avatar aria-label="Recipe" className={classes.avatar}>
+              R
+            </Avatar>
+          }
+          action={
+            <IconButton>
+              <MoreVertIcon />
+            </IconButton>
+          }
+          title="Shrimp and Chorizo Paella"
+          subheader="September 14, 2016"
+        />
+        <CardMedia
+          className={classes.media}
+          image={keym.pic}
+          title="Paella dish"
+        />
+        <div>
+            <img src={keym.pic} width = "100%" height = "100%" />
+        </div>
+        <CardContent>
+          <Typography component="p">
+            คำอธิบาย
+          </Typography>
+        </CardContent>
+        <CardActions className={classes.actions} disableActionSpacing>
+          <IconButton aria-label="Add to favorites">
+            <FavoriteIcon />
+          </IconButton>
+          <IconButton aria-label="Share">
+            <ShareIcon />
+          </IconButton>
+          <IconButton
+            className={classnames(classes.expand, {
+              [classes.expandOpen]: this.state.expanded
+            })}
+            onClick={this.handleExpandClick}
+            aria-expanded={this.state.expanded}
+            aria-label="Show more"
+          >
+            <ExpandMoreIcon />
+          </IconButton>
+        </CardActions>
+        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+          <CardContent>
+            <Typography paragraph>หัวข้อ:</Typography>
+            <Typography paragraph>
+              คำอธิบาย
+            </Typography>
+            
+          </CardContent>
+        </Collapse>
+      </Card>
 
+                                </div>
+                            </Modal>
                         </Drawer>
                         <main
                             className={classNames(classes.content, {
@@ -546,7 +618,6 @@ class Formup extends React.Component {
 
                         {/* /* ****************************************************************************************************************************************************************** */}
 
-                        <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
                         <Divider />
                         <List>
                             Test arai d wa oooooooooooooo
@@ -555,74 +626,7 @@ class Formup extends React.Component {
                         <Divider />
 
                         <div>
-                            <Button onClick={(e) => { this.handleOpen(e) }}>Open Modal</Button>
-                            <Modal
-                                aria-labelledby="simple-modal-title"
-                                aria-describedby="simple-modal-description"
-                                open={this.state.open}
-                                onClose={this.handleClose}
-                            >
-                                <div style={getModalStyle()} className={classes.paper}>
-                        {/* <img src={keym.pic}/> */}
-                        <Card className={classes.card}>
-        <CardHeader
-          avatar={
-            <Avatar aria-label="Recipe" className={classes.avatar}>
-              R
-            </Avatar>
-          }
-          action={
-            <IconButton>
-              <MoreVertIcon />
-            </IconButton>
-          }
-          title="Shrimp and Chorizo Paella"
-          subheader="September 14, 2016"
-        />
-        <CardMedia
-          className={classes.media}
-          image={keym.pic}
-          title="Paella dish"
-        />
-        <div>
-            <img src={keym.pic} width = "100%" height = "100%" />
-        </div>
-        <CardContent>
-          <Typography component="p">
-            คำอธิบาย
-          </Typography>
-        </CardContent>
-        <CardActions className={classes.actions} disableActionSpacing>
-          <IconButton aria-label="Add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="Share">
-            <ShareIcon />
-          </IconButton>
-          <IconButton
-            className={classnames(classes.expand, {
-              [classes.expandOpen]: this.state.expanded
-            })}
-            onClick={this.handleExpandClick}
-            aria-expanded={this.state.expanded}
-            aria-label="Show more"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
-        </CardActions>
-        <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Typography paragraph>หัวข้อ:</Typography>
-            <Typography paragraph>
-              คำอธิบาย
-            </Typography>
-            
-          </CardContent>
-        </Collapse>
-      </Card>
-
-                                </div>
-                            </Modal>
+                            
                         </div>
                         {/* ///////////////////////////////////////////////////////////// */}
                     </Drawer>
