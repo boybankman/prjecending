@@ -1,8 +1,7 @@
 //import React from 'react';
 import '../App.css';
 import React, { Component } from 'react';
-import fire from '../firebase/Fire'
-import Testmark from './Marker'
+import Autocomplete from 'react-google-autocomplete';
 
 
 class Map extends Component {
@@ -11,17 +10,16 @@ class Map extends Component {
         this.state = {
             isLoad: false,
             zoom: 15,
-            center: { lat: 13.7648, lng: 100.5381 }
+            center: { lat: 13.7648, lng: 100.5381 },
         }
-
         this.initMap = this.initMap.bind(this);
 
-    }
-    componentWillMount() {
 
+    }
+  componentWillMount() {
         window.initMap = this.initMap
-
     }
+
     initMap = () => {
         window.map = new window.google.maps.Map(document.getElementById("map"), {
             center: this.state.center,
@@ -31,24 +29,9 @@ class Map extends Component {
         this.setState({
             isLoad: true
         })
-        
-        // var marker = new window.google.maps.Marker({
-        //     map: window.map,
-        //     position: { lat: 13.7648, lng: 100.5381 },
-        //     clickable: true,
-        //     draggable: true,
 
-        // })
-        // window.google.maps.event.addListener(window.map, 'click', function (event) {
-        //     console.log("This last lat", event.latLng.lat())
-        //     console.log("This last lng", event.latLng.lng())
-        //     marker.setOptions({ position: event.latLng })
-        //     //  _this.sendPosition(event.latLng)
-        // })
     }
-    //*********************************************************************************************************************** */
-
-
+  
     render() {
         var childrenOutput = null;
         const { marks } = this.state

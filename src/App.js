@@ -63,7 +63,8 @@ class App extends Component {
           key: childSnapshot.key,
           name: childSnapshot.val().sendToP.name,
           lat: childSnapshot.val().sendToP.lat,
-          lng: childSnapshot.val().sendToP.lng
+          lng: childSnapshot.val().sendToP.lng,
+          pic: childSnapshot.val().sendToP.pic
 
         })
       })
@@ -77,15 +78,10 @@ class App extends Component {
           position: { lat: m.lat, lng: m.lng },
           clickable: true,
           draggable: false,
-        })
-        
-     
-
-        
+        })   
         window.google.maps.event.addListener(marker, 'click', function (event) {
           var keym = m;
           self.setState({ open: true, keym });
-          
         })
 
       })
@@ -93,55 +89,6 @@ class App extends Component {
 
   }
   
-
-
-  // btnmarker = () => {
-  //   var _this = this
-  //   // window.map = new window.google.maps.Map(document.getElementById("map"), {
-  //   //     center: this.state.center,
-  //   //     zoom: this.state.zoom,
-
-  //   //     //clickableIcons: false,
-  //   //     // mapTypeControl: false,
-  //   //     // streetViewControl: false,
-  //   //     // fullscreenControl: false,
-  //   //     mapTypeId: 'satellite',
-  //   // })
-  //   // this.setState({
-  //   //     isLoad: true
-  //   // })
-
-  //   window.google.maps.event.addListener(window.map, 'click', function (event) {
-  //     var marker = new window.google.maps.Marker({
-  //       map: window.map,
-  //       position: event.latLng,
-  //       clickable: true,
-  //       draggable: true,
-
-  //     })
-  //     console.log("This last lat", event.latLng.lat())
-  //     console.log("This last lng", event.latLng.lng())
-  //     _this.sendPosition(event.latLng)
-  //     window.google.maps.event.clearListeners(window.map,'click')
-  //   })
-
-  // }
-  // sendPosition(latLng) {
-  //   let sendToP = {
-  //     lat: latLng.lat(),
-  //     lng: latLng.lng()
-  //   }
-
-  //   const databaseRef = fire.database().ref('/Marker');
-  //   const MarkerPoint = databaseRef.push({ sendToP })
-  //   console.log(MarkerPoint)
-  //   const keyMarker = MarkerPoint.key
-  //   this.setState({ keyMarker: keyMarker })
-  //   console.log(keyMarker)
-  // }
-
-
-
   render() {
 
     return (
