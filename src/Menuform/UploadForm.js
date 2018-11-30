@@ -160,9 +160,9 @@ class Register extends Component {
 
                             // const databaseRef = fire.database().ref(`images`);
                             // const metadataKeyRef = databaseRef.push({ metadataFile });
-                            thisSpecialStrref.setState({ oopen: false })
                             const databaseRef = fire.database().ref('/Marker');
                             const MarkerPoint = databaseRef.push({ sendToP })
+                            thisSpecialStrref.props.btncancel()
                             console.log(MarkerPoint.key)
 
 
@@ -192,7 +192,7 @@ class Register extends Component {
                             <input
                                 type="file"
                                 accept=".jpg, .png, .tiff"
-                                multiple
+                                
                                 ref={input => {
                                     this.fileInput = input;
                                 }} />

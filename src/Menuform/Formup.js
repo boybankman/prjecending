@@ -203,13 +203,7 @@ class Formup extends React.Component {
             transform: `translate(-${top}%, -${left}%)`,
         };
     }
-    handleOpen = () => {
-        this.setState({ open: true });
-    };
 
-    handleClose = () => {
-        this.setState({ open: false });
-    };
     render() {
         window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
         const { classes, theme, open } = this.props;
@@ -250,7 +244,7 @@ class Formup extends React.Component {
                             }}
                         >
                             <div className={classes.drawerHeader}>
-                                <IconButton onClick={this.props.handleDrawerClose}>
+                                <IconButton onClick={this.btncancel}>
                                     {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                                 </IconButton>
                             </div>
@@ -265,10 +259,9 @@ class Formup extends React.Component {
                             </div>
 
 
-                            <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>Logout</Button>
+                            {/* <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>Logout</Button> */}
 
 
-                            {/* /* ****************************************************************************************************************************************************************** */}
 
                             <Divider />
                             <List>
@@ -278,6 +271,99 @@ class Formup extends React.Component {
                                     btncancel={this.btncancel}
                                     slatlong={slatlong}
                                 />
+                            </List>
+
+                        </Drawer>
+                        <main
+                            className={classNames(classes.content, {
+                                [classes.contentShift]: open,
+                            })}
+                        >
+                            <div className={classes} />
+                            <Login />
+                            <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
+                        </main>
+
+
+                    </div >
+
+
+
+                )
+                // ******************************************************************************************************************************************************
+                // *******************************************************************************************************************************************************
+                // ******************************************************************************************************************************************************
+            }
+            if (this.props.openLog) {
+                return (
+                    <div className={classes.root}>
+                        <CssBaseline />
+                        <AppBar
+                            position="fixed"
+                            className={classNames(classes.appBar, {
+                                [classes.appBarShift]: open,
+                            })}
+                        >
+                            <Toolbar disableGutters={!open}>
+                                <IconButton
+                                    color="inherit"
+                                    aria-label="Open drawer"
+                                    onClick={this.props.handleOpen}
+                                    className={classNames(classes.menuButton, open && classes.hide)}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                                <Typography className={classes.typography} variant="h6" color="inherit" noWrap>
+                                    BKB Upload Image System
+                </Typography>
+                            </Toolbar>
+                        </AppBar>
+                        <Drawer
+                            className={classes.drawer}
+                            variant="persistent"
+                            anchor="left"
+                            open={this.props.openLog}
+                            classes={{
+                                paper: classes.drawerPaper,
+                            }}
+                        >
+                            <div className={classes.drawerHeader}>
+                                <IconButton onClick={this.props.handleClose}>
+                                    {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                                </IconButton>
+                            </div>
+                            <Divider />
+                            <div className={classes.fullList}>
+
+                                <br />
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                           <p className="sansserif">{this.state.user.email}</p>
+                                <br />
+
+                            </div>
+
+
+                          
+
+
+                          
+                            <Divider />
+                            <List>
+                               something wrong!?
+                                {this.props.keym.key}
+                                <br />
+                                {this.props.keym.name}
+                                <br />
+                                {this.props.keym.lat}
+                                <br />
+                                {this.props.keym.lng}
+                                <Popup trigger={<div><img src={this.props.keym.pic} alt="pic64*64" width={100} height={100} mode='fit' /></div>} modal>
+                                    {close => (
+                                        <div className="Dmodal">
+                                            <img src={this.props.keym.pic} alt="pic64*64" />
+                                        </div>
+                                    )}</Popup>
+
                             </List>
 
                         </Drawer>
@@ -353,20 +439,8 @@ class Formup extends React.Component {
 
                         <Divider />
                         <List>
-                            {this.props.keym.key}
-                            <br />
-                            {this.props.keym.name}
-                            <br />
-                            {this.props.keym.lat}
-                            <br />
-                            {this.props.keym.lng}
-                            <Popup trigger={<div><img src={this.props.keym.pic} alt="pic64*64" width={100} height={100} mode='fit' /></div>} modal>
-                                {close => (
-                                    <div className="Dmodal">
-                                        <img src={this.props.keym.pic} alt="pic64*64" />
-                                    </div>
-                                )}</Popup>
-
+                            Test arai d wa oooooooooooooo
+                           ai sus phai
                         </List>
 
                     </Drawer>

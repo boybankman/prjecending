@@ -18,7 +18,8 @@ class App extends Component {
     this.state = {
       user: null,
       open: false,
-      keym: {}
+      keym: {},
+      openLog: false,
     }
     this.getMarker = this.getMarker.bind(this)
   }
@@ -51,7 +52,13 @@ class App extends Component {
     this.setState({ open: false });
   };
  
-  
+  handleOpen = () => {
+    this.setState({ openLog: true });
+};
+
+handleClose = () => {
+    this.setState({ openLog: false });
+};
   getMarker() {
     var self = this
     const dataref = fire.database().ref('Marker')
@@ -84,7 +91,7 @@ class App extends Component {
         window.google.maps.event.addListener(marker, 'click', function (event) {
           var keym = m;
 
-          self.setState({ open: true, keym });
+          self.setState({ openLog: true, keym });
           
         })
 
@@ -154,7 +161,8 @@ class App extends Component {
         <Formup
           handleDrawerClose={this.handleDrawerClose}
           handleDrawerOpen={this.handleDrawerOpen}
-          
+          handleOpen={this.handleOpen}
+          handleClose={this.handleClose}
           {...this.state}
         >
 
