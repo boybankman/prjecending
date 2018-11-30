@@ -38,6 +38,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import classnames from 'classnames';
+import Popup from "reactjs-popup";
 
 
 const drawerWidth = 240;
@@ -197,8 +198,6 @@ class Formup extends React.Component {
         this.loginE = this.loginE.bind(this);
         this.btnmarker = this.btnmarker.bind(this);
         this.btncancel = this.btncancel.bind(this);
-        this.sendPosition = this.sendPosition.bind(this);
-        this.registerU = this.registerU.bind(this);
     }
     componentDidMount() {
         auth.onAuthStateChanged((user) => {
@@ -271,81 +270,25 @@ class Formup extends React.Component {
         })
 
     }
-    sendPosition(e, fname) {
-        const { slatlong } = this.state
-        console.log(slatlong.lng())
-        let sendToP = {
-            name: fname,
-            lat: slatlong.lat(),
-            lng: slatlong.lng()
-        }
 
-        const databaseRef = fire.database().ref('/Marker');
-        const MarkerPoint = databaseRef.push({ sendToP })
-        console.log(MarkerPoint)
-        this.setState({ oopen: false })
-
-
-    }
     btncancel() {
         this.setState({ oopen: false })
     }
+    getModalStyle = () => {
+        const top = 50;
+        const left = 50;
 
-    handleOpen = () => {
-        this.setState({ open: true });
-    };
-
-    handleClose = () => {
-        this.setState({ open: false });
-    };
-
-    registerU(e) {
-        e.preventDefault();
-        firebase.auth().createUserWithEmailAndPassword(this.state.email2, this.state.password2).then((u) => {
-            alert('Register Complete');
-        }).catch((error) => {
-            console.log(error);
-        });
+        return {
+            top: `${top}%`,
+            left: `${left}%`,
+            transform: `translate(-${top}%, -${left}%)`,
+        };
     }
-    /////////////////////////////////////////////////////////////////////////
-    // renderSearch = () =>{
 
-    //         var _this = this
-    //         var input = document.getElementById('pac-input');
-    //         var searchBox = new window.google.maps.places.SearchBox(input);
-    //         this.map.controls[this.google.maps.ControlPosition.TOP_LEFT].push(input);
-
-    //         // Bias the SearchBox results towards current map's viewport.
-    //         this.map.addListener('bounds_changed', function() {
-    //          searchBox.sewtBounds(this.map.getBounds());
-    //         });
-
-    //         searchBox.addListener('places_changed', function() {
-    //             var places = searchBox.getPlaces();
-    //             if (places.length == 0) {
-    //               return;
-    //             }
-    //             var bounds = new window.google.maps.LatLngBounds();
-    //            places.forEach(function(place) {
-    //               if (!place.geometry) {
-    //                 console.log("Returned place contains no geometry");
-    //                 return;
-    //               }
-    //               if (place.geometry.viewport) {
-    //                 // Only geocodes have viewport.
-    //                 bounds.union(place.geometry.viewport);
-    //               } else {
-    //                 bounds.extend(place.geometry.location);
-    //               }
-    //             });
-    //             _this.map.fitBounds(bounds);
-    //           });
-    //     }
-    //////////////////////////////////////////////////////////////////////////
     render() {
         window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
         const { classes, theme, open } = this.props;
-        const { user, oopen, slatlong, uploadFilesObj } = this.state;
+        const { slatlong } = this.state;
         var _this = this
         if (this.state.user) {
             if (this.state.oopen) {
@@ -395,7 +338,7 @@ class Formup extends React.Component {
                             }}
                         >
                             <div className={classes.drawerHeader}>
-                                <IconButton onClick={this.props.handleDrawerClose}>
+                                <IconButton onClick={this.btncancel}>
                                     {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                                 </IconButton>
                             </div>
@@ -409,11 +352,19 @@ class Formup extends React.Component {
 
                             </div>
 
-                            <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>upload</Button>
+
+                            {/* <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>Logout</Button> */}
+
+
+
                             <Divider />
                             <List>
-                                {this.state.slatlong.lng()}
-                                {this.state.slatlong.lat()}
+                                {/* {this.state.slatlong.lng()}
+                                    {this.state.slatlong.lat()} */}
+                                <UploadForm
+                                    btncancel={this.btncancel}
+                                    slatlong={slatlong}
+                                />
                             </List>
 
                         </Drawer>
@@ -427,7 +378,103 @@ class Formup extends React.Component {
                             <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
                         </main>
 
+
                     </div >
+
+
+
+                )
+                // ******************************************************************************************************************************************************
+                // *******************************************************************************************************************************************************
+                // ******************************************************************************************************************************************************
+            }
+            if (this.props.openLog) {
+                return (
+                    <div className={classes.root}>
+                        <CssBaseline />
+                        <AppBar
+                            position="fixed"
+                            className={classNames(classes.appBar, {
+                                [classes.appBarShift]: open,
+                            })}
+                        >
+                            <Toolbar disableGutters={!open}>
+                                <IconButton
+                                    color="inherit"
+                                    aria-label="Open drawer"
+                                    onClick={this.props.handleOpen}
+                                    className={classNames(classes.menuButton, open && classes.hide)}
+                                >
+                                    <MenuIcon />
+                                </IconButton>
+                                <Typography className={classes.typography} variant="h6" color="inherit" noWrap>
+                                    BKB Upload Image System
+                </Typography>
+                            </Toolbar>
+                        </AppBar>
+                        <Drawer
+                            className={classes.drawer}
+                            variant="persistent"
+                            anchor="left"
+                            open={this.props.openLog}
+                            classes={{
+                                paper: classes.drawerPaper,
+                            }}
+                        >
+                            <div className={classes.drawerHeader}>
+                                <IconButton onClick={this.props.handleClose}>
+                                    {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                                </IconButton>
+                            </div>
+                            <Divider />
+                            <div className={classes.fullList}>
+
+                                <br />
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                           <p className="sansserif">{this.state.user.email}</p>
+                                <br />
+
+                            </div>
+
+
+                          
+
+
+                          
+                            <Divider />
+                            <List>
+                               something wrong!?
+                                {this.props.keym.key}
+                                <br />
+                                {this.props.keym.name}
+                                <br />
+                                {this.props.keym.lat}
+                                <br />
+                                {this.props.keym.lng}
+                                <Popup trigger={<div><img src={this.props.keym.pic} alt="pic64*64" width={100} height={100} mode='fit' /></div>} modal>
+                                    {close => (
+                                        <div className="Dmodal">
+                                            <img src={this.props.keym.pic} alt="pic64*64" />
+                                        </div>
+                                    )}</Popup>
+
+                            </List>
+
+                        </Drawer>
+                        <main
+                            className={classNames(classes.content, {
+                                [classes.contentShift]: open,
+                            })}
+                        >
+                            <div className={classes} />
+                            <Login />
+                            <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
+                        </main>
+
+
+                    </div >
+
+
 
                 )
             }
@@ -495,15 +542,15 @@ class Formup extends React.Component {
 
 
                         <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
+
+
+                        {/* /* ****************************************************************************************************************************************************************** */}
+
+                        <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>
                         <Divider />
                         <List>
-                            {this.props.keym.key}
-                            <br />
-                            {this.props.keym.name}
-                            <br />
-                            {this.props.keym.lat}
-                            <br />
-                            {this.props.keym.lng}
+                            Test arai d wa oooooooooooooo
+                           ai sus phai
                         </List>
                         <Divider />
 
