@@ -30,7 +30,7 @@ import UploadForm from '../Menuform/UploadForm';
 import TextField from '@material-ui/core/TextField';
 import { createMuiTheme } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-
+import Popup from "reactjs-popup";
 
 
 const drawerWidth = 240;
@@ -213,7 +213,7 @@ class Formup extends React.Component {
     render() {
         window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true;
         const { classes, theme, open } = this.props;
-        const { slatlong} = this.state;
+        const { slatlong } = this.state;
         var _this = this
         if (this.state.user) {
             if (this.state.oopen) {
@@ -272,12 +272,12 @@ class Formup extends React.Component {
 
                             <Divider />
                             <List>
-                                    {/* {this.state.slatlong.lng()}
+                                {/* {this.state.slatlong.lng()}
                                     {this.state.slatlong.lat()} */}
-                                    <UploadForm
-                                    btncancel = {this.btncancel}
-                                    slatlong = {slatlong}
-                                    />
+                                <UploadForm
+                                    btncancel={this.btncancel}
+                                    slatlong={slatlong}
+                                />
                             </List>
 
                         </Drawer>
@@ -360,7 +360,13 @@ class Formup extends React.Component {
                             {this.props.keym.lat}
                             <br />
                             {this.props.keym.lng}
-                            <img src = {this.props.keym.pic} alt = "pic64*64" />
+                            <Popup trigger={<div><img src={this.props.keym.pic} alt="pic64*64" width={100} height={100} mode='fit' /></div>} modal>
+                                {close => (
+                                    <div className="Dmodal">
+                                        <img src={this.props.keym.pic} alt="pic64*64" />
+                                    </div>
+                                )}</Popup>
+
                         </List>
 
                     </Drawer>
