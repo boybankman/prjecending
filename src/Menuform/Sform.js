@@ -342,7 +342,7 @@ class PersistentDrawerLeft extends React.Component {
 
 
                     <div className="Dmodal">
-                        <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" />
+                        <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" mode="fit"/>
                       
                         <Button onClick={this.handleModalOpen}>Information</Button>
                         <Modal
