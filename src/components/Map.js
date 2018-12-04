@@ -1,7 +1,6 @@
 //import React from 'react';
 import '../App.css';
 import React, { Component } from 'react';
-import Autocomplete from 'react-google-autocomplete';
 
 
 class Map extends Component {
