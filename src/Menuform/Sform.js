@@ -13,11 +13,6 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import Map from '../components/Map'
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -111,6 +106,13 @@ const styles = theme => ({
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
       },
+      paperRegister: {
+        position: 'absolute',
+        width: theme.spacing.unit * 50,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing.unit * 4,
+      },
       card: {
         maxWidth: 800,
       },
@@ -146,6 +148,7 @@ class PersistentDrawerLeft extends React.Component {
         this.state = {
             open: false,
             modalOpen: false,
+            registerOpen: false,
             user: null,
             email: '',
             password: '',
@@ -249,6 +252,7 @@ class PersistentDrawerLeft extends React.Component {
     }
     handleChange = (e) => {
         this.setState({ [e.target.name]: e.target.value });
+        console.log(this.state.emailregis)
     }
 
     handleDrawerOpen = () => {
@@ -264,6 +268,12 @@ class PersistentDrawerLeft extends React.Component {
     handleModalClose = () => {
         this.setState({ modalOpen: false });
       };
+    handleOpenResgister = () =>{
+        this.setState({ registerOpen: true });
+    }
+    handleCloseResgister = () =>{
+        this.setState({ registerOpen: false });
+    }
     btnmarker = () => {
 
         var self = this
@@ -283,6 +293,14 @@ class PersistentDrawerLeft extends React.Component {
             self.setState({ open: true })
         })
     };
+    registerU = (e) =>{
+        e.preventDefault();
+        firebase.auth().createUserWithEmailAndPassword(this.state.emailregis, this.state.passwordregis).then((u)=>{
+            alert('Register Complete');
+        }).catch((error) => {
+            console.log(error);
+          });     
+    }
     addMarkerListener = (marker) => {
         var self = this
         window.google.maps.event.addListener(marker, 'click', function (event) {
@@ -296,7 +314,7 @@ class PersistentDrawerLeft extends React.Component {
     renderDrawerPage = () => {
         const { drawerPage, selectedMarker, } = this.state
 
-        const {classes, keym} = this.props
+        const {classes,} = this.props
         switch (drawerPage) {
             case 'upload':
                 return (
@@ -434,15 +452,15 @@ class PersistentDrawerLeft extends React.Component {
                                 <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button>
                                 <br /><br />
 
-                                <Button onClick={this.handleOpen}>Register</Button>
+                                <Button onClick={this.handleOpenResgister}>Register</Button>
                                 {/* ************************************************************************************************** */}
                                 <Modal
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
-                                    open={false}
-                                    onClose={this.handleClose} s
+                                    onClose={this.handleCloseRegister} 
+                                    open={this.state.registerOpen}
                                 >
-                                    <div style={getModalStyle()} className={classes.paper}>
+                                    <div style={getModalStyle()} className={classes.paperRegister}>
 
                                         <p class="headRegis">
                                             <Typography variant="h4" gutterBottom> ****** Register ****** </Typography>
@@ -451,17 +469,18 @@ class PersistentDrawerLeft extends React.Component {
 
                                             <Typography variant="h6" gutterBottom>Email addresssda</Typography>
 
-                                            <TextField value={this.state.email2} onChange={this.handleChange} type="email" name="email2" class="form-control"
+                                            <TextField value={this.state.emailregis} onChange={this.handleChange} type="email" name="emailregis"
+                                             class="form-control"
                                                 id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
 
                                         </div>
                                         <div class="form-group">
                                             <Typography variant="h6" gutterBottom>Password</Typography>
-                                            <TextField value={this.state.password2} onChange={this.handleChange} type="password" name="password2" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-
+                                            <TextField value={this.state.passwordregis} onChange={this.handleChange} type="password" name="passwordregis" 
+                                            class="form-control" id="exampleInputPassword1" placeholder="Password" />
                                         </div><br />
                                         <Button type="submit" onClick={this.registerU} >Register</Button>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleClose}>Back</Button>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleCloseResgister}>Back</Button>
                                         <br /> <br />
                                     </div></Modal>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Button>Reset</Button>
