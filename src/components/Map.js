@@ -16,7 +16,7 @@ class Map extends Component {
 
 
     }
-  componentWillMount() {
+    componentWillMount() {
         window.initMap = this.initMap
     }
 
@@ -31,7 +31,7 @@ class Map extends Component {
         })
 
     }
-  
+
     render() {
         var childrenOutput = null;
         const { marks } = this.state
@@ -40,11 +40,13 @@ class Map extends Component {
         }
         return (
             <div style={{
-                //left: this.props.left,
-                height: "768px",
-                weight: "1280px"
-
-
+                // position: 'absolute',
+                // top: 0,
+                // right: 0,
+                // left: 0,
+                // bottom: 0,
+                width: '500px',
+                height: '500px'
             }}
                 className="Map"
                 id="map"

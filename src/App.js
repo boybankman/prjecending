@@ -7,7 +7,7 @@ import fire from './firebase/Fire';
 import Login from './LoginPage/Login'
 import Register from './RegisterPage/Register'
 import Upload from './UploadPage/Upload'
-import Formup from './Menuform/Formup'
+import Sform from './Menuform/Sform'
 import { Switch, Route } from 'react-router-dom'
 import { func } from 'prop-types';
 
@@ -21,83 +21,7 @@ class App extends Component {
       keym: {},
       openLog: false,
     }
-    this.getMarker = this.getMarker.bind(this)
   }
-
-  componentDidMount() {
-    this.authListener();
-  }
-
-  componentWillMount() {
-    this.getMarker()
-  }
-  authListener() {
-    fire.auth().onAuthStateChanged((user) => {
-      //console.log(user);
-      if (user) {
-        this.setState({ user });
-        // localStorage.setItem('user', user.uid);
-      }
-      else {
-        this.setState({ user: null });
-        // localStorage.removeItem('user');
-      }
-    });
-  }
-  handleDrawerOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleDrawerClose = () => {
-    this.setState({ open: false });
-  };
- 
-  handleOpen = () => {
-    this.setState({ openLog: true });
-};
-
-handleClose = () => {
-    this.setState({ openLog: false });
-};
-  getMarker() {
-    var self = this
-    const dataref = fire.database().ref('Marker')
-    dataref.on('value', (snapshot) => {
-      let marks = [];
-
-      snapshot.forEach(function (childSnapshot) {
-        marks.push({
-          key: childSnapshot.key,
-          name: childSnapshot.val().sendToP.name,
-          lat: childSnapshot.val().sendToP.lat,
-          lng: childSnapshot.val().sendToP.lng,
-          pic: childSnapshot.val().sendToP.pic
-
-        })
-      })
-      this.setState({
-        marks: marks
-      });
-      console.log(marks)
-      marks.map((m) => {
-        var marker = new window.google.maps.Marker({
-          map: window.map,
-          position: { lat: m.lat, lng: m.lng },
-          clickable: true,
-          draggable: false,
-        })   
-        window.google.maps.event.addListener(marker, 'click', function (event) {
-          var keym = m;
-
-          self.setState({ openLog: true, keym });
-          
-        })
-
-      })
-    })
-
-  }
-  
   render() {
 
     return (
@@ -107,7 +31,7 @@ handleClose = () => {
           <Route exact path="/Register" component={Register} />
           <Route exact path="/Upload" component={Upload} />
         </Switch>
-        <Formup
+        <Sform
           handleDrawerClose={this.handleDrawerClose}
           handleDrawerOpen={this.handleDrawerOpen}
           handleOpen={this.handleOpen}
@@ -117,7 +41,7 @@ handleClose = () => {
 
         
 
-        </Formup>
+        </Sform>
       </div>
     );
   }

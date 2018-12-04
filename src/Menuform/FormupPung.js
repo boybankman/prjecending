@@ -41,6 +41,7 @@ import classnames from 'classnames';
 import Popup from "reactjs-popup";
 import UploadForm from "../Menuform/UploadForm"
 
+
 const drawerWidth = 240;
 
 const theme = createMuiTheme({
@@ -186,8 +187,8 @@ class Formup extends React.Component {
 
             email: '',
             password: '',
-            email2: '',
-            password2: '',
+            emailregis: '',
+            passwordregis: '',
             uploadFilesObj: {}
 
 
@@ -540,7 +541,7 @@ class Formup extends React.Component {
                         >
                             <div className={classes} />
                             <Login />
-                            <Map><Button variant="contained" onClick={this.btnmarker}>test database</Button></Map>
+                           <Button variant="contained" onClick={this.btnmarker}>test database</Button>
                         </main>
 
 
@@ -754,13 +755,13 @@ class Formup extends React.Component {
 
                                             <Typography variant="h6" gutterBottom>Email addresssda</Typography>
 
-                                            <TextField value={this.state.email2} onChange={this.handleChange} type="email" name="email2" class="form-control"
+                                            <TextField value={this.state.emailregis} onChange={this.handleChange} type="email" name="email2" class="form-control"
                                                 id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
 
                                         </div>
                                         <div class="form-group">
                                             <Typography variant="h6" gutterBottom>Password</Typography>
-                                            <TextField value={this.state.password2} onChange={this.handleChange} type="password" name="password2" class="form-control" id="exampleInputPassword1" placeholder="Password" />
+                                            <TextField value={this.state.passwordregis} onChange={this.handleChange} type="password" name="password2" class="form-control" id="exampleInputPassword1" placeholder="Password" />
 
                                         </div><br />
                                         <Button type="submit" onClick={this.registerU} >Register</Button>
