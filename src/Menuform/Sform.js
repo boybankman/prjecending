@@ -297,6 +297,7 @@ class PersistentDrawerLeft extends React.Component {
         e.preventDefault();
         firebase.auth().createUserWithEmailAndPassword(this.state.emailregis, this.state.passwordregis).then((u)=>{
             alert('Register Complete');
+            this.setState({emailregis:null, passwordregis:null, registerOpen :false})
         }).catch((error) => {
             console.log(error);
           });     
