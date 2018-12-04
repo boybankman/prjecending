@@ -5,7 +5,8 @@ class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            fname: ''
+            fname: '',
+            textnName: ''
         }
         this.handleChange = this.handleChange.bind(this);
         this.uploadSubmit = this.uploadSubmit.bind(this);
@@ -15,6 +16,9 @@ class Register extends Component {
     }
     handleChange(e) {
         this.setState({ fname: e.target.value });
+    }
+    handleDescription = (e) => {
+        this.setState({ textnName: e.target.value });
     }
     // sendPosition() {
     //     const { slatlong } = this.props
@@ -126,57 +130,58 @@ class Register extends Component {
         var originalName = file.name // 01.jpg
         var originalPath = "images/" + originalName; // resized/....^
 
-   
-    
+
+
         var thisSpecialStrref = this;
         setTimeout(function () {
-        thisSpecialStrref.strRef.child(originalPath).getDownloadURL().then(function (downloadURL3) {
-      thisSpecialStrref.strRef.child(`images/${file.name}`).getMetadata().then((metadata) => {
+            thisSpecialStrref.strRef.child(originalPath).getDownloadURL().then(function (downloadURL3) {
+                thisSpecialStrref.strRef.child(`images/${file.name}`).getMetadata().then((metadata) => {
 
-                            // let sendName = {
-                            //     UserId: thisSpecialStrref.state.user.email,
-                            //     name: "GGFOLDER",
-                            //     create: new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(timestamp)
-                            //     //  stateCopy: this.state.stateCopy
-                            // }
-                            // const databaseRefFolder = fire.database().ref(`folder`);
-                            // const FolderKeyRef = databaseRefFolder.push({ sendName });
-                            // const FolderKeyRef = this.props.FolderKeyRef
-                            // console.log(FolderKeyRef)
+                    // let sendName = {
+                    //     UserId: thisSpecialStrref.state.user.email,
+                    //     name: "GGFOLDER",
+                    //     create: new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(timestamp)
+                    //     //  stateCopy: this.state.stateCopy
+                    // }
+                    // const databaseRefFolder = fire.database().ref(`folder`);
+                    // const FolderKeyRef = databaseRefFolder.push({ sendName });
+                    // const FolderKeyRef = this.props.FolderKeyRef
+                    // console.log(FolderKeyRef)
 
-                            let sendToP = {
-                                name: thisSpecialStrref.state.fname,
-                                lat: slatlong.lat(),
-                                lng: slatlong.lng(),
-                                pic: downloadURL3,
-                                // FolderKey: FolderKeyRef,
-                                // timestamp: new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(timestamp)
-                                // //  stateCopy: this.state.stateCopy
-                            }
-
-
-
-                            //Process save metadata
-
-                            // const databaseRef = fire.database().ref(`images`);
-                            // const metadataKeyRef = databaseRef.push({ metadataFile });
-                            const databaseRef = fire.database().ref('/Marker');
-                            const MarkerPoint = databaseRef.push({ sendToP })
-                            thisSpecialStrref.props.btncancel()
-                            console.log(MarkerPoint.key)
+                    let sendToP = {
+                        name: thisSpecialStrref.state.fname,
+                        lat: slatlong.lat(),
+                        lng: slatlong.lng(),
+                        pic: downloadURL3,
+                        desc: thisSpecialStrref.state.textnName
+                        // FolderKey: FolderKeyRef,
+                        // timestamp: new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(timestamp)
+                        // //  stateCopy: this.state.stateCopy
+                    }
 
 
-                            // Delay before delete file from state
 
-                        }).catch((error) => {
-                            console.log("URL error 4 : " + error.message);
-                        });
-                    }).catch((error) => {
-                        console.log("URL error 1 : " + error.code);
-                    });
-                }, 3000);
-                }
-          
+                    //Process save metadata
+
+                    // const databaseRef = fire.database().ref(`images`);
+                    // const metadataKeyRef = databaseRef.push({ metadataFile });
+                    const databaseRef = fire.database().ref('/Marker');
+                    const MarkerPoint = databaseRef.push({ sendToP })
+                    thisSpecialStrref.props.btncancel()
+                    console.log(MarkerPoint.key)
+
+
+                    // Delay before delete file from state
+
+                }).catch((error) => {
+                    console.log("URL error 4 : " + error.message);
+                });
+            }).catch((error) => {
+                console.log("URL error 1 : " + error.code);
+            });
+        }, 3000);
+    }
+
 
 
     render() {
@@ -192,67 +197,16 @@ class Register extends Component {
                             <input
                                 type="file"
                                 accept=".jpg, .png, .tiff"
-                                
+
                                 ref={input => {
                                     this.fileInput = input;
                                 }} />
-                            <button className="loginBtn2 loginBtn--U" type="submit">Upload</button>
+
                         </div>
-
+                        <textarea rows="10" cols="30" disabled={this.fileInput ? false : true} value={this.state.textnName} onChange={this.handleDescription} type="text"  ></textarea>
+                        <button className="loginBtn2 loginBtn--U" type="submit">Upload</button>
                     </form>
-                    {/* <button onClick={this.sendPosition}>Test get latloong</button><br /> */}
-                    {/* <div class="barPro">
-                                {
-                                    Object.keys(uploadFilesObj).map((key, index) => {
-                                        const fileObj = uploadFilesObj[key];
-                                        return (
-                                            <div key={index}>
-                                                <progress value={fileObj.progressPercent} max="100"></progress>&nbsp; &nbsp;{fileObj.progressPercent}%
 
-
-                                                 <Popup trigger={<button className="button"> <img  className="IconCancel" alt="Icon" /> </button>} modal>
-                                                    {close => (
-                                                        <div className="Dmodal">
-                                                            <div className="Dheader"> Do you want to Cancel </div>
-                                                            <div className="Dactions">
-                                                                <button className="button" onClick={() => {
-
-                                                                    this.btnCancel(key)
-                                                                    close()
-                                                                }}>Yes</button>
-                                                                <button
-                                                                    className="button"
-                                                                    onClick={() => {
-                                                                        console.log('modal closed')
-                                                                        close()
-                                                                    }}
-                                                                >
-                                                                    No</button>
-                                                            </div>
-                                                        </div>
-                                                    )}</Popup>
-
-                                                <button type="button"><img  className="IconCancel" onClick={() => this.btnPause(key)} alt="Icon" /></button>
-                                                <button type="button"><img  className="IconCancel" onClick={() => this.btnPlay(key)} alt="Icon" /></button>
-                                                <p>{fileObj.fileName}</p>
-                                                <br />
-                                            </div>
-                                        );
-                                    })
-                                }
-                            </div> */}
-
-                    {/* <p class="sansserif">Register</p>
-                    <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <br /><br />
-                        <input value={this.state.email} onChange={this.handleChange} type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" /><br /><br /><br />
-                    </div>
-                    <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label><br /><br />
-                        <input value={this.state.password} onChange={this.handleChange} type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-                    </div><br />
-                    <button type="submit" onClick={this.registerU} class="loginBtn loginBtn--L">Register</button> */}
                 </div>
                 <button onClick={(e) => { this.props.btncancel(e) }}>Cancel</button>
             </div>

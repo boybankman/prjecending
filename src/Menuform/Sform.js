@@ -33,18 +33,18 @@ const drawerWidth = 240;
 function getModalStyle() {
     const top = 50;
     const left = 50;
-  
+
     return {
-      top: `${top}%`,
-      left: `${left}%`,
-      transform: `translate(-${top}%, -${left}%)`,
+        top: `${top}%`,
+        left: `${left}%`,
+        transform: `translate(-${top}%, -${left}%)`,
     };
-  }
+}
 
 
 const styles = theme => ({
 
-    
+
     root: {
         display: 'flex',
     },
@@ -115,32 +115,32 @@ const styles = theme => ({
       },
       card: {
         maxWidth: 800,
-      },
-      media: {
+    },
+    media: {
         height: 0,
         paddingTop: '56.25%', // 16:9
-      },
-      actions: {
+    },
+    actions: {
         display: 'flex',
-      },
-      expand: {
+    },
+    expand: {
         transform: 'rotate(0deg)',
         transition: theme.transitions.create('transform', {
-          duration: theme.transitions.duration.shortest,
+            duration: theme.transitions.duration.shortest,
         }),
         marginLeft: 'auto',
         [theme.breakpoints.up('sm')]: {
-          marginRight: -8,
+            marginRight: -8,
         },
-      },
-      expandOpen: {
+    },
+    expandOpen: {
         transform: 'rotate(180deg)',
-      },
-      avatar: {
+    },
+    avatar: {
         backgroundColor: red[500],
-      },
-    
-    
+    },
+
+
 });
 class PersistentDrawerLeft extends React.Component {
     constructor(props) {
@@ -198,6 +198,7 @@ class PersistentDrawerLeft extends React.Component {
                     pic: childSnapshot.val().sendToP.pic,
                     name: childSnapshot.val().sendToP.name,
                     key: childSnapshot.key,
+                    desc: childSnapshot.val().sendToP.desc
                 })
                 self.addMarkerListener(marker)
             })
@@ -264,7 +265,7 @@ class PersistentDrawerLeft extends React.Component {
     };
     handleModalOpen = () => {
         this.setState({ modalOpen: true });
-      };
+    };
     handleModalClose = () => {
         this.setState({ modalOpen: false });
       };
@@ -273,6 +274,9 @@ class PersistentDrawerLeft extends React.Component {
     }
     handleCloseResgister = () =>{
         this.setState({ registerOpen: false });
+    };
+    btncancel= () => {
+        this.setState({ open: false })
     }
     btnmarker = () => {
 
@@ -290,7 +294,7 @@ class PersistentDrawerLeft extends React.Component {
             self.setState({ slatlong: event.latLng, open: true, drawerPage: 'upload' })
             window.google.maps.event.clearListeners(window.map, 'click')
             self.addMarkerListener(marker)
-            self.setState({ open: true })
+            self.setState({ open: true, slatlong: event.latLng })
         })
     };
     registerU = (e) =>{
@@ -313,7 +317,7 @@ class PersistentDrawerLeft extends React.Component {
         this.setState({ selectedMarker: marker })
     }
     renderDrawerPage = () => {
-        const { drawerPage, selectedMarker, } = this.state
+        const { drawerPage, selectedMarker, slatlong } = this.state
 
         const {classes,} = this.props
         switch (drawerPage) {
@@ -321,6 +325,7 @@ class PersistentDrawerLeft extends React.Component {
                 return (
                     <UploadForm
                         btncancel={this.btncancel}
+                        slatlong={slatlong}
                     // slatlong={slatlong}
                     />
                 )
@@ -330,38 +335,40 @@ class PersistentDrawerLeft extends React.Component {
             )
             case 'information': return (
                 <List>
-                    {selectedMarker.getPosition().lat()}
-                    {selectedMarker.key}
+                    {selectedMarker.name}<br />
+                    {selectedMarker.getPosition().lat()}<br />
+                    {selectedMarker.getPosition().lng()}<br />
+                    {/* {selectedMarker.key}<br/> */}
+
 
                     <div className="Dmodal">
                         <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" />
-
+                      
                         <Button onClick={this.handleModalOpen}>Information</Button>
                         <Modal
-                        aria-labelledby="simple-modal-title"
-                        aria-describedby="simple-modal-description"
-                        open={this.state.modalOpen}
-                        onClose={this.handleModalClose}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                            open={this.state.modalOpen}
+                            onClose={this.handleModalClose}
                         >
-                        <div style={getModalStyle()} className={classes.paper}>
-                            <Typography variant="h6" id="modal-title">
-                            Information
+                            <div style={getModalStyle()} className={classes.paper}>
+                                <Typography variant="h6" id="modal-title">
+                                    Detail
                             </Typography>
-                            <CardMedia
-                       className={classes.media}
-                       image={selectedMarker.pic}
-                       title="Paella dish"
-                        />
-                        <CardContent>
-                        <Typography component="p">
-                            This impressive paella is a perfect party dish and a fun meal to cook together with your
-                            guests. Add 1 cup of frozen peas along with the mussels, if you like.
+                                <CardMedia
+                                    className={classes.media}
+                                    image={selectedMarker.pic}
+                                    title="Paella dish"
+                                />
+                                <CardContent>
+                                    <Typography component="p">
+                                    Description: {selectedMarker.desc}
                         </Typography>
-                        </CardContent>
+                                </CardContent>
 
-                        </div>
+                            </div>
                         </Modal>
-                        
+
 
 
                     </div>
@@ -500,7 +507,7 @@ class PersistentDrawerLeft extends React.Component {
                 >
                     <div className={classes.drawerHeader} />
                     <Map>
-                        <Button variant="contained" disabled = {user ? false:true} onClick={this.btnmarker}>Add marker</Button>
+                        <Button variant="contained" disabled={user ? false : true} onClick={this.btnmarker}>Add marker</Button>
                     </Map>
                 </main>
             </div >
