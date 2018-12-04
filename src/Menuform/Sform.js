@@ -25,6 +25,10 @@ import Modal from '@material-ui/core/Modal';
 import UploadForm from './UploadForm'
 import firebase from '../firebase/Fire';
 import { provider, auth, provider2 } from '../firebase/Fire';
+import red from '@material-ui/core/colors/red';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+
 
 
 
@@ -107,6 +111,32 @@ const styles = theme => ({
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
       },
+      card: {
+        maxWidth: 800,
+      },
+      media: {
+        height: 0,
+        paddingTop: '56.25%', // 16:9
+      },
+      actions: {
+        display: 'flex',
+      },
+      expand: {
+        transform: 'rotate(0deg)',
+        transition: theme.transitions.create('transform', {
+          duration: theme.transitions.duration.shortest,
+        }),
+        marginLeft: 'auto',
+        [theme.breakpoints.up('sm')]: {
+          marginRight: -8,
+        },
+      },
+      expandOpen: {
+        transform: 'rotate(180deg)',
+      },
+      avatar: {
+        backgroundColor: red[500],
+      },
     
     
 });
@@ -115,6 +145,7 @@ class PersistentDrawerLeft extends React.Component {
         super(props);
         this.state = {
             open: false,
+            modalOpen: false,
             user: null,
             email: '',
             password: '',
@@ -228,10 +259,10 @@ class PersistentDrawerLeft extends React.Component {
         this.setState({ open: false });
     };
     handleModalOpen = () => {
-        this.setState({ open: true });
+        this.setState({ modalOpen: true });
       };
     handleModalClose = () => {
-        this.setState({ open: false });
+        this.setState({ modalOpen: false });
       };
     btnmarker = () => {
 
@@ -264,7 +295,8 @@ class PersistentDrawerLeft extends React.Component {
     }
     renderDrawerPage = () => {
         const { drawerPage, selectedMarker, } = this.state
-        const {classes} = this.props
+
+        const {classes, keym} = this.props
         switch (drawerPage) {
             case 'upload':
                 return (
@@ -285,21 +317,29 @@ class PersistentDrawerLeft extends React.Component {
                     <div className="Dmodal">
                         <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" />
 
-                        <Button onClick={this.handleOpen}>Information</Button>
+                        <Button onClick={this.handleModalOpen}>Information</Button>
                         <Modal
                         aria-labelledby="simple-modal-title"
                         aria-describedby="simple-modal-description"
-                        open={this.state.open}
+                        open={this.state.modalOpen}
                         onClose={this.handleModalClose}
                         >
                         <div style={getModalStyle()} className={classes.paper}>
                             <Typography variant="h6" id="modal-title">
-                            Text in a modal
+                            Information
                             </Typography>
-                            <Typography variant="subtitle1" id="simple-modal-description">
-                            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                            </Typography>
-                            < PersistentDrawerLeft/>
+                            <CardMedia
+                       className={classes.media}
+                       image={selectedMarker.pic}
+                       title="Paella dish"
+                        />
+                        <CardContent>
+                        <Typography component="p">
+                            This impressive paella is a perfect party dish and a fun meal to cook together with your
+                            guests. Add 1 cup of frozen peas along with the mussels, if you like.
+                        </Typography>
+                        </CardContent>
+
                         </div>
                         </Modal>
                         
