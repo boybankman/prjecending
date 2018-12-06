@@ -6,7 +6,8 @@ class Register extends Component {
         super(props);
         this.state = {
             fname: '',
-            textnName: ''
+            textnName: '',
+            uploadFilesObj: {},
         }
         this.handleChange = this.handleChange.bind(this);
         this.uploadSubmit = this.uploadSubmit.bind(this);
@@ -185,8 +186,8 @@ class Register extends Component {
 
 
     render() {
-        const { uploadFilesObj } = this.props
-        const { fname } = this.state
+
+        const { uploadFilesObj } = this.state
         return (
             <div className="App">
                 <div className="loading container wrapper">
@@ -203,12 +204,26 @@ class Register extends Component {
                                 }} />
 
                         </div>
-                        <textarea rows="10" cols="30" disabled={this.fileInput ? false : true} value={this.state.textnName} onChange={this.handleDescription} type="text"    placeholder="เพิ่มข้อมูล" ></textarea>
+                        <textarea rows="10" cols="30" disabled={this.fileInput ? false : true} value={this.state.textnName} onChange={this.handleDescription} type="text" placeholder="เพิ่มข้อมูล" ></textarea>
                         <button className="loginBtn2 loginBtn--U" type="submit">Upload</button>
                     </form>
 
                 </div>
                 <button onClick={(e) => { this.props.btncancel(e) }}>Cancel</button>
+                {
+                    Object.keys(uploadFilesObj).map((key, index) => {
+                        const fileObj = uploadFilesObj[key];
+                        return (
+                            <div key={index}>
+                                <progress value={fileObj.progressPercent} max="100"></progress>&nbsp; &nbsp;{fileObj.progressPercent}%
+                                                <p>{fileObj.fileName}</p>
+                                <br />
+                            </div>
+                        );
+                    })
+                }
+
+
             </div>
         );
     }

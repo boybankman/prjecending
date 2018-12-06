@@ -117,7 +117,7 @@ const styles = theme => ({
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
-      },
+    },
     card: {
         maxWidth: 800,
     },
@@ -159,8 +159,6 @@ class PersistentDrawerLeft extends React.Component {
             emailregis: '',
             passwordregis: '',
             passwordregis2: '',
-            uploadFilesObj: {},
-            
             drawerPage: 'homePage',
             isWaitingForUserResult: true,
             selectedMarker: null,
@@ -210,8 +208,8 @@ class PersistentDrawerLeft extends React.Component {
                 // self.addMarkerListener(marker)
             })
             this.setState({ marks });
-            
-          const marcus =  marks.map((m) => {
+
+            const marcus = marks.map((m) => {
                 var marker = new window.google.maps.Marker({
                     //map: window.map,
                     position: { lat: m.lat, lng: m.lng },
@@ -226,7 +224,7 @@ class PersistentDrawerLeft extends React.Component {
                 return marker
             })
             var markerCluster = new window.MarkerClusterer(window.map, marcus,
-                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'})
+                { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' })
         })
     }
 
@@ -289,6 +287,12 @@ class PersistentDrawerLeft extends React.Component {
     handleCloseResgister = () => {
         this.setState({ registerOpen: false, emailregis: null, passwordregis: null, passwordregis2: null, });
     };
+    handleOpenReset = () => {
+        this.setState({ resetOpen: true })
+    }
+    handleCloseReset = () => {
+        this.setState({ resetOpen: false })
+    }
     btncancel = () => {
         this.setState({ open: false })
     }
@@ -310,7 +314,11 @@ class PersistentDrawerLeft extends React.Component {
             alert('The Paaword is not match');
         }
     }
-
+    resetPassword = () => {
+        firebase.auth().sendPasswordResetEmail(this.state.emailAddress).then((e) => {
+            alert('Please Check in Email')
+        })
+    }
     btnmarker = () => {
 
         var self = this
@@ -351,7 +359,7 @@ class PersistentDrawerLeft extends React.Component {
         window.map.fitBounds(bounds)
     }
     renderDrawerPage = () => {
-        const { drawerPage, selectedMarker, slatlong,marks } = this.state
+        const { drawerPage, selectedMarker, slatlong, marks } = this.state
 
         const { classes, keym } = this.props
         switch (drawerPage) {
@@ -524,7 +532,7 @@ class PersistentDrawerLeft extends React.Component {
                                         <div class="form-group">
                                             <Typography variant="h6" gutterBottom>Password</Typography>
                                             <TextField value={this.state.passwordregis} onChange={this.handleChange} type="password" name="passwordregis" class="form-control" id="exampleInputPassword1" placeholder="Password" />
-                                           
+
                                             <div class="form-group">
                                                 <Typography variant="h6" gutterBottom>Confirm Password</Typography>
                                                 <TextField value={this.state.passwordregis2} onChange={this.handleChange} type="password" name="passwordregis2"
@@ -536,7 +544,32 @@ class PersistentDrawerLeft extends React.Component {
                                         <br /> <br />
 
                                     </div></Modal>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Button>Reset</Button>
+          <Button onClick={this.handleOpenReset}>Reset</Button>
+                                {/* ******************************************************************************************************************** */}
+                                <Modal
+                                    aria-labelledby="simple-modal-title"
+                                    aria-describedby="simple-modal-description"
+                                    open={this.state.resetOpen}
+                                    onClose={this.handleCloseReset}
+                                >
+                                    <div style={getModalStyle()} className={classes.paperRegister}>
+
+                                        <p class="headRegis">
+                                            <Typography variant="h4" gutterBottom> ****** Reset  ****** </Typography>
+                                        </p>
+                                        <div class="form-group">
+
+                                            <Typography variant="h6" gutterBottom>Email addresssd</Typography>
+
+                                            <TextField value={this.state.emailAddress} onChange={this.handleChange} type="email" name="emailAddress" class="form-control"
+                                                id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+
+                                        </div>
+                                        <Button type="submit" onClick={this.resetPassword} >Send</Button>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleCloseReset}>Back</Button>
+                                        <br /> <br />
+
+                                    </div></Modal>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
           <br /><br />
                             </div>
