@@ -105,15 +105,15 @@ const styles = theme => ({
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
-      },
-      paperRegister: {
+    },
+    paperRegister: {
         position: 'absolute',
         width: theme.spacing.unit * 50,
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
-      },
-      card: {
+    },
+    card: {
         maxWidth: 800,
     },
     media: {
@@ -154,6 +154,7 @@ class PersistentDrawerLeft extends React.Component {
             password: '',
             emailregis: '',
             passwordregis: '',
+            passwordregis2: '',
             uploadFilesObj: {},
             drawerPage: 'homePage',
             isWaitingForUserResult: true,
@@ -268,14 +269,14 @@ class PersistentDrawerLeft extends React.Component {
     };
     handleModalClose = () => {
         this.setState({ modalOpen: false });
-      };
-    handleOpenResgister = () =>{
+    };
+    handleOpenResgister = () => {
         this.setState({ registerOpen: true });
     }
-    handleCloseResgister = () =>{
-        this.setState({ registerOpen: false });
+    handleCloseResgister = () => {
+        this.setState({ registerOpen: false, emailregis: null, passwordregis: null, passwordregis2: null, });
     };
-    btncancel= () => {
+    btncancel = () => {
         this.setState({ open: false })
     }
     btnmarker = () => {
@@ -297,14 +298,33 @@ class PersistentDrawerLeft extends React.Component {
             self.setState({ open: true, slatlong: event.latLng })
         })
     };
-    registerU = (e) =>{
+    registerU = (e) => {
+
         e.preventDefault();
-        firebase.auth().createUserWithEmailAndPassword(this.state.emailregis, this.state.passwordregis).then((u)=>{
-            alert('Register Complete');
-            this.setState({emailregis:null, passwordregis:null, registerOpen :false})
-        }).catch((error) => {
-            console.log(error);
-          });     
+        if (this.state.passwordregis == this.state.passwordregis2) {
+            firebase.auth().createUserWithEmailAndPassword(this.state.emailregis, this.state.passwordregis).then((u) => {
+                alert('Success!!');
+                this.setState({ emailregis: null, passwordregis: null, passwordregis2: null, registerOpen: false })
+            }).catch((error) => {
+                alert('Please correctly your information')
+            })
+        } else {
+            alert('The Paaword is not match');
+        }
+
+
+
+        // e.preventDefault();
+        // firebase.auth().createUserWithEmailAndPassword(this.state.emailregis, this.state.passwordregis, this.state.passsword2).then((u)=>{
+        //      alert('Register Complete');
+        //     this.setState({emailregis:null, passwordregis:null, passwordregis2:null, registerOpen :false})
+        // }).catch((error) => {
+        // alert('Please fill out of your information');
+        // if(this.state.passwordregis!=this.state.passwordregis2){
+        //     alert('password1 != password2');      
+        // }
+        //   });     
+
     }
     addMarkerListener = (marker) => {
         var self = this
@@ -316,10 +336,13 @@ class PersistentDrawerLeft extends React.Component {
     setSelectedMarker = (marker) => {
         this.setState({ selectedMarker: marker })
     }
+
+
+
     renderDrawerPage = () => {
         const { drawerPage, selectedMarker, slatlong } = this.state
 
-        const {classes,} = this.props
+        const { classes, } = this.props
         switch (drawerPage) {
             case 'upload':
                 return (
@@ -342,8 +365,8 @@ class PersistentDrawerLeft extends React.Component {
 
 
                     <div className="Dmodal">
-                        <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" mode="fit"/>
-                      
+                        <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" mode="fit" />
+
                         <Button onClick={this.handleModalOpen}>Information</Button>
                         <Modal
                             aria-labelledby="simple-modal-title"
@@ -362,15 +385,11 @@ class PersistentDrawerLeft extends React.Component {
                                 />
                                 <CardContent>
                                     <Typography component="p">
-                                    Description: {selectedMarker.desc}
-                        </Typography>
+                                        Description: {selectedMarker.desc}
+                                    </Typography>
                                 </CardContent>
-
                             </div>
                         </Modal>
-
-
-
                     </div>
 
 
@@ -382,6 +401,7 @@ class PersistentDrawerLeft extends React.Component {
     render() {
         const { classes, theme } = this.props;
         const { open, user, isWaitingForUserResult } = this.state;
+
 
         return (
             <div className={classes.root}>
@@ -465,7 +485,7 @@ class PersistentDrawerLeft extends React.Component {
                                 <Modal
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
-                                    onClose={this.handleCloseRegister} 
+                                    onClose={this.handleCloseRegister}
                                     open={this.state.registerOpen}
                                 >
                                     <div style={getModalStyle()} className={classes.paperRegister}>
@@ -475,18 +495,24 @@ class PersistentDrawerLeft extends React.Component {
                                         </p>
                                         <div class="form-group">
 
-                                            <Typography variant="h6" gutterBottom>Email addresssda</Typography>
+                                            <Typography variant="h6" gutterBottom>Email address</Typography>
 
                                             <TextField value={this.state.emailregis} onChange={this.handleChange} type="email" name="emailregis"
-                                             class="form-control"
+                                                class="form-control"
                                                 id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-
                                         </div>
                                         <div class="form-group">
                                             <Typography variant="h6" gutterBottom>Password</Typography>
-                                            <TextField value={this.state.passwordregis} onChange={this.handleChange} type="password" name="passwordregis" 
-                                            class="form-control" id="exampleInputPassword1" placeholder="Password" />
-                                        </div><br />
+                                            <TextField value={this.state.passwordregis} onChange={this.handleChange} type="password" name="passwordregis"
+                                                class="form-control" id="exampleInputPassword1" placeholder="Password" />
+                                        </div>
+                                        <div class="form-group">
+                                            <Typography variant="h6" gutterBottom>Confirm Password</Typography>
+                                            <TextField value={this.state.passwordregis2} onChange={this.handleChange} type="password" name="passwordregis2"
+                                                class="form-control" id="exampleInputPassword1" placeholder="Password" />
+                                        </div>
+
+                                        <br />
                                         <Button type="submit" onClick={this.registerU} >Register</Button>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleCloseResgister}>Back</Button>
                                         <br /> <br />
