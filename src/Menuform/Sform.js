@@ -441,9 +441,7 @@ class PersistentDrawerLeft extends React.Component {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography variant="h6" color="inherit" noWrap>
-                            Persistent drawer
-            </Typography>
+                        <Typography variant="h6" color="inherit" noWrap> Welcome! </Typography>
                     </Toolbar>
                 </AppBar>
                 <Drawer
@@ -462,6 +460,8 @@ class PersistentDrawerLeft extends React.Component {
                         </IconButton>
 
                     </div>
+                    <Typography variant="h3" color="inherit"> Login </Typography>
+                       <br />    <br />
                     <Divider />
                     {!isWaitingForUserResult ?
 
@@ -471,7 +471,7 @@ class PersistentDrawerLeft extends React.Component {
                             < div className="form-group">
                                 <br />    <br />
                                 <label >Email address: </label>
-
+                                <br />
                                 <TextField
                                     value={this.state.email}
                                     onChange={this.handleChange}
@@ -481,9 +481,10 @@ class PersistentDrawerLeft extends React.Component {
                                     placeholder="Enter email"
                                     className={classes.input}
                                 />
-
+                               
+                               <br />
                                 <label>Password: </label>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
                    <TextField
                                     value={this.state.password}
                                     onChange={this.handleChange}
@@ -495,19 +496,19 @@ class PersistentDrawerLeft extends React.Component {
                                 />
                                 <br /> <br />
 
-                                <Button type="submit" onClick={this.loginE} variant="contained" className={classes.button}>Login</Button><br />
-                                <Button onClick={this.login} variant="contained" color="primary" className={classes.button}> Log in with Facebook </Button>
-                                <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button>
+                                <Button type="submit" onClick={this.loginE} variant="contained" className={classes.button}>Login</Button><br /><br />
+                                <Button onClick={this.login} variant="contained" color="primary" className={classes.button}> Log in with Facebook </Button><br /><br />
+                                <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button><br /><br />
                                 <br /><br />
 
                                 <Button onClick={this.handleOpenResgister}>Register</Button>
-                                {/* ************************************************************************************************** */}
                                 <Modal
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
                                     open={this.state.registerOpen}
                                     onClose={this.handleCloseRegister}
                                 >
+
                                     <div style={getModalStyle()} className={classes.paperRegister}>
 
                                         <p class="headRegis">
