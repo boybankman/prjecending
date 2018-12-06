@@ -46,7 +46,7 @@ class Register extends Component {
                 <tr >
                     
                     <th >{m.name}</th>
-                    <th><button onClick={() => {this.props.gotoMarker(m)}}>กดโกรธ</button></th>
+                    <th><button onClick={() => {this.props.gotoMarker(m)}}>Go</button></th>
 
                 </tr>
             )

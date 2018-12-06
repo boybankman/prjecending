@@ -8,7 +8,7 @@ class Map extends Component {
         super(props);
         this.state = {
             isLoad: false,
-            zoom: 15,
+            zoom: 5,
             // center: { lat: 13.7648, lng: 100.5381 },
         }
         this.initMap = this.initMap.bind(this);
@@ -28,7 +28,6 @@ class Map extends Component {
         this.setState({
             isLoad: true
         })
-
     }
 
     render() {
@@ -45,7 +44,7 @@ class Map extends Component {
                 // left: 0,
                 // bottom: 0,
                 width: '100%',
-                height: '100vh'
+                height: '90vh'
             }}
                 //className="Map"
                 id="map"

@@ -189,38 +189,44 @@ class PersistentDrawerLeft extends React.Component {
             let marks = [];
 
             snapshot.forEach(function (childSnapshot) {
-                // marks.push({
-                //     key: childSnapshot.key,
-                //     name: childSnapshot.val().sendToP.name,
-                //     lat: childSnapshot.val().sendToP.lat,
-                //     lng: childSnapshot.val().sendToP.lng,
-                //     pic: childSnapshot.val().sendToP.pic
+                marks.push({
+                    key: childSnapshot.key,
+                    name: childSnapshot.val().sendToP.name,
+                    lat: childSnapshot.val().sendToP.lat,
+                    lng: childSnapshot.val().sendToP.lng,
+                    pic: childSnapshot.val().sendToP.pic
 
+                })
+                // var marker = new window.google.maps.Marker({
+                //     map: window.map,
+                //     position: { lat: childSnapshot.val().sendToP.lat, lng: childSnapshot.val().sendToP.lng },
+                //     clickable: true,
+                //     draggable: false,
+                //     pic: childSnapshot.val().sendToP.pic,
+                //     name: childSnapshot.val().sendToP.name,
+                //     key: childSnapshot.key,
+                //     desc: childSnapshot.val().sendToP.desc
                 // })
+                // self.addMarkerListener(marker)
+            })
+            this.setState({ marks });
+            
+          const marcus =  marks.map((m) => {
                 var marker = new window.google.maps.Marker({
-                    map: window.map,
-                    position: { lat: childSnapshot.val().sendToP.lat, lng: childSnapshot.val().sendToP.lng },
+                    //map: window.map,
+                    position: { lat: m.lat, lng: m.lng },
                     clickable: true,
                     draggable: false,
-                    pic: childSnapshot.val().sendToP.pic,
-                    name: childSnapshot.val().sendToP.name,
-                    key: childSnapshot.key,
-                    desc: childSnapshot.val().sendToP.desc
+                    pic: m.pic,
+                    name: m.name,
+                    key: m.key,
+                    desc: m.desc
                 })
                 self.addMarkerListener(marker)
-
+                return marker
             })
-            //this.setState({ marks });
-
-            // marks.map((m) => {
-            //     var marker = new window.google.maps.Marker({
-            //         map: window.map,
-            //         position: { lat: m.lat, lng: m.lng },
-            //         clickable: true,
-            //         draggable: false,
-            //     })
-            //     self.addMarkerListener(marker)
-            // })
+            var markerCluster = new window.MarkerClusterer(window.map, marcus,
+                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'})
         })
     }
 
@@ -345,7 +351,7 @@ class PersistentDrawerLeft extends React.Component {
         window.map.fitBounds(bounds)
     }
     renderDrawerPage = () => {
-        const { drawerPage, selectedMarker, slatlong } = this.state
+        const { drawerPage, selectedMarker, slatlong,marks } = this.state
 
         const { classes, keym } = this.props
         switch (drawerPage) {
@@ -363,6 +369,7 @@ class PersistentDrawerLeft extends React.Component {
                     <hr />
                     <ListMarker
                         gotoMarker={this.gotoMarker}
+                        marks={this.marks}
                     />
                 </div>
             )
