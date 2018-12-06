@@ -203,7 +203,7 @@ class Register extends Component {
                                 }} />
 
                         </div>
-                        <textarea rows="10" cols="30" disabled={this.fileInput ? false : true} value={this.state.textnName} onChange={this.handleDescription} type="text"  ></textarea>
+                        <textarea rows="10" cols="30" disabled={this.fileInput ? false : true} value={this.state.textnName} onChange={this.handleDescription} type="text"    placeholder="เพิ่มข้อมูล" ></textarea>
                         <button className="loginBtn2 loginBtn--U" type="submit">Upload</button>
                     </form>
 

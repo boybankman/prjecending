@@ -9,7 +9,7 @@ class Map extends Component {
         this.state = {
             isLoad: false,
             zoom: 15,
-            center: { lat: 13.7648, lng: 100.5381 },
+            // center: { lat: 13.7648, lng: 100.5381 },
         }
         this.initMap = this.initMap.bind(this);
 
@@ -21,7 +21,7 @@ class Map extends Component {
 
     initMap = () => {
         window.map = new window.google.maps.Map(document.getElementById("map"), {
-            center: this.state.center,
+            center: this.props.center,
             zoom: this.state.zoom,
             mapTypeId: 'satellite',
         })
@@ -44,10 +44,10 @@ class Map extends Component {
                 // right: 0,
                 // left: 0,
                 // bottom: 0,
-                width: '500px',
-                height: '500px'
+                width: '100%',
+                height: '100vh'
             }}
-                className="Map"
+                //className="Map"
                 id="map"
             >
                 {/* <button onClick={this.btnmarker()}>Click me </button> */}

@@ -28,12 +28,12 @@ import { provider, auth, provider2 } from '../firebase/Fire';
 import red from '@material-ui/core/colors/red';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
+import ListMarker from '../Menuform/ListMarker';
 
 
 
 
-
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 function getModalStyle() {
     const top = 50;
@@ -154,7 +154,8 @@ class PersistentDrawerLeft extends React.Component {
             uploadFilesObj: {},
             drawerPage: 'homePage',
             isWaitingForUserResult: true,
-            selectedMarker: null
+            selectedMarker: null,
+            center: { lat: 13.7648, lng: 100.5381 },
         }
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
@@ -198,9 +199,10 @@ class PersistentDrawerLeft extends React.Component {
                     desc: childSnapshot.val().sendToP.desc
                 })
                 self.addMarkerListener(marker)
+
             })
             //this.setState({ marks });
-            console.log(marks)
+
             // marks.map((m) => {
             //     var marker = new window.google.maps.Marker({
             //         map: window.map,
@@ -258,6 +260,7 @@ class PersistentDrawerLeft extends React.Component {
 
     handleDrawerClose = () => {
         this.setState({ open: false });
+        this.setState({ drawerPage: 'homePage' })
     };
     handleModalOpen = () => {
         this.setState({ modalOpen: true });
@@ -265,8 +268,13 @@ class PersistentDrawerLeft extends React.Component {
     handleModalClose = () => {
         this.setState({ modalOpen: false });
     };
-    btncancel= () => {
+    btncancel = () => {
         this.setState({ open: false })
+    }
+    backToMenu = () => {
+        var self = this
+        self.setState({ drawerPage: 'homePage' })
+
     }
     btnmarker = () => {
 
@@ -289,13 +297,23 @@ class PersistentDrawerLeft extends React.Component {
     };
     addMarkerListener = (marker) => {
         var self = this
+        var infowindow = new window.google.maps.InfoWindow({
+            content: `${marker.name}<br/><img src=${marker.pic} width=100 height=100/>`
+        })
         window.google.maps.event.addListener(marker, 'click', function (event) {
             self.setSelectedMarker(marker)
+            infowindow.open(marker.get('map'), marker);
             self.setState({ open: true, drawerPage: 'information' })
+
         })
     }
     setSelectedMarker = (marker) => {
         this.setState({ selectedMarker: marker })
+    }
+    gotoMarker = (m) => {
+        const bounds =  new window.google.maps.LatLngBounds
+        bounds.extend( { lat: m.lat, lng: m.lng })
+        window.map.fitBounds(bounds)
     }
     renderDrawerPage = () => {
         const { drawerPage, selectedMarker, slatlong } = this.state
@@ -307,12 +325,17 @@ class PersistentDrawerLeft extends React.Component {
                     <UploadForm
                         btncancel={this.btncancel}
                         slatlong={slatlong}
-                    // slatlong={slatlong}
+
                     />
                 )
             case 'homePage': return (
-
-                <p className="sansserif">{this.state.user.email}</p>
+                <div>
+                    <p className="sansserif">{this.state.user.email}</p>
+                    <hr />
+                    <ListMarker
+                        gotoMarker={this.gotoMarker}
+                    />
+                </div>
             )
             case 'information': return (
                 <List>
@@ -324,7 +347,7 @@ class PersistentDrawerLeft extends React.Component {
 
                     <div className="Dmodal">
                         <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" />
-                      
+
                         <Button onClick={this.handleModalOpen}>Information</Button>
                         <Modal
                             aria-labelledby="simple-modal-title"
@@ -343,14 +366,14 @@ class PersistentDrawerLeft extends React.Component {
                                 />
                                 <CardContent>
                                     <Typography component="p">
-                                    Description: {selectedMarker.desc}
-                        </Typography>
+                                        Description: {selectedMarker.desc}
+                                    </Typography>
                                 </CardContent>
 
                             </div>
                         </Modal>
-
-
+                        <br />
+                        <button onClick={this.backToMenu}>Back</button>
 
                     </div>
 
@@ -485,8 +508,9 @@ class PersistentDrawerLeft extends React.Component {
                         [classes.contentShift]: open,
                     })}
                 >
-                    <div className={classes.drawerHeader} />
-                    <Map>
+                    {/* <div className={classes.drawerHeader} /> */}
+                    <Map    {...this.state}>
+
                         <Button variant="contained" disabled={user ? false : true} onClick={this.btnmarker}>Add marker</Button>
                     </Map>
                 </main>

@@ -755,13 +755,14 @@ class Formup extends React.Component {
 
                                             <Typography variant="h6" gutterBottom>Email addresssda</Typography>
 
-                                            <TextField value={this.state.emailregis} onChange={this.handleChange} type="email" name="email2" class="form-control"
+                                            <TextField value={this.state.emailregis} onChange={this.handleChange} type="email" name="emailregis" class="form-control"
                                                 id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
 
                                         </div>
                                         <div class="form-group">
                                             <Typography variant="h6" gutterBottom>Password</Typography>
-                                            <TextField value={this.state.passwordregis} onChange={this.handleChange} type="password" name="password2" class="form-control" id="exampleInputPassword1" placeholder="Password" />
+                                            <TextField value={this.state.passwordregis} onChange={this.handleChange} type="password" name="password2" 
+                                            class="form-control" id="exampleInputPassword1" placeholder="Password" />
 
                                         </div><br />
                                         <Button type="submit" onClick={this.registerU} >Register</Button>
