@@ -29,6 +29,8 @@ import red from '@material-ui/core/colors/red';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import ListMarker from '../Menuform/ListMarker';
+import LockIcon from '@material-ui/icons/LockOutlined';
+import Avatar from '@material-ui/core/Avatar';
 
 
 
@@ -123,7 +125,7 @@ const styles = theme => ({
     },
     media: {
         height: 0,
-        paddingTop: '56.25%', // 16:9
+        paddingTop: '100%', // 16:9
     },
     actions: {
         display: 'flex',
@@ -143,6 +145,9 @@ const styles = theme => ({
     },
     avatar: {
         backgroundColor: red[500],
+        //
+        margin: theme.spacing.unit,
+        backgroundColor: theme.palette.secondary.main,
     },
 
 
@@ -163,12 +168,11 @@ class PersistentDrawerLeft extends React.Component {
             isWaitingForUserResult: true,
             selectedMarker: null,
             center: { lat: 13.7648, lng: 100.5381 },
+            marcus: []
         }
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
         this.loginE = this.loginE.bind(this);
-        this.btnmarker = this.btnmarker.bind(this);
-
     }
     componentWillMount() {
         auth.onAuthStateChanged((result) => {
@@ -192,8 +196,10 @@ class PersistentDrawerLeft extends React.Component {
                     name: childSnapshot.val().sendToP.name,
                     lat: childSnapshot.val().sendToP.lat,
                     lng: childSnapshot.val().sendToP.lng,
-                    pic: childSnapshot.val().sendToP.pic
-
+                    pic: childSnapshot.val().sendToP.pic,
+                    desc: childSnapshot.val().sendToP.desc,
+                    namepic: childSnapshot.val().sendToP.namepic,
+                    source: 'server',
                 })
                 // var marker = new window.google.maps.Marker({
                 //     map: window.map,
@@ -207,7 +213,7 @@ class PersistentDrawerLeft extends React.Component {
                 // })
                 // self.addMarkerListener(marker)
             })
-            this.setState({ marks });
+
 
             const marcus = marks.map((m) => {
                 var marker = new window.google.maps.Marker({
@@ -218,11 +224,13 @@ class PersistentDrawerLeft extends React.Component {
                     pic: m.pic,
                     name: m.name,
                     key: m.key,
-                    desc: m.desc
+                    desc: m.desc,
+                    namepic: m.namepic
                 })
                 self.addMarkerListener(marker)
                 return marker
             })
+            this.setState({ marks, marcus });
             var markerCluster = new window.MarkerClusterer(window.map, marcus,
                 { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' })
         })
@@ -328,14 +336,12 @@ class PersistentDrawerLeft extends React.Component {
                 position: event.latLng,
                 clickable: true,
                 draggable: true,
-
+                source: 'local',
             })
-            console.log("This last lat", event.latLng.lat())
-            console.log("This last lng", event.latLng.lng())
-            self.setState({ slatlong: event.latLng, open: true, drawerPage: 'upload' })
-            window.google.maps.event.clearListeners(window.map, 'click')
             self.addMarkerListener(marker)
-            self.setState({ open: true, slatlong: event.latLng })
+            self.setSelectedMarker(marker)
+            self.setState({ slatlong: event.latLng, open: true, drawerPage: 'information' })
+            window.google.maps.event.clearListeners(window.map, 'click')
         })
     };
     addMarkerListener = (marker) => {
@@ -347,82 +353,125 @@ class PersistentDrawerLeft extends React.Component {
             self.setSelectedMarker(marker)
             infowindow.open(marker.get('map'), marker);
             self.setState({ open: true, drawerPage: 'information' })
-
         })
     }
     setSelectedMarker = (marker) => {
+        this.resetSelectedMarker()
         this.setState({ selectedMarker: marker })
+    }
+    resetSelectedMarker = () => {
+        const { selectedMarker } = this.state
+        if (selectedMarker) {
+            console.log('ieie')
+        }
     }
     gotoMarker = (m) => {
         const bounds = new window.google.maps.LatLngBounds
         bounds.extend({ lat: m.lat, lng: m.lng })
         window.map.fitBounds(bounds)
     }
+    removeMarker = (m) => {
+
+        // var marker = new window.google.maps.Marker({
+        //     map: window.map,
+        //     position: { lat: m.lat, lng: m.lng },
+        //     clickable: true,
+        //     draggable: true,
+
+        // })
+        m.setMap(null);
+        (console.log(m.namepic))
+        const storageRef = firebase.storage().ref(`images/${m.namepic}`);
+        storageRef.delete().then(() => {
+            console.log('OK Delete')
+        }).catch((error) => {
+            console.log("Delete pic error : ", error.message);
+        });
+        const databaseRef = firebase.database().ref('/Marker')
+        databaseRef.child(m.key).remove()
+            .then(() => {
+                console.log("Delete metada success");
+
+            })
+            .catch((error) => {
+                console.log("Delete data error : ", error.message);
+            });
+
+
+    }
+
     renderDrawerPage = () => {
         const { drawerPage, selectedMarker, slatlong, marks } = this.state
-
         const { classes, keym } = this.props
         switch (drawerPage) {
-            case 'upload':
+            case 'information':
                 return (
-                    <UploadForm
-                        btncancel={this.btncancel}
-                        slatlong={slatlong}
+                    selectedMarker.source === 'local'
+                        ?
+                        <UploadForm
+                            btncancel={this.btncancel}
+                            slatlong={slatlong}
+                            drawerPage={drawerPage}
+                        />
+                        :
+                        <List>
+                            {selectedMarker.name}<br />
+                            {selectedMarker.getPosition().lat()}<br />
+                            {selectedMarker.getPosition().lng()}<br />
+                            {selectedMarker.desc}<br />
+                            {/* {selectedMarker.key}<br/> */}
 
-                    />
+
+                            <div className="Dmodal">
+                                <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" />
+
+                                <Button onClick={this.handleModalOpen}>Information</Button>
+                                <Modal
+                                    aria-labelledby="simple-modal-title"
+                                    aria-describedby="simple-modal-description"
+                                    open={this.state.modalOpen}
+                                    onClose={this.handleModalClose}
+                                >
+                                    <div style={getModalStyle()} className={classes.paper}>
+                                        <Typography variant="h6" id="modal-title">
+                                            Detail
+                            </Typography>
+                                        <CardMedia
+                                            className={classes.media}
+                                            image={selectedMarker.pic}
+                                            title="Paella dish"
+                                        />
+                                        <CardContent>
+                                            <Typography component="p">
+                                                Description: {selectedMarker.desc}
+                                            </Typography>
+                                        </CardContent>
+
+                                    </div>
+                                </Modal>
+                                <br />
+                                <button onClick={this.backToMenu}>Back</button>
+
+                            </div>
+
+
+                        </List>
                 )
             case 'homePage': return (
                 <div>
+
+                    <br />
+
                     <p className="sansserif">{this.state.user.email}</p>
-                    <hr />
+                    {<Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>}      <br />  <br />
+                    <Divider /><br />
                     <ListMarker
+                        marcus={this.state.marcus}
                         gotoMarker={this.gotoMarker}
-                        marks={this.marks}
+                        removeMarker={this.removeMarker}
+
                     />
                 </div>
-            )
-            case 'information': return (
-                <List>
-                    {selectedMarker.name}<br />
-                    {selectedMarker.getPosition().lat()}<br />
-                    {selectedMarker.getPosition().lng()}<br />
-                    {/* {selectedMarker.key}<br/> */}
-
-
-                    <div className="Dmodal">
-                        <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" />
-
-                        <Button onClick={this.handleModalOpen}>Information</Button>
-                        <Modal
-                            aria-labelledby="simple-modal-title"
-                            aria-describedby="simple-modal-description"
-                            open={this.state.modalOpen}
-                            onClose={this.handleModalClose}
-                        >
-                            <div style={getModalStyle()} className={classes.paper}>
-                                <Typography variant="h6" id="modal-title">
-                                    Detail
-                            </Typography>
-                                <CardMedia
-                                    className={classes.media}
-                                    image={selectedMarker.pic}
-                                    title="Paella dish"
-                                />
-                                <CardContent>
-                                    <Typography component="p">
-                                        Description: {selectedMarker.desc}
-                                    </Typography>
-                                </CardContent>
-
-                            </div>
-                        </Modal>
-                        <br />
-                        <button onClick={this.backToMenu}>Back</button>
-
-                    </div>
-
-
-                </List>
             )
             default: return;
         }
@@ -462,14 +511,18 @@ class PersistentDrawerLeft extends React.Component {
                     }}
                 >
                     <div className={classes.drawerHeader}>
-                        {user ? <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button> : null}
+
                         <IconButton onClick={this.handleDrawerClose}>
                             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
                         </IconButton>
 
-                    </div>
-                    <Typography variant="h3" color="inherit"> Login </Typography>
-                       <br />    <br />
+                    </div><br />
+                    {/* <Typography variant="h3" color="inherit"> Login </Typography><br />
+                    {user ? <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button> : null}
+                       <br />     */}
+
+
+
                     <Divider />
                     {!isWaitingForUserResult ?
 
@@ -477,9 +530,13 @@ class PersistentDrawerLeft extends React.Component {
                             this.renderDrawerPage()
                             :
                             < div className="form-group">
-                                <br />    <br />
-                                <label >Email address: </label>
                                 <br />
+                                <Typography variant="h3" color="inherit"> Login </Typography><br />
+                                {user ? <Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button> : null}
+                                <br />
+
+                                <Typography variant="h6" color="inherit"> Email address: </Typography>
+
                                 <TextField
                                     value={this.state.email}
                                     onChange={this.handleChange}
@@ -489,11 +546,11 @@ class PersistentDrawerLeft extends React.Component {
                                     placeholder="Enter email"
                                     className={classes.input}
                                 />
-                               
-                               <br />
-                                <label>Password: </label>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br />
-                   <TextField
+
+                                <br /> <br />
+                                <Typography variant="h6" color="inherit"> Password: </Typography>
+
+                                <TextField
                                     value={this.state.password}
                                     onChange={this.handleChange}
                                     type="password"
@@ -509,7 +566,7 @@ class PersistentDrawerLeft extends React.Component {
                                 <Button onClick={this.login2} variant="contained" color="secondary" className={classes.button}>Log in with Google</Button><br /><br />
                                 <br /><br />
 
-                                <Button onClick={this.handleOpenResgister}>Register</Button>
+                                <Button onClick={this.handleOpenResgister} variant="outlined" >Register</Button>
                                 <Modal
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
@@ -524,7 +581,7 @@ class PersistentDrawerLeft extends React.Component {
                                         </p>
                                         <div class="form-group">
 
-                                            <Typography variant="h6" gutterBottom>Email addresssda</Typography>
+                                            <Typography variant="h6" gutterBottom>Email address</Typography>
 
                                             <TextField value={this.state.emailregis} onChange={this.handleChange} type="email" name="emailregis" class="form-control"
                                                 id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
@@ -540,12 +597,12 @@ class PersistentDrawerLeft extends React.Component {
                                                     class="form-control" id="exampleInputPassword1" placeholder="Password" />
                                             </div>
                                         </div><br />
-                                        <Button type="submit" onClick={this.registerU} >Register</Button>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleCloseResgister}>Back</Button>
+                                        <Button type="submit" onClick={this.registerU} variant="outlined" >Register</Button>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleCloseResgister} variant="outlined" >Back</Button>
                                         <br /> <br />
 
                                     </div></Modal>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Button onClick={this.handleOpenReset}>Reset</Button>
+          <Button onClick={this.handleOpenReset} variant="outlined" >Reset</Button>
                                 {/* ******************************************************************************************************************** */}
                                 <Modal
                                     aria-labelledby="simple-modal-title"
@@ -565,9 +622,9 @@ class PersistentDrawerLeft extends React.Component {
                                             <TextField value={this.state.emailAddress} onChange={this.handleChange} type="email" name="emailAddress" class="form-control"
                                                 id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
 
-                                        </div>
-                                        <Button type="submit" onClick={this.resetPassword} >Send</Button>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleCloseReset}>Back</Button>
+                                        </div> <br /> <br />
+                                        <Button type="submit" onClick={this.resetPassword} variant="outlined" >Send</Button>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleCloseReset} variant="outlined" >Back</Button>
                                         <br /> <br />
 
                                     </div></Modal>
@@ -587,7 +644,8 @@ class PersistentDrawerLeft extends React.Component {
                     {/* <div className={classes.drawerHeader} /> */}
                     <Map    {...this.state}>
 
-                        <Button variant="contained" disabled={user ? false : true} onClick={this.btnmarker}>Add marker</Button>
+
+                        <Button variant="contained" disabled={user ? false : true} onClick={this.btnmarker} >Add marker</Button>
                     </Map>
                 </main>
             </div >

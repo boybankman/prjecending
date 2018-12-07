@@ -1,52 +1,55 @@
 import React, { Component } from 'react';
 import firebase from '../firebase/Fire';
-import Popup from "reactjs-popup";
-class Register extends Component {
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import sendIcon from '../sendIcon.png'
+import trash from '../trash.png'
+
+const styles = theme => ({
+
+    button: {
+        margin: theme.spacing.unit,
+    },
+    leftIcon: {
+        marginRight: theme.spacing.unit,
+    },
+    rightIcon: {
+        marginLeft: theme.spacing.unit,
+    },
+    iconSmall: {
+        fontSize: 20,
+    },
+});
+
+class ListMarker extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            marks: []
-        }
+        this.state = {}
 
     }
-    componentWillMount = () => {
-        this.getDataList()
-    }
-
-    getDataList = () => {
-
-        const dataref = firebase.database().ref('Marker')
-
-        dataref.on('value', (snapshot) => {
-            let marks = [];
-
-            snapshot.forEach(function (childSnapshot) {
-                marks.push({
-                    key: childSnapshot.key,
-                    name: childSnapshot.val().sendToP.name,
-                    lat: childSnapshot.val().sendToP.lat,
-                    lng: childSnapshot.val().sendToP.lng,
-                    pic: childSnapshot.val().sendToP.pic
-                });
-            });
-
-            this.setState({
-                marks: marks
-            });
-            console.log(marks)
-        });
-    }
-
     render() {
-        const { marks } = this.state
-        let showMarks = marks.map((m) => {
+        const { classes, marcus } = this.props;
+        let showMarks = marcus.map((m) => {
 
             return (
 
                 <tr >
-                    
-                    <th >{m.name}</th>
-                    <th><button onClick={() => {this.props.gotoMarker(m)}}>Go</button></th>
+
+                    <Typography variant="h6" gutterBottom>{m.name}</Typography>
+
+                    <th><Button color="secondary" className={classes.button} onClick={() => { this.props.gotoMarker(m) }}>
+                        <img src={sendIcon} width="30px" height="30px" />
+                    </Button></th>
+
+                    <th><Button color="secondary" className={classes.button} onClick={() => { this.props.removeMarker(m) }}>
+                        <img src={trash} width="30px" height="30px" />
+                    </Button></th>
+
+
+
+
 
                 </tr>
             )
@@ -59,4 +62,11 @@ class Register extends Component {
     }
 }
 
-export default Register;
+ListMarker.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+
+// export default ListMarker;
+
+export default withStyles(styles, { withTheme: true })(ListMarker);

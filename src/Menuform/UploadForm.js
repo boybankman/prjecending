@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import fire from '../firebase/Fire';
 import Popup from "reactjs-popup";
-class Register extends Component {
+
+class UploadForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -130,11 +131,11 @@ class Register extends Component {
         const { slatlong } = this.props
         var originalName = file.name // 01.jpg
         var originalPath = "images/" + originalName; // resized/....^
-
+console.log(originalName)
 
 
         var thisSpecialStrref = this;
-        setTimeout(function () {
+      
             thisSpecialStrref.strRef.child(originalPath).getDownloadURL().then(function (downloadURL3) {
                 thisSpecialStrref.strRef.child(`images/${file.name}`).getMetadata().then((metadata) => {
 
@@ -154,13 +155,12 @@ class Register extends Component {
                         lat: slatlong.lat(),
                         lng: slatlong.lng(),
                         pic: downloadURL3,
-                        desc: thisSpecialStrref.state.textnName
+                        desc: thisSpecialStrref.state.textnName,
+                        namepic: originalName
                         // FolderKey: FolderKeyRef,
                         // timestamp: new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(timestamp)
                         // //  stateCopy: this.state.stateCopy
                     }
-
-
 
                     //Process save metadata
 
@@ -170,7 +170,7 @@ class Register extends Component {
                     const MarkerPoint = databaseRef.push({ sendToP })
                     thisSpecialStrref.props.btncancel()
                     console.log(MarkerPoint.key)
-
+                    this.setState({drawerPage : 'homePage'})
 
                     // Delay before delete file from state
 
@@ -180,7 +180,7 @@ class Register extends Component {
             }).catch((error) => {
                 console.log("URL error 1 : " + error.code);
             });
-        }, 3000);
+     
     }
 
 
@@ -229,4 +229,4 @@ class Register extends Component {
     }
 }
 
-export default Register;
+export default UploadForm;
