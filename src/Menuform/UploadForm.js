@@ -168,7 +168,7 @@ console.log(originalName)
                     // const metadataKeyRef = databaseRef.push({ metadataFile });
                     const databaseRef = fire.database().ref('/Marker');
                     const MarkerPoint = databaseRef.push({ sendToP })
-                    thisSpecialStrref.props.btncancel()
+                    thisSpecialStrref.props.closeDrawerafterup()
                     console.log(MarkerPoint.key)
                     this.setState({drawerPage : 'homePage'})
 
