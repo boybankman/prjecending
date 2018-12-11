@@ -285,8 +285,7 @@ class PersistentDrawerLeft extends React.Component {
     };
 
     handleDrawerClose = () => {
-        this.setState({ open: false });
-        this.setState({ drawerPage: 'homePage' })
+        this.setState({ open: false,drawerPage: 'homePage' });
     };
     handleModalOpen = () => {
         this.setState({ modalOpen: true });
