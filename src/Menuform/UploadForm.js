@@ -173,7 +173,7 @@ console.log(originalName)
 
                     const databaseRef = fire.database().ref('/Marker');
                     const MarkerPoint = databaseRef.push({ sendToP })
-                    thisSpecialStrref.props.btncancel()
+                    thisSpecialStrref.props.closeDrawerafterup()
                     console.log(MarkerPoint.key)
                   
 
