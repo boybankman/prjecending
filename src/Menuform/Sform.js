@@ -149,6 +149,12 @@ const styles = theme => ({
         margin: theme.spacing.unit,
         backgroundColor: theme.palette.secondary.main,
     },
+     demo: {
+    backgroundColor: theme.palette.background.paper,
+  },
+  title: {
+    margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`,
+  },
 
 
 });
@@ -424,9 +430,9 @@ class PersistentDrawerLeft extends React.Component {
 
 
                             <div className="Dmodal">
-                                <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" /><br />
+                                <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" /><br /><br />
 
-                                <Button variant="contained" onClick={this.handleModalOpen}>Information</Button>
+                                <Button variant="contained" color="primary" onClick={this.handleModalOpen}>Information</Button>
                                 <Modal
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
@@ -450,8 +456,10 @@ class PersistentDrawerLeft extends React.Component {
 
                                     </div>
                                 </Modal>
-                                <br />
-                                <button onClick={this.backToMenu}>Back</button>
+                                <br /> <br />
+                                <Button variant="contained" color="secondary" className={classes.button} onClick={this.backToMenu}>
+                                    Back
+                                </Button>
 
                             </div>
 
@@ -466,12 +474,15 @@ class PersistentDrawerLeft extends React.Component {
                     <p className="sansserif">{this.state.user.email}</p>
                     {<Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>}      <br />  <br />
                     <Divider /><br />
+                    <ListItem>
                     <ListMarker
                         marcus={this.state.marcus}
                         gotoMarker={this.gotoMarker}
                         removeMarker={this.removeMarker}
-
                     />
+                    </ListItem>
+
+                    
                 </div>
             )
             default: return;
