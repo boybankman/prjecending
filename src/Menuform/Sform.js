@@ -203,6 +203,7 @@ class PersistentDrawerLeft extends React.Component {
                     desc: childSnapshot.val().sendToP.desc,
                     namepic: childSnapshot.val().sendToP.namepic,
                     source: 'server',
+                    userUP: childSnapshot.val().sendToP.userUP,
                 })
                 // var marker = new window.google.maps.Marker({
                 //     map: window.map,
@@ -228,7 +229,8 @@ class PersistentDrawerLeft extends React.Component {
                     name: m.name,
                     key: m.key,
                     desc: m.desc,
-                    namepic: m.namepic
+                    namepic: m.namepic,
+                    userUP: m.userUP
                 })
                 self.addMarkerListener(marker)
                 return marker
@@ -374,19 +376,13 @@ class PersistentDrawerLeft extends React.Component {
         }
     }
     gotoMarker = (m) => {
+        console.log("this is a ",m.position.lat())
         const bounds = new window.google.maps.LatLngBounds
-        bounds.extend({ lat: m.lat, lng: m.lng })
+        bounds.extend({ lat: m.position.lat(), lng: m.position.lng() })
         window.map.fitBounds(bounds)
     }
     removeMarker = (m) => {
 
-        // var marker = new window.google.maps.Marker({
-        //     map: window.map,
-        //     position: { lat: m.lat, lng: m.lng },
-        //     clickable: true,
-        //     draggable: true,
-
-        // })
         m.setMap(null);
         (console.log(m.namepic))
         const storageRef = firebase.storage().ref(`images/${m.namepic}`);
@@ -409,7 +405,7 @@ class PersistentDrawerLeft extends React.Component {
     }
 
     renderDrawerPage = () => {
-        const { drawerPage, selectedMarker, slatlong, marks } = this.state
+        const { drawerPage, selectedMarker, slatlong, marks,user } = this.state
         const { classes, keym } = this.props
         switch (drawerPage) {
             case 'information':
@@ -418,24 +414,25 @@ class PersistentDrawerLeft extends React.Component {
                         ?
                         <UploadForm
                         closeDrawerafterup={this.closeDrawerafterup}
-                        btncancel={this.btncancel}
+                            user={user}
+                            btncancel={this.btncancel}
                             slatlong={slatlong}
                             drawerPage={drawerPage}
                         />
                         :
                         <List>
-                            {selectedMarker.name}<br />
-                            {selectedMarker.getPosition().lat()}<br />
-                            {selectedMarker.getPosition().lng()}<br />
-                            {selectedMarker.desc}<br />
+                            
+                            <u>Name</u>: {selectedMarker.name}<br />
+                            <u>Lat</u>: {selectedMarker.getPosition().lat()}<br />
+                            <u>Lng</u>: {selectedMarker.getPosition().lng()}<br />
+                            <u>Descriptions</u>: {selectedMarker.desc}<br /><br />
                             {/* {selectedMarker.key}<br/> */}
 
 
                             <div className="Dmodal">
+                                <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" /><br />
 
-                                <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" />
-
-                                <Button onClick={this.handleModalOpen}>Information</Button>
+                                <Button variant="contained" onClick={this.handleModalOpen}>Information</Button>
                                 <Modal
 
                                     aria-labelledby="simple-modal-title"

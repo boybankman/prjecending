@@ -1,6 +1,40 @@
 import React, { Component } from 'react';
 import fire from '../firebase/Fire';
-import Popup from "reactjs-popup";
+import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+
+
+const styles = theme => ({
+    container: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    textField: {
+      marginLeft: theme.spacing.unit,
+      marginRight: theme.spacing.unit,
+      width: 200,
+    },
+    dense: {
+      marginTop: 19,
+    },
+    menu: {
+      width: 200,
+    },
+    root: {
+        width: '100%',
+        maxWidth: 500,
+      },
+    input: {
+        display: 'none',
+    },
+    button: {
+        margin: theme.spacing.unit,
+      },
+  });
+
 
 class UploadForm extends Component {
     constructor(props) {
@@ -18,32 +52,19 @@ class UploadForm extends Component {
     }
     handleChange(e) {
         this.setState({ fname: e.target.value });
+        //////////////////////////////////
+        // this.setState({
+        //     [name]: event.target.value,
+        //   });
+        //////////////////////////////////
     }
     handleDescription = (e) => {
         this.setState({ textnName: e.target.value });
     }
-    // sendPosition() {
-    //     const { slatlong } = this.props
-    //     console.log(slatlong.lng())
-    //     let sendToP = {
-    //         name: this.state.fname,
-    //         lat: slatlong.lat(),
-    //         lng: slatlong.lng()
-    //     }
-
-    //     const databaseRef = fire.database().ref('/Marker');
-    //     const MarkerPoint = databaseRef.push({ sendToP })
-    //     console.log(MarkerPoint.key)
-    //     this.setState({ oopen: false })
-
-    //     // const keyMarker = MarkerPoint.key
-    //     // this.setState({ keyMarker: keyMarker })
-    //     // console.log(keyMarker)
-    // }
+   
     uploadSubmit(event) {
         event.preventDefault();
-        // const timestamp = Date.now();
-        // console.log(new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(timestamp));
+       
         const allFiles = Array.from(this.fileInput.files);
         if (allFiles.length > 0) {
             // Add each files to state
@@ -128,7 +149,8 @@ class UploadForm extends Component {
 
     }
     CheckUrl(file) {
-        const { slatlong } = this.props
+
+        const { slatlong,user } = this.props
         var originalName = file.name // 01.jpg
         var originalPath = "images/" + originalName; // resized/....^
 console.log(originalName)
@@ -139,38 +161,21 @@ console.log(originalName)
             thisSpecialStrref.strRef.child(originalPath).getDownloadURL().then(function (downloadURL3) {
                 thisSpecialStrref.strRef.child(`images/${file.name}`).getMetadata().then((metadata) => {
 
-                    // let sendName = {
-                    //     UserId: thisSpecialStrref.state.user.email,
-                    //     name: "GGFOLDER",
-                    //     create: new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(timestamp)
-                    //     //  stateCopy: this.state.stateCopy
-                    // }
-                    // const databaseRefFolder = fire.database().ref(`folder`);
-                    // const FolderKeyRef = databaseRefFolder.push({ sendName });
-                    // const FolderKeyRef = this.props.FolderKeyRef
-                    // console.log(FolderKeyRef)
-
                     let sendToP = {
                         name: thisSpecialStrref.state.fname,
                         lat: slatlong.lat(),
                         lng: slatlong.lng(),
                         pic: downloadURL3,
                         desc: thisSpecialStrref.state.textnName,
-                        namepic: originalName
-                        // FolderKey: FolderKeyRef,
-                        // timestamp: new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(timestamp)
-                        // //  stateCopy: this.state.stateCopy
+                        namepic: originalName,
+                       userUP: user.email
                     }
 
-                    //Process save metadata
-
-                    // const databaseRef = fire.database().ref(`images`);
-                    // const metadataKeyRef = databaseRef.push({ metadataFile });
                     const databaseRef = fire.database().ref('/Marker');
                     const MarkerPoint = databaseRef.push({ sendToP })
                     thisSpecialStrref.props.closeDrawerafterup()
                     console.log(MarkerPoint.key)
-                    this.setState({drawerPage : 'homePage'})
+                  
 
                     // Delay before delete file from state
 
@@ -183,33 +188,44 @@ console.log(originalName)
      
     }
 
-
-
     render() {
-
         const { uploadFilesObj } = this.state
+        const { classes,user } = this.props;
         return (
-            <div className="App">
+            <div className={classes.root}>
                 <div className="loading container wrapper">
-                    <label for="กรุณากรอกชื่อที่ต้องการ">Name:</label>
-                    <input value={this.state.fname} onChange={this.handleChange} type="text" name="fname" ></input>
+                    
+                    <TextField
+                    type="text" 
+                    name="fname"
+                    id="standard-name"
+                    label="Name"
+                    className={classes.textField}
+                    value={this.state.fname} 
+                    onChange={this.handleChange}
+                    margin="normal"
+        />
                     <form onSubmit={this.uploadSubmit}>
                         <div class="inpc">
                             <input
                                 type="file"
                                 accept=".jpg, .png, .tiff"
-
                                 ref={input => {
                                     this.fileInput = input;
                                 }} />
-
                         </div>
-                        <textarea rows="10" cols="30" disabled={this.fileInput ? false : true} value={this.state.textnName} onChange={this.handleDescription} type="text" placeholder="เพิ่มข้อมูล" ></textarea>
-                        <button className="loginBtn2 loginBtn--U" type="submit">Upload</button>
-                    </form>
+                        <br />
+                        <textarea rows="10" cols="30" disabled={this.fileInput ? false : true} value={this.state.textnName} 
+                        onChange={this.handleDescription} type="text" placeholder="เพิ่มข้อมูล" ></textarea><br />
+                        <br />
+                        <Button variant="contained" color="primary" className="loginBtn2 loginBtn--U" type="submit">
+                         Upload</Button>
 
+                         <Button variant="contained" color="secondary" className={classes.button} 
+                onClick={(e) => { this.props.btncancel(e) }}>Cancel</Button>
+                        </form>
                 </div>
-                <button onClick={(e) => { this.props.btncancel(e) }}>Cancel</button>
+            
                 {
                     Object.keys(uploadFilesObj).map((key, index) => {
                         const fileObj = uploadFilesObj[key];
@@ -229,4 +245,7 @@ console.log(originalName)
     }
 }
 
-export default UploadForm;
+UploadForm.propTypes = {
+    classes: PropTypes.object.isRequired,
+  };
+export default withStyles(styles, { withTheme: true })(UploadForm);
