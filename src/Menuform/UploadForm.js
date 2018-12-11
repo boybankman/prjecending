@@ -9,31 +9,31 @@ import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
     container: {
-      display: 'flex',
-      flexWrap: 'wrap',
+        display: 'flex',
+        flexWrap: 'wrap',
     },
     textField: {
-      marginLeft: theme.spacing.unit,
-      marginRight: theme.spacing.unit,
-      width: 200,
+        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
+        width: 200,
     },
     dense: {
-      marginTop: 19,
+        marginTop: 19,
     },
     menu: {
-      width: 200,
+        width: 200,
     },
     root: {
         width: '100%',
         maxWidth: 500,
-      },
+    },
     input: {
         display: 'none',
     },
     button: {
         margin: theme.spacing.unit,
-      },
-  });
+    },
+});
 
 
 class UploadForm extends Component {
@@ -61,10 +61,10 @@ class UploadForm extends Component {
     handleDescription = (e) => {
         this.setState({ textnName: e.target.value });
     }
-   
+
     uploadSubmit(event) {
         event.preventDefault();
-       
+
         const allFiles = Array.from(this.fileInput.files);
         if (allFiles.length > 0) {
             // Add each files to state
@@ -150,61 +150,61 @@ class UploadForm extends Component {
     }
     CheckUrl(file) {
 
-        const { slatlong,user } = this.props
+        const { slatlong, user } = this.props
         var originalName = file.name // 01.jpg
         var originalPath = "images/" + originalName; // resized/....^
-console.log(originalName)
+        console.log(originalName)
 
 
         var thisSpecialStrref = this;
-      
-            thisSpecialStrref.strRef.child(originalPath).getDownloadURL().then(function (downloadURL3) {
-                thisSpecialStrref.strRef.child(`images/${file.name}`).getMetadata().then((metadata) => {
 
-                    let sendToP = {
-                        name: thisSpecialStrref.state.fname,
-                        lat: slatlong.lat(),
-                        lng: slatlong.lng(),
-                        pic: downloadURL3,
-                        desc: thisSpecialStrref.state.textnName,
-                        namepic: originalName,
-                       userUP: user.email
-                    }
+        thisSpecialStrref.strRef.child(originalPath).getDownloadURL().then(function (downloadURL3) {
+            thisSpecialStrref.strRef.child(`images/${file.name}`).getMetadata().then((metadata) => {
 
-                    const databaseRef = fire.database().ref('/Marker');
-                    const MarkerPoint = databaseRef.push({ sendToP })
-                    thisSpecialStrref.props.closeDrawerafterup()
-                    console.log(MarkerPoint.key)
-                  
+                let sendToP = {
+                    name: thisSpecialStrref.state.fname,
+                    lat: slatlong.lat(),
+                    lng: slatlong.lng(),
+                    pic: downloadURL3,
+                    desc: thisSpecialStrref.state.textnName,
+                    namepic: originalName,
+                    userUP: user.email
+                }
 
-                    // Delay before delete file from state
+                const databaseRef = fire.database().ref('/Marker');
+                const MarkerPoint = databaseRef.push({ sendToP })
+                thisSpecialStrref.props.closeDrawerafterup()
+                console.log(MarkerPoint.key)
 
-                }).catch((error) => {
-                    console.log("URL error 4 : " + error.message);
-                });
+
+                // Delay before delete file from state
+
             }).catch((error) => {
-                console.log("URL error 1 : " + error.code);
+                console.log("URL error 4 : " + error.message);
             });
-     
+        }).catch((error) => {
+            console.log("URL error 1 : " + error.code);
+        });
+
     }
 
     render() {
         const { uploadFilesObj } = this.state
-        const { classes,user } = this.props;
+        const { classes, user } = this.props;
         return (
             <div className={classes.root}>
                 <div className="loading container wrapper">
-                    
+
                     <TextField
-                    type="text" 
-                    name="fname"
-                    id="standard-name"
-                    label="Name"
-                    className={classes.textField}
-                    value={this.state.fname} 
-                    onChange={this.handleChange}
-                    margin="normal"
-        />
+                        type="text"
+                        name="fname"
+                        id="standard-name"
+                        label="Name"
+                        className={classes.textField}
+                        value={this.state.fname}
+                        onChange={this.handleChange}
+                        margin="normal"
+                    />
                     <form onSubmit={this.uploadSubmit}>
                         <div class="inpc">
                             <input
@@ -215,17 +215,17 @@ console.log(originalName)
                                 }} />
                         </div>
                         <br />
-                        <textarea rows="10" cols="30" disabled={this.fileInput ? false : true} value={this.state.textnName} 
-                        onChange={this.handleDescription} type="text" placeholder="เพิ่มข้อมูล" ></textarea><br />
+                        <textarea rows="10" cols="30" value={this.state.textnName}
+                            onChange={this.handleDescription} type="text" placeholder="เพิ่มข้อมูล" ></textarea><br />
                         <br />
                         <Button variant="contained" color="primary" className="loginBtn2 loginBtn--U" type="submit">
-                         Upload</Button>
+                            Upload</Button>
 
-                         <Button variant="contained" color="secondary" className={classes.button} 
-                onClick={(e) => { this.props.btncancel(e) }}>Cancel</Button>
-                        </form>
+                        <Button variant="contained" color="secondary" className={classes.button}
+                            onClick={(e) => { this.props.btncancel(e) }}>Cancel</Button>
+                    </form>
                 </div>
-            
+
                 {
                     Object.keys(uploadFilesObj).map((key, index) => {
                         const fileObj = uploadFilesObj[key];
@@ -247,5 +247,5 @@ console.log(originalName)
 
 UploadForm.propTypes = {
     classes: PropTypes.object.isRequired,
-  };
+};
 export default withStyles(styles, { withTheme: true })(UploadForm);

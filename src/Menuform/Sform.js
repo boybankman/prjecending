@@ -31,6 +31,9 @@ import CardHeader from '@material-ui/core/CardHeader';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CardContent from '@material-ui/core/CardContent';
 import ListMarker from '../Menuform/ListMarker';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -151,12 +154,12 @@ const styles = theme => ({
         margin: theme.spacing.unit,
         backgroundColor: theme.palette.secondary.main,
     },
-     demo: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  title: {
-    margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`,
-  },
+    demo: {
+        backgroundColor: theme.palette.background.paper,
+    },
+    title: {
+        margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`,
+    },
 
 
 });
@@ -177,7 +180,9 @@ class PersistentDrawerLeft extends React.Component {
             selectedMarker: null,
             center: { lat: 13.7648, lng: 100.5381 },
             marcus: [],
-            isAddMarkerClickAble: false
+            isAddMarkerClickAble: false,
+            myUp: false,
+            showFiltermark:[]
         }
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
@@ -241,7 +246,7 @@ class PersistentDrawerLeft extends React.Component {
                 self.addMarkerListener(marker)
                 return marker
             })
-            this.setState({ marks, marcus });
+            this.setState({ marks, marcus,showFiltermark:marcus });
             var markerCluster = new window.MarkerClusterer(window.map, marcus,
                 { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' })
         })
@@ -291,7 +296,7 @@ class PersistentDrawerLeft extends React.Component {
     };
 
     handleDrawerClose = () => {
-        this.setState({ open: false,drawerPage: 'homePage' });
+        this.setState({ open: false, drawerPage: 'homePage' });
     };
     handleModalOpen = () => {
         this.setState({ modalOpen: true });
@@ -311,13 +316,27 @@ class PersistentDrawerLeft extends React.Component {
     handleCloseReset = () => {
         this.setState({ resetOpen: false })
     }
+    handleChangeSwitch = name => event => {
+        const { marcus,user } = this.state
+        const checked = event.target.checked
+        var filter
+        if (checked) {
+            filter = marcus.filter(marker => marker.userUP === user.email)
+        } else {
+            filter = marcus
+        }
+        this.setState({
+            showFiltermark: filter,
+            [name]: checked
+        });
+    };
     btncancel = () => {
         const { selectedMarker } = this.state
         selectedMarker.setMap(null)
-        this.setState({ open: false ,isAddMarkerClickAble:false})
+        this.setState({ open: false, isAddMarkerClickAble: false })
     }
     closeDrawerafterup = () => {
-        this.setState({ open: false ,isAddMarkerClickAble:false})
+        this.setState({ open: false, isAddMarkerClickAble: false })
     }
     backToMenu = () => {
         var self = this
@@ -381,7 +400,7 @@ class PersistentDrawerLeft extends React.Component {
         }
     }
     gotoMarker = (m) => {
-        console.log("this is a ",m.position.lat())
+        console.log("this is a ", m.position.lat())
         const bounds = new window.google.maps.LatLngBounds
         bounds.extend({ lat: m.position.lat(), lng: m.position.lng() })
         window.map.fitBounds(bounds)
@@ -410,7 +429,7 @@ class PersistentDrawerLeft extends React.Component {
     }
 
     renderDrawerPage = () => {
-        const { drawerPage, selectedMarker, slatlong, marks,user } = this.state
+        const { drawerPage, selectedMarker, slatlong, marks, user } = this.state
         const { classes, keym } = this.props
         switch (drawerPage) {
             case 'information':
@@ -418,7 +437,7 @@ class PersistentDrawerLeft extends React.Component {
                     selectedMarker.source === 'local'
                         ?
                         <UploadForm
-                        closeDrawerafterup={this.closeDrawerafterup}
+                            closeDrawerafterup={this.closeDrawerafterup}
                             user={user}
                             btncancel={this.btncancel}
                             slatlong={slatlong}
@@ -426,7 +445,7 @@ class PersistentDrawerLeft extends React.Component {
                         />
                         :
                         <List>
-                            
+
                             <u>Name</u>: {selectedMarker.name}<br />
                             <u>Lat</u>: {selectedMarker.getPosition().lat()}<br />
                             <u>Lng</u>: {selectedMarker.getPosition().lng()}<br />
@@ -487,17 +506,28 @@ class PersistentDrawerLeft extends React.Component {
                     <br />
 
                     <p className="sansserif">{this.state.user.email}</p>
-                    {<Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>}      <br />  <br />
+                    {<Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>}      <br />
+
+                    <FormGroup
+                        row
+                    >
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={this.state.myUp}
+                                    onChange={this.handleChangeSwitch('myUp')}
+                                    value="myUp"
+                                />
+                            }
+                            label={this.state.myUp ? "เฉพาะของฉัน" : "ทั้งหมด"}
+                        />
+                    </FormGroup> <br />
                     <Divider /><br />
-                    <ListItem>
                     <ListMarker
-                        marcus={this.state.marcus}
                         gotoMarker={this.gotoMarker}
                         removeMarker={this.removeMarker}
+                        {...this.state}
                     />
-                    </ListItem>
-
-                    
                 </div>
             )
             default: return;
