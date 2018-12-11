@@ -24,6 +24,7 @@ class Map extends Component {
             center: this.props.center,
             zoom: this.state.zoom,
             mapTypeId: 'satellite',
+            
         })
         this.setState({
             isLoad: true
