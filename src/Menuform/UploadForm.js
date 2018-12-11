@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
+var shortid = require('shortid');
 
 const styles = theme => ({
     container: {
@@ -90,12 +90,14 @@ class UploadForm extends Component {
         }
     }
     uploadFile(file, index) {
+        const id = shortid.generate()
+        const fileName = id + file.name
         var fileObjKey = `file${index}`;
         var metadata = {
             contentType: file.type
         };
         var thisSpecialStrref = this;
-        var uploadTask = thisSpecialStrref.strRef.child(`images/${file.name}`).put(file, metadata);
+        var uploadTask = this.strRef.child(`images/${fileName}`).put(file, metadata);
 
         uploadTask.on("state_changed", (snapshot) => {
             // Progress handling
@@ -142,16 +144,15 @@ class UploadForm extends Component {
             }, 2000)
 
 
-            this.CheckUrl(file);
+            this.CheckUrl(fileName);
 
         });
 
 
     }
     CheckUrl(file) {
-
         const { slatlong, user } = this.props
-        var originalName = file.name // 01.jpg
+        var originalName = file // 01.jpg
         var originalPath = "images/" + originalName; // resized/....^
         console.log(originalName)
 
@@ -159,7 +160,7 @@ class UploadForm extends Component {
         var thisSpecialStrref = this;
 
         thisSpecialStrref.strRef.child(originalPath).getDownloadURL().then(function (downloadURL3) {
-            thisSpecialStrref.strRef.child(`images/${file.name}`).getMetadata().then((metadata) => {
+            thisSpecialStrref.strRef.child(`images/${originalName}`).getMetadata().then((metadata) => {
 
                 let sendToP = {
                     name: thisSpecialStrref.state.fname,
