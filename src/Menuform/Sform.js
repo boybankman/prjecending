@@ -184,9 +184,6 @@ class PersistentDrawerLeft extends React.Component {
             myUp: false,
             showFiltermark: []
         }
-        this.login = this.login.bind(this);
-        this.logout = this.logout.bind(this);
-        this.loginE = this.loginE.bind(this);
     }
     componentWillMount() {
         auth.onAuthStateChanged((result) => {
@@ -203,7 +200,6 @@ class PersistentDrawerLeft extends React.Component {
         const dataref = firebase.database().ref('Marker')
         dataref.on('value', (snapshot) => {
             let marks = [];
-
             snapshot.forEach(function (childSnapshot) {
                 marks.push({
                     key: childSnapshot.key,
@@ -216,24 +212,8 @@ class PersistentDrawerLeft extends React.Component {
                     source: 'server',
                     userUP: childSnapshot.val().sendToP.userUP,
                 })
-                // var marker = new window.google.maps.Marker({
-                //     map: window.map,
-                //     position: { lat: childSnapshot.val().sendToP.lat, lng: childSnapshot.val().sendToP.lng },
-                //     clickable: true,
-                //     draggable: false,
-                //     pic: childSnapshot.val().sendToP.pic,
-                //     name: childSnapshot.val().sendToP.name,
-                //     key: childSnapshot.key,
-                //     desc: childSnapshot.val().sendToP.desc
-                // })
-                // self.addMarkerListener(marker)
             })
-
-
             const marcus = marks.map((m) => {
-                // if (m.source === ) {
-
-                // }
                 var marker = new window.google.maps.Marker({
                     //map: window.map,
                     position: { lat: m.lat, lng: m.lng },
@@ -247,15 +227,13 @@ class PersistentDrawerLeft extends React.Component {
                     userUP: m.userUP
                 })
                 self.addMarkerListener(marker)
+                //window.markerCluster.addMarker(marker)
                 return marker
             })
-            this.setState({ marks, marcus, showFiltermark: marcus });
             var markerCluster = new window.MarkerClusterer(window.map, marcus,
                 { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' })
-            console.log(markerCluster)
+            this.setState({ marks, showFiltermark: marcus, marcus });
         })
-
-
     }
 
     logout() {
@@ -376,11 +354,12 @@ class PersistentDrawerLeft extends React.Component {
         var self = this
         window.google.maps.event.addListener(window.map, 'click', function (event) {
             var marker = new window.google.maps.Marker({
-                map: window.map,
                 position: event.latLng,
                 clickable: true,
+                draggable: false,
                 source: 'local',
             })
+            window.markerCluster.addMarker(marker)
             self.addMarkerListener(marker)
             self.setSelectedMarker(marker)
             self.setState({ slatlong: event.latLng, open: true, drawerPage: 'information', isAddMarkerClickAble: true })
@@ -409,7 +388,7 @@ class PersistentDrawerLeft extends React.Component {
         }
     }
     gotoMarker = (m) => {
-        console.log("this is a ", m.position.lat())
+        console.log("this is a ", m)
         const bounds = new window.google.maps.LatLngBounds
         bounds.extend({ lat: m.position.lat(), lng: m.position.lng() })
         window.map.fitBounds(bounds)
@@ -486,12 +465,8 @@ class PersistentDrawerLeft extends React.Component {
 
                                         <CardHeader
 
-                                            action={
-                                                <IconButton>
-                                                    <MoreVertIcon />
-                                                </IconButton>
-                                            }
-                                            title={selectedMarker.name}
+                                            
+                                            title="Shrimp and Chorizo Paella"
                                             subheader="September 14, 2016"
                                         />
 

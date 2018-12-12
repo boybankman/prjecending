@@ -24,7 +24,6 @@ class Marker extends Component {
         } else {
             this.marker.setOptions({
                 position: this.props.position,
-
             })
         }
     }
