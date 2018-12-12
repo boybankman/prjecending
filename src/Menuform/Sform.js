@@ -31,6 +31,9 @@ import CardHeader from '@material-ui/core/CardHeader';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CardContent from '@material-ui/core/CardContent';
 import ListMarker from '../Menuform/ListMarker';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -178,6 +181,8 @@ class PersistentDrawerLeft extends React.Component {
             center: { lat: 13.7648, lng: 100.5381 },
             marcus: [],
             isAddMarkerClickAble: false,
+            myUp: false,
+            showFiltermark: []
         }
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
@@ -226,11 +231,14 @@ class PersistentDrawerLeft extends React.Component {
 
 
             const marcus = marks.map((m) => {
+                // if (m.source === ) {
+
+                // }
                 var marker = new window.google.maps.Marker({
                     //map: window.map,
                     position: { lat: m.lat, lng: m.lng },
                     clickable: true,
-                    draggable: false,
+                    draggable: true,
                     pic: m.pic,
                     name: m.name,
                     key: m.key,
@@ -241,10 +249,13 @@ class PersistentDrawerLeft extends React.Component {
                 self.addMarkerListener(marker)
                 return marker
             })
-            this.setState({ marks, marcus });
+            this.setState({ marks, marcus, showFiltermark: marcus });
             var markerCluster = new window.MarkerClusterer(window.map, marcus,
                 { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' })
+            console.log(markerCluster)
         })
+
+
     }
 
     logout() {
@@ -291,8 +302,7 @@ class PersistentDrawerLeft extends React.Component {
     };
 
     handleDrawerClose = () => {
-        this.setState({ open: false });
-        this.setState({ drawerPage: 'homePage' })
+        this.setState({ open: false, drawerPage: 'homePage' });
     };
     handleModalOpen = () => {
         this.setState({ modalOpen: true });
@@ -312,6 +322,20 @@ class PersistentDrawerLeft extends React.Component {
     handleCloseReset = () => {
         this.setState({ resetOpen: false })
     }
+    handleChangeSwitch = name => event => {
+        const { marcus, user } = this.state
+        const checked = event.target.checked
+        var filter
+        if (checked) {
+            filter = marcus.filter(marker => marker.userUP === user.email)
+        } else {
+            filter = marcus
+        }
+        this.setState({
+            showFiltermark: filter,
+            [name]: checked
+        });
+    };
     btncancel = () => {
         const { selectedMarker } = this.state
         selectedMarker.setMap(null)
@@ -319,6 +343,10 @@ class PersistentDrawerLeft extends React.Component {
     }
     closeDrawerafterup = () => {
         this.setState({ open: false, isAddMarkerClickAble: false })
+        const { selectedMarker, marcus } = this.state
+
+        selectedMarker.setOptions({ source: 'server', })
+        this.setState({ drawerPage: 'information', isAddMarkerClickAble: false })
     }
     backToMenu = () => {
         var self = this
@@ -351,7 +379,6 @@ class PersistentDrawerLeft extends React.Component {
                 map: window.map,
                 position: event.latLng,
                 clickable: true,
-                draggable: true,
                 source: 'local',
             })
             self.addMarkerListener(marker)
@@ -497,17 +524,28 @@ class PersistentDrawerLeft extends React.Component {
                     <br />
 
                     <p className="sansserif">{this.state.user.email}</p>
-                    {<Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>}      <br />  <br />
-                    <Divider /><br />
-                    <ListItem>
-                        <ListMarker
-                            marcus={this.state.marcus}
-                            gotoMarker={this.gotoMarker}
-                            removeMarker={this.removeMarker}
+                    {<Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>}      <br />
+
+                    <FormGroup
+                        row
+                    >
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={this.state.myUp}
+                                    onChange={this.handleChangeSwitch('myUp')}
+                                    value="myUp"
+                                />
+                            }
+                            label={this.state.myUp ? "เฉพาะของฉัน" : "ทั้งหมด"}
                         />
-                    </ListItem>
-
-
+                    </FormGroup> <br />
+                    <Divider /><br />
+                    <ListMarker
+                        gotoMarker={this.gotoMarker}
+                        removeMarker={this.removeMarker}
+                        {...this.state}
+                    />
                 </div>
             )
             default: return;

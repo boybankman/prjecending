@@ -12,6 +12,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import withMobileDialog from '@material-ui/core/withMobileDialog';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import IconButton from '@material-ui/core/IconButton';
+import Location from '@material-ui/icons/LocationOn';
 
 const styles = theme => ({
 
@@ -26,6 +34,10 @@ const styles = theme => ({
     },
     iconSmall: {
         fontSize: 20,
+    },
+    root: {
+        width: '100%',
+        backgroundColor: theme.palette.background.paper,
     },
 });
 
@@ -51,60 +63,37 @@ class ListMarker extends Component {
     //   };
 
     render() {
-        const { classes, marcus} = this.props;
-
-       
-        let showMarks = marcus.map((m) => {
-            return (
-                <tr >
-
-                    <Typography variant="h6" gutterBottom>{m.name}</Typography>
-
-                    <th><Button color="secondary" className={classes.button} onClick={() => { this.props.gotoMarker(m) }}>
-                        <img src={sendIcon} width="30px" height="30px" />
-                    </Button></th>
-
-                    <th><Button color="secondary" className={classes.button} onClick={this.handleClickOpen}>
-                  
-                    <Dialog
-                //   fullScreen={fullScreen}
-                  open={this.state.openDialog}
-                  onClose={this.handleDialogClose}
-                  aria-labelledby="responsive-dialog-title"
-                    >
-                     <DialogTitle id="responsive-dialog-title">{"Use Google's location service?"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText>
-                        Do want to delete?
-                        </DialogContentText>
-                    </DialogContent>
-                 
-                       
-                    <DialogActions>
-                    <Button onClick={this.handleDialogClose}  color="primary" >
-                        {/* <Button  onClick={() => { this.props.removeMarker(m) }} color="primary"> */}
-                        No
-                        </Button>
-                        {/* <Button onClick={this.handleClose}  color="primary" > */}
-                        <Button  onClick={() => { this.props.removeMarker(m) }} color="primary"> 
-                        Yes
-                        </Button>
-                    </DialogActions>
-                  
-                    </Dialog>
-                   
-                   
-                        <img src={trash} width="30px" height="30px" />
-                    </Button></th>
-
-                </tr>
-            )
-        });
-        
+        const { classes, showFiltermark, user } = this.props;
         return (
-            <div className="App">
-                {showMarks}
-            </div>
+            <List
+                className={classes.root}>
+                {showFiltermark.map(marker => (
+                    <ListItem
+                        key={marker.key}
+                        button
+                        onClick={() => this.props.gotoMarker(marker)}
+                    >
+                        <ListItemText primary={marker.name} />
+                        <ListItemSecondaryAction>
+                            <IconButton aria-label="Location">
+                                <Location
+                                    onClick={() => this.props.gotoMarker(marker)}
+                                />
+                            </IconButton>
+                            {user.email === marker.userUP ?
+                                <IconButton aria-label="Delete">
+                                    <DeleteForeverIcon
+                                        onClick={() => this.props.removeMarker(marker)}
+                                    />
+                                </IconButton>
+                                :
+                                null
+                            }
+
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                ))}
+            </List>
         );
     }
 }
