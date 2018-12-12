@@ -171,6 +171,7 @@ class UploadForm extends Component {
         const { slatlong, user } = this.props
         var originalName = file // 01.jpg
         var originalPath = "images/" + originalName; // resized/....^
+        const timestamp = Date.now();
         console.log(originalName)
 
         var thisSpecialStrref = this;
@@ -185,7 +186,9 @@ class UploadForm extends Component {
                     pic: downloadURL3,
                     desc: thisSpecialStrref.state.textnName,
                     namepic: originalName,
-                    userUP: user.email
+                    userUP: user.email,
+                    timestamp: new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(timestamp)
+                                
                 }
 
                 const databaseRef = fire.database().ref('/Marker');

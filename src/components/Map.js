@@ -24,16 +24,19 @@ class Map extends Component {
             center: this.props.center,
             zoom: this.state.zoom,
             mapTypeId: 'satellite',
-            
+
         })
         this.setState({
             isLoad: true
         })
-        window.markerCluster = new window.MarkerClusterer(window.map,[],
-            { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' })
+        var test = [{ a: 1 }, { a: 3 }, { a: 2 }, { a: 5 }, { a: 0 }]
+        var result = test.sort(function (a, b) {
+            return a.a - b.a
+        })
+        console.log(result)
     }
 
- 
+
 
     render() {
         var childrenOutput = null;

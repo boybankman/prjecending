@@ -34,6 +34,9 @@ import ListMarker from '../Menuform/ListMarker';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Radio from '@material-ui/core/Radio';
+import FormLabel from '@material-ui/core/FormLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -184,6 +187,7 @@ class PersistentDrawerLeft extends React.Component {
             myUp: false,
             showFiltermark: [],
             delOpen: false,
+            sortMKT: 'date'
         }
     }
     componentWillMount() {
@@ -212,6 +216,7 @@ class PersistentDrawerLeft extends React.Component {
                     namepic: childSnapshot.val().sendToP.namepic,
                     source: 'server',
                     userUP: childSnapshot.val().sendToP.userUP,
+                    timestamp: childSnapshot.val().sendToP.timestamp
                 })
             })
             const marcus = marks.map((m) => {
@@ -225,7 +230,8 @@ class PersistentDrawerLeft extends React.Component {
                     key: m.key,
                     desc: m.desc,
                     namepic: m.namepic,
-                    userUP: m.userUP
+                    userUP: m.userUP,
+                    timestamp: m.timestamp
                 })
                 self.addMarkerListener(marker)
                 //window.markerCluster.addMarker(marker)
@@ -233,7 +239,7 @@ class PersistentDrawerLeft extends React.Component {
             })
             var markerCluster = new window.MarkerClusterer(window.map, marcus,
                 { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' })
-            this.setState({ marks, showFiltermark: marcus, marcus });
+            this.setState({ marks, marcus }, () => { this.filterShowMarker() });
         })
     }
 
@@ -307,9 +313,29 @@ class PersistentDrawerLeft extends React.Component {
     handleClosedel = () => {
         this.setState({ delOpen: false })
     }
-    handleChangeSwitch = name => event => {
-        const { marcus, user } = this.state
+
+    handleChangeSwitch = (event) => {
         const checked = event.target.checked
+        this.setState({ myUp: checked }, () => this.filterShowMarker());
+    };
+    handleSortList = (event) => {
+        this.setState({ sortMKT: event.target.value }, () => this.filterShowMarker());
+    };
+    // filterShowMarker = (checked = this.state.myUp) => {
+    //     const { marcus, user } = this.state
+    //     var filter
+    //     if (checked) {
+    //         filter = marcus.filter(marker => marker.userUP === user.email)
+    //     } else {
+    //         filter = marcus
+    //     }
+    //     this.setState({
+    //         showFiltermark: filter,
+    //         myUp: checked
+    //     });
+    // }
+    filterShowMarker = (checked = this.state.myUp) => {
+        const { marcus, user } = this.state
         var filter
         if (checked) {
             filter = marcus.filter(marker => marker.userUP === user.email)
@@ -318,20 +344,39 @@ class PersistentDrawerLeft extends React.Component {
         }
         this.setState({
             showFiltermark: filter,
-            [name]: checked
-        });
-    };
+            myUp: checked
+        }, () => this.Sortdatenamefunc());
+    }
+    Sortdatenamefunc = (value = this.state.sortMKT) => {
+        const { showFiltermark } = this.state
+        var sortresult
+        if (value === 'date') {
+            sortresult = showFiltermark.sort(function (a, b) {
+                return a.timestamp - b.timestamp
+
+            })
+        }
+        else {
+            sortresult = showFiltermark.sort(function (a, b) {
+                return a.name - b.name
+
+            })
+        }
+        console.log(sortresult)
+        this.setState({ showFiltermark: sortresult, });
+
+    }
+
+
     btncancel = () => {
         const { selectedMarker } = this.state
         selectedMarker.setMap(null)
         this.setState({ open: false, isAddMarkerClickAble: false })
     }
     closeDrawerafterup = () => {
-        this.setState({ open: true, isAddMarkerClickAble: false })
+        this.setState({ open: true, isAddMarkerClickAble: false, drawerPage: 'homePage' })
         const { selectedMarker, marcus } = this.state
-
         selectedMarker.setOptions({ source: 'server', })
-        this.setState({ drawerPage: 'homePage', isAddMarkerClickAble: false })
     }
     backToMenu = () => {
         var self = this
@@ -365,8 +410,9 @@ class PersistentDrawerLeft extends React.Component {
                 clickable: true,
                 draggable: false,
                 source: 'local',
+                map: window.map
             })
-            window.markerCluster.addMarker(marker)
+            // window.markerCluster.addMarker(marker)
             self.addMarkerListener(marker)
             self.setSelectedMarker(marker)
             self.setState({ slatlong: event.latLng, open: true, drawerPage: 'information', isAddMarkerClickAble: true })
@@ -403,12 +449,10 @@ class PersistentDrawerLeft extends React.Component {
         const bounds = new window.google.maps.LatLngBounds
         bounds.extend({ lat: m.position.lat(), lng: m.position.lng() })
         window.map.fitBounds(bounds)
-
         var infowindow = new window.google.maps.InfoWindow({
             content: `${m.name}<br/><img src=${m.pic} width=100 height=100/>`
         })
         infowindow.open(m.get('map'), m);
-
     }
     removeMarker = (m) => {
 
@@ -474,8 +518,8 @@ class PersistentDrawerLeft extends React.Component {
                                         <CardHeader
 
 
-                                            title="Shrimp and Chorizo Paella"
-                                            subheader="September 14, 2016"
+                                            title={selectedMarker.userUP}
+                                            subheader={selectedMarker.timestamp}
                                         />
 
                                         <CardMedia
@@ -516,12 +560,22 @@ class PersistentDrawerLeft extends React.Component {
                             control={
                                 <Switch
                                     checked={this.state.myUp}
-                                    onChange={this.handleChangeSwitch('myUp')}
+                                    onChange={this.handleChangeSwitch}
                                     value="myUp"
                                 />
                             }
                             label={this.state.myUp ? "เฉพาะของฉัน" : "ทั้งหมด"}
                         />
+                        <RadioGroup
+                            aria-label="Gender"
+                            name="gender1"
+                            className={classes.group}
+                            value={this.state.sortMKT}
+                            onChange={this.handleSortList}
+                        >
+                            <FormControlLabel value="date" control={<Radio />} label="วันที่" />
+                            <FormControlLabel value="name" control={<Radio />} label="ชื่อ" />
+                        </RadioGroup>
                     </FormGroup> <br />
                     <Divider /><br />
                     <ListMarker
