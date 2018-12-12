@@ -455,11 +455,7 @@ class PersistentDrawerLeft extends React.Component {
 
                                         <CardHeader
 
-                                            action={
-                                                <IconButton>
-                                                    <MoreVertIcon />
-                                                </IconButton>
-                                            }
+                                            
                                             title="Shrimp and Chorizo Paella"
                                             subheader="September 14, 2016"
                                         />
