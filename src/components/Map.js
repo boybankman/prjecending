@@ -29,6 +29,8 @@ class Map extends Component {
         this.setState({
             isLoad: true
         })
+        window.markerCluster = new window.MarkerClusterer(window.map,[],
+            { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' })
     }
 
     render() {
