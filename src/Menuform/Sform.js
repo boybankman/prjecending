@@ -492,10 +492,10 @@ class PersistentDrawerLeft extends React.Component {
                         <List>
 
                             <u>Name</u>: {selectedMarker.name}<br />
-                            <u>Lat</u>: {selectedMarker.getPosition().lat()}<br />
+                            {/* <u>Lat</u>: {selectedMarker.getPosition().lat()}<br />
                             <u>Lng</u>: {selectedMarker.getPosition().lng()}<br />
                             <u>Descriptions</u>: {selectedMarker.desc}<br /><br />
-                            {/* {selectedMarker.key}<br/> */}
+                            {selectedMarker.key}<br/> */}
 
 
                             <div className="Dmodal">
@@ -588,7 +588,7 @@ class PersistentDrawerLeft extends React.Component {
                         onClose={this.handleClosedel}
                     >
                         <div style={getModalStyle()} className={classes.paperRegister}>
-                            <p>Del?</p>
+                            <p>Do you want to delete this mark?</p>
                             <Button type="submit" onClick={() => {this.removeMarker(delMarker)}} variant="outlined" >Send</Button>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleClosedel} variant="outlined" >Back</Button>
                             <br /> <br />

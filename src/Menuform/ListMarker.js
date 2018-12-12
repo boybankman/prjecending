@@ -21,6 +21,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import IconButton from '@material-ui/core/IconButton';
 import Location from '@material-ui/icons/LocationOn';
 import Popup from "reactjs-popup";
+import Grid from '@material-ui/core/Grid';
 const styles = theme => ({
 
     button: {
@@ -46,19 +47,19 @@ const styles = theme => ({
 class ListMarker extends Component {
     constructor(props) {
         super(props);
-        this.state = {openDialog: false}
+        this.state = { openDialog: false }
     }
     handleDialogClose = () => {
-        this.setState({ openDialog : false})
+        this.setState({ openDialog: false })
         document.addEventListener("keydown", this.escFunction, false);
         console.log(this.state.openDialog)
     }
     handleClickOpen = () => {
         this.setState({ openDialog: true });
-      };
-    
+    };
+
     //   handleClose = () => {
-         
+
     //     this.setState({ openDialog: false });
     //   };
 
@@ -73,7 +74,13 @@ class ListMarker extends Component {
                         button
                         onClick={() => this.props.gotoMarker(marker)}
                     >
-                        <ListItemText primary={marker.name} />
+
+
+                        <Grid item xs zeroMinWidth >
+                            <Typography noWrap><ListItemText primary={marker.name} /></Typography>
+                        </Grid>
+
+
                         <ListItemSecondaryAction>
                             <IconButton aria-label="Location">
                                 <Location
@@ -81,14 +88,14 @@ class ListMarker extends Component {
                                 />
                             </IconButton>
                             {user.email === marker.userUP ?
-                            
+
                                 <IconButton aria-label="Delete">
-                                
+
                                     <DeleteForeverIcon
-                                    
+
                                         onClick={() => this.props.handleOpenDel(marker)}
                                     />
-                                    
+
                                 </IconButton>
                                 :
                                 null
