@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const styles = theme => ({
@@ -32,6 +33,9 @@ const styles = theme => ({
     },
     button: {
         margin: theme.spacing.unit,
+      },
+      progress: {
+        margin: theme.spacing.unit * 2,
       },
   });
 
@@ -153,8 +157,7 @@ class UploadForm extends Component {
         const { slatlong,user } = this.props
         var originalName = file.name // 01.jpg
         var originalPath = "images/" + originalName; // resized/....^
-console.log(originalName)
-
+        console.log(originalName)
 
         var thisSpecialStrref = this;
       
@@ -215,7 +218,7 @@ console.log(originalName)
                                 }} />
                         </div>
                         <br />
-                        <textarea rows="10" cols="30" disabled={this.fileInput ? false : true} value={this.state.textnName} 
+                        <textarea rows="10" cols="30" value={this.state.textnName} 
                         onChange={this.handleDescription} type="text" placeholder="เพิ่มข้อมูล" ></textarea><br />
                         <br />
                         <Button variant="contained" color="primary" className="loginBtn2 loginBtn--U" type="submit">
@@ -231,7 +234,8 @@ console.log(originalName)
                         const fileObj = uploadFilesObj[key];
                         return (
                             <div key={index}>
-                                <progress value={fileObj.progressPercent} max="100"></progress>&nbsp; &nbsp;{fileObj.progressPercent}%
+                                {/* <progress value={fileObj.progressPercent} max="100"></progress>&nbsp; &nbsp;{fileObj.progressPercent}% */}
+                                <CircularProgress className={classes.progress} />
                                                 <p>{fileObj.fileName}</p>
                                 <br />
                             </div>

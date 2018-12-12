@@ -31,6 +31,8 @@ class Map extends Component {
         })
     }
 
+ 
+
     render() {
         var childrenOutput = null;
         const { marks } = this.state

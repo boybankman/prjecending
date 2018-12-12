@@ -151,12 +151,12 @@ const styles = theme => ({
         margin: theme.spacing.unit,
         backgroundColor: theme.palette.secondary.main,
     },
-     demo: {
-    backgroundColor: theme.palette.background.paper,
-  },
-  title: {
-    margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`,
-  },
+    demo: {
+        backgroundColor: theme.palette.background.paper,
+    },
+    title: {
+        margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`,
+    },
 
 
 });
@@ -177,7 +177,7 @@ class PersistentDrawerLeft extends React.Component {
             selectedMarker: null,
             center: { lat: 13.7648, lng: 100.5381 },
             marcus: [],
-            isAddMarkerClickAble: false
+            isAddMarkerClickAble: false,
         }
         this.login = this.login.bind(this);
         this.logout = this.logout.bind(this);
@@ -315,10 +315,10 @@ class PersistentDrawerLeft extends React.Component {
     btncancel = () => {
         const { selectedMarker } = this.state
         selectedMarker.setMap(null)
-        this.setState({ open: false ,isAddMarkerClickAble:false})
+        this.setState({ open: false, isAddMarkerClickAble: false })
     }
     closeDrawerafterup = () => {
-        this.setState({ open: false ,isAddMarkerClickAble:false})
+        this.setState({ open: false, isAddMarkerClickAble: false })
     }
     backToMenu = () => {
         var self = this
@@ -382,10 +382,19 @@ class PersistentDrawerLeft extends React.Component {
         }
     }
     gotoMarker = (m) => {
-        console.log("this is a ",m.position.lat())
+        console.log("this is a ", m.position.lat())
         const bounds = new window.google.maps.LatLngBounds
         bounds.extend({ lat: m.position.lat(), lng: m.position.lng() })
         window.map.fitBounds(bounds)
+        m.setAnimation(window.google.maps.Animation.BOUNCE);
+
+        var infowindow = new window.google.maps.InfoWindow({
+            content: `${m.name}<br/><img src=${m.pic} width=100 height=100/>`
+        })
+        infowindow.open(m.get('map'), m);
+        setTimeout(() => {
+            m.setAnimation(null);
+        }, 4000);
     }
     removeMarker = (m) => {
 
@@ -411,7 +420,7 @@ class PersistentDrawerLeft extends React.Component {
     }
 
     renderDrawerPage = () => {
-        const { drawerPage, selectedMarker, slatlong, marks,user } = this.state
+        const { drawerPage, selectedMarker, slatlong, marks, user } = this.state
         const { classes, keym } = this.props
         switch (drawerPage) {
             case 'information':
@@ -419,7 +428,7 @@ class PersistentDrawerLeft extends React.Component {
                     selectedMarker.source === 'local'
                         ?
                         <UploadForm
-                        closeDrawerafterup={this.closeDrawerafterup}
+                            closeDrawerafterup={this.closeDrawerafterup}
                             user={user}
                             btncancel={this.btncancel}
                             slatlong={slatlong}
@@ -427,7 +436,7 @@ class PersistentDrawerLeft extends React.Component {
                         />
                         :
                         <List>
-                            
+
                             <u>Name</u>: {selectedMarker.name}<br />
                             <u>Lat</u>: {selectedMarker.getPosition().lat()}<br />
                             <u>Lng</u>: {selectedMarker.getPosition().lng()}<br />
@@ -455,7 +464,7 @@ class PersistentDrawerLeft extends React.Component {
                                                     <MoreVertIcon />
                                                 </IconButton>
                                             }
-                                            title="Shrimp and Chorizo Paella"
+                                            title={selectedMarker.name}
                                             subheader="September 14, 2016"
                                         />
 
@@ -491,14 +500,14 @@ class PersistentDrawerLeft extends React.Component {
                     {<Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>}      <br />  <br />
                     <Divider /><br />
                     <ListItem>
-                    <ListMarker
-                        marcus={this.state.marcus}
-                        gotoMarker={this.gotoMarker}
-                        removeMarker={this.removeMarker}
-                    />
+                        <ListMarker
+                            marcus={this.state.marcus}
+                            gotoMarker={this.gotoMarker}
+                            removeMarker={this.removeMarker}
+                        />
                     </ListItem>
 
-                    
+
                 </div>
             )
             default: return;
