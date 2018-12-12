@@ -218,6 +218,7 @@ class PersistentDrawerLeft extends React.Component {
                     timestamp: childSnapshot.val().sendToP.timestamp
                 })
             })
+            console.log(marks)
             const marcus = marks.map((m) => {
                 var marker = new window.google.maps.Marker({
                     //map: window.map,
@@ -313,19 +314,6 @@ class PersistentDrawerLeft extends React.Component {
     handleSortList = (event) => {
         this.setState({ sortMKT: event.target.value }, () => this.filterShowMarker());
     };
-    // filterShowMarker = (checked = this.state.myUp) => {
-    //     const { marcus, user } = this.state
-    //     var filter
-    //     if (checked) {
-    //         filter = marcus.filter(marker => marker.userUP === user.email)
-    //     } else {
-    //         filter = marcus
-    //     }
-    //     this.setState({
-    //         showFiltermark: filter,
-    //         myUp: checked
-    //     });
-    // }
     filterShowMarker = (checked = this.state.myUp) => {
         const { marcus, user } = this.state
         var filter
@@ -337,24 +325,32 @@ class PersistentDrawerLeft extends React.Component {
         this.setState({
             showFiltermark: filter,
             myUp: checked
-        }, () => this.Sortdatenamefunc());
+        }, () => this.sortdatenamefunc());
     }
-    Sortdatenamefunc = (value = this.state.sortMKT) => {
+    sortdatenamefunc = (value = this.state.sortMKT) => {
         const { showFiltermark } = this.state
+        console.log(showFiltermark)
+        //console.log(showFiltermark)
+        //var showFiltermark = [1,0,3,5,4]
         var sortresult
-        if (value === 'date') {
+        if (value === 'name') {
             sortresult = showFiltermark.sort(function (a, b) {
-                return a.timestamp - b.timestamp
-
+                const nameA = a.name
+                const nameB =b.name
+                if (nameA > nameB) {
+                    return 1;
+                }
+                if (nameA < nameB) {
+                    return -1;
+                }
+                return 0;
             })
         }
         else {
             sortresult = showFiltermark.sort(function (a, b) {
-                return a.name - b.name
-
+                return new Date(a.timestamp) - new Date(b.timestamp)
             })
         }
-        console.log(sortresult)
         this.setState({ showFiltermark: sortresult, });
 
     }
