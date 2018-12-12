@@ -20,7 +20,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import IconButton from '@material-ui/core/IconButton';
 import Location from '@material-ui/icons/LocationOn';
-
+import Popup from "reactjs-popup";
 const styles = theme => ({
 
     button: {
@@ -81,10 +81,14 @@ class ListMarker extends Component {
                                 />
                             </IconButton>
                             {user.email === marker.userUP ?
+                            
                                 <IconButton aria-label="Delete">
+                                
                                     <DeleteForeverIcon
-                                        onClick={() => this.props.removeMarker(marker)}
+                                    
+                                        onClick={() => this.props.handleOpenDel(marker)}
                                     />
+                                    
                                 </IconButton>
                                 :
                                 null

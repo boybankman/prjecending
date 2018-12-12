@@ -6,6 +6,10 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import IconCancel from '../IconCancel.png';
+import IconPause from '../IconPause.png';
+import IconPlay from '../IconPlay.png';
+import Popup from "reactjs-popup";
 
 var shortid = require('shortid');
 
@@ -34,12 +38,12 @@ const styles = theme => ({
     },
     button: {
         margin: theme.spacing.unit,
-      },
-      progress: {
+    },
+    progress: {
         margin: theme.spacing.unit * 2,
-      },
-  });
-  
+    },
+});
+
 
 
 
@@ -56,6 +60,9 @@ class UploadForm extends Component {
         this.uploadFile = this.uploadFile.bind(this);
         this.CheckUrl = this.CheckUrl.bind(this);
         this.strRef = fire.storage().ref();
+        this.btnCancel = this.btnCancel.bind(this)
+        this.btnPause = this.btnPause.bind(this)
+        this.btnPlay = this.btnPlay.bind(this)
     }
     handleChange(e) {
         this.setState({ fname: e.target.value });
@@ -68,10 +75,9 @@ class UploadForm extends Component {
     handleDescription = (e) => {
         this.setState({ textnName: e.target.value });
     }
-
+    //new multi
     uploadSubmit(event) {
         event.preventDefault();
-
         const allFiles = Array.from(this.fileInput.files);
         if (allFiles.length > 0) {
             // Add each files to state
@@ -95,7 +101,12 @@ class UploadForm extends Component {
             });
 
         }
+
+
     }
+    //new muti upload C.
+  
+    
     uploadFile(file, index) {
         const id = shortid.generate()
         const fileName = id + file.name
@@ -105,7 +116,6 @@ class UploadForm extends Component {
         };
         var thisSpecialStrref = this;
         var uploadTask = this.strRef.child(`images/${fileName}`).put(file, metadata);
-
         uploadTask.on("state_changed", (snapshot) => {
             // Progress handling
             var progressFix = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -194,7 +204,25 @@ class UploadForm extends Component {
         });
 
     }
+    btnCancel(fileId) {
+        // console.log(fileId)
+        var uploadTaskS = Object.assign({}, this.state);
+        var uploadTask = uploadTaskS.uploadFilesObj[fileId].uploadTask;
+        uploadTask.cancel();
 
+    }
+    btnPlay(fileId) {
+        // console.log(fileId)
+        var uploadTaskS = Object.assign({}, this.state);
+        var uploadTask = uploadTaskS.uploadFilesObj[fileId].uploadTask;
+        uploadTask.resume();
+    }
+    btnPause(fileId) {
+        // console.log(fileId)
+        var uploadTaskS = Object.assign({}, this.state);
+        var uploadTask = uploadTaskS.uploadFilesObj[fileId].uploadTask;
+        uploadTask.pause();
+    }
     render() {
         const { uploadFilesObj } = this.state
         const { classes, user } = this.props;
@@ -233,19 +261,54 @@ class UploadForm extends Component {
                     </form>
                 </div>
 
-                {
-                    Object.keys(uploadFilesObj).map((key, index) => {
-                        const fileObj = uploadFilesObj[key];
-                        return (
-                            <div key={index}>
-                                {/* <progress value={fileObj.progressPercent} max="100"></progress>&nbsp; &nbsp;{fileObj.progressPercent}% */}
-                                <CircularProgress className={classes.progress} />
-                                                <p>{fileObj.fileName}</p>
-                                <br />
-                            </div>
-                        );
-                    })
-                }
+                <div class="barPro">
+                    {
+                        Object.keys(uploadFilesObj).map((key, index) => {
+                            const fileObj = uploadFilesObj[key];
+                            return (
+                                <div key={index}>
+
+
+
+
+                                    {fileObj.progressPercent}
+
+                                    <br />
+                                    <br />
+                                    {/* <progress value={fileObj.progressPercent} max="100"></progress>&nbsp; &nbsp;{fileObj.progressPercent}% */}
+
+
+                                    <Popup trigger={<button className="button"> <img src={IconCancel} className="IconCancel" alt="Icon" height="10" weight="10" /> </button>} modal>
+                                        {close => (
+                                            <div className="Dmodal">
+                                                <div className="Dheader"> Do you want to Cancel </div>
+                                                <div className="Dactions">
+                                                    <button className="button" onClick={() => {
+
+                                                        this.btnCancel(key)
+                                                        close()
+                                                    }}>Yes</button>
+                                                    <button
+                                                        className="button"
+                                                        onClick={() => {
+                                                            console.log('modal closed')
+                                                            close()
+                                                        }}
+                                                    >
+                                                        No</button>
+                                                </div>
+                                            </div>
+                                        )}</Popup>
+
+                                    <button type="button"><img src={IconPause} className="IconCancel" onClick={() => this.btnPause(key)} alt="Icon" height="10" weight="10" /></button>
+                                    <button type="button"><img src={IconPlay} className="IconCancel" onClick={() => this.btnPlay(key)} alt="Icon" height="10" weight="10" /></button>
+                                    <p>{fileObj.fileName}</p>
+                                    <br />
+                                </div>
+                            );
+                        })
+                    }
+                </div>
 
 
             </div>

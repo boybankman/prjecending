@@ -182,7 +182,8 @@ class PersistentDrawerLeft extends React.Component {
             marcus: [],
             isAddMarkerClickAble: false,
             myUp: false,
-            showFiltermark: []
+            showFiltermark: [],
+            delOpen: false,
         }
     }
     componentWillMount() {
@@ -218,7 +219,7 @@ class PersistentDrawerLeft extends React.Component {
                     //map: window.map,
                     position: { lat: m.lat, lng: m.lng },
                     clickable: true,
-                    draggable: true,
+                    draggable: false,
                     pic: m.pic,
                     name: m.name,
                     key: m.key,
@@ -236,12 +237,12 @@ class PersistentDrawerLeft extends React.Component {
         })
     }
 
-    logout() {
+    logout = () => {
         firebase.auth().signOut();
         this.setState({ user: null });
     }
 
-    loginE(e) {
+    loginE = (e) => {
         e.preventDefault();
         firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password).then((u) => {
         }).catch((error) => {
@@ -300,6 +301,12 @@ class PersistentDrawerLeft extends React.Component {
     handleCloseReset = () => {
         this.setState({ resetOpen: false })
     }
+    handleOpenDel = (delMarker) => {
+        this.setState({ delOpen: true,delMarker: delMarker })
+    }
+    handleClosedel = () => {
+        this.setState({ delOpen: false })
+    }
     handleChangeSwitch = name => event => {
         const { marcus, user } = this.state
         const checked = event.target.checked
@@ -320,11 +327,11 @@ class PersistentDrawerLeft extends React.Component {
         this.setState({ open: false, isAddMarkerClickAble: false })
     }
     closeDrawerafterup = () => {
-        this.setState({ open: false, isAddMarkerClickAble: false })
+        this.setState({ open: true, isAddMarkerClickAble: false })
         const { selectedMarker, marcus } = this.state
 
         selectedMarker.setOptions({ source: 'server', })
-        this.setState({ drawerPage: 'information', isAddMarkerClickAble: false })
+        this.setState({ drawerPage: 'homePage', isAddMarkerClickAble: false })
     }
     backToMenu = () => {
         var self = this
@@ -364,6 +371,10 @@ class PersistentDrawerLeft extends React.Component {
             self.setSelectedMarker(marker)
             self.setState({ slatlong: event.latLng, open: true, drawerPage: 'information', isAddMarkerClickAble: true })
             window.google.maps.event.clearListeners(window.map, 'click')
+            marker.setAnimation(window.google.maps.Animation.BOUNCE);
+            setTimeout(() => {
+                marker.setAnimation(null);
+            }, 2000);
         })
     };
     addMarkerListener = (marker) => {
@@ -392,15 +403,12 @@ class PersistentDrawerLeft extends React.Component {
         const bounds = new window.google.maps.LatLngBounds
         bounds.extend({ lat: m.position.lat(), lng: m.position.lng() })
         window.map.fitBounds(bounds)
-        m.setAnimation(window.google.maps.Animation.BOUNCE);
 
         var infowindow = new window.google.maps.InfoWindow({
             content: `${m.name}<br/><img src=${m.pic} width=100 height=100/>`
         })
         infowindow.open(m.get('map'), m);
-        setTimeout(() => {
-            m.setAnimation(null);
-        }, 4000);
+
     }
     removeMarker = (m) => {
 
@@ -421,12 +429,12 @@ class PersistentDrawerLeft extends React.Component {
             .catch((error) => {
                 console.log("Delete data error : ", error.message);
             });
-
+            this.setState({ delOpen: false})
 
     }
 
     renderDrawerPage = () => {
-        const { drawerPage, selectedMarker, slatlong, marks, user } = this.state
+        const { drawerPage, selectedMarker, slatlong, delMarker, user } = this.state
         const { classes, keym } = this.props
         switch (drawerPage) {
             case 'information':
@@ -465,7 +473,7 @@ class PersistentDrawerLeft extends React.Component {
 
                                         <CardHeader
 
-                                            
+
                                             title="Shrimp and Chorizo Paella"
                                             subheader="September 14, 2016"
                                         />
@@ -519,8 +527,24 @@ class PersistentDrawerLeft extends React.Component {
                     <ListMarker
                         gotoMarker={this.gotoMarker}
                         removeMarker={this.removeMarker}
+                        handleOpenDel={this.handleOpenDel}
                         {...this.state}
                     />
+
+                    <Modal
+                        aria-labelledby="simple-modal-title"
+                        aria-describedby="simple-modal-description"
+                        open={this.state.delOpen}
+                        onClose={this.handleClosedel}
+                    >
+                        <div style={getModalStyle()} className={classes.paperRegister}>
+                            <p>Del?</p>
+                            <Button type="submit" onClick={() => {this.removeMarker(delMarker)}} variant="outlined" >Send</Button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleClosedel} variant="outlined" >Back</Button>
+                            <br /> <br />
+
+                        </div></Modal>
+
                 </div>
             )
             default: return;
@@ -654,30 +678,7 @@ class PersistentDrawerLeft extends React.Component {
                                     </div></Modal>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Button onClick={this.handleOpenReset} variant="outlined" >Reset</Button>
                                 {/* ******************************************************************************************************************** */}
-                                <Modal
-                                    aria-labelledby="simple-modal-title"
-                                    aria-describedby="simple-modal-description"
-                                    open={this.state.resetOpen}
-                                    onClose={this.handleCloseReset}
-                                >
-                                    <div style={getModalStyle()} className={classes.paperRegister}>
 
-                                        <p class="headRegis">
-                                            <Typography variant="h4" gutterBottom> ****** Reset  ****** </Typography>
-                                        </p>
-                                        <div class="form-group">
-
-                                            <Typography variant="h6" gutterBottom>Email addresssd</Typography>
-
-                                            <TextField value={this.state.emailAddress} onChange={this.handleChange} type="email" name="emailAddress" class="form-control"
-                                                id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
-
-                                        </div> <br /> <br />
-                                        <Button type="submit" onClick={this.resetPassword} variant="outlined" >Send</Button>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleCloseReset} variant="outlined" >Back</Button>
-                                        <br /> <br />
-
-                                    </div></Modal>
                                 &nbsp;&nbsp;&nbsp;&nbsp;
           <br /><br />
                             </div>
