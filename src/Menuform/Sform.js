@@ -19,6 +19,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import Map from '../components/Map'
+import ImageIcon from '@material-ui/icons/Image';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Modal from '@material-ui/core/Modal';
@@ -187,7 +188,8 @@ class PersistentDrawerLeft extends React.Component {
             myUp: false,
             showFiltermark: [],
             delOpen: false,
-            sortMKT: 'date'
+            sortMKT: 'date',
+            
         }
     }
     componentWillMount() {
@@ -490,7 +492,7 @@ class PersistentDrawerLeft extends React.Component {
                             removeMarker={this.removeMarker}
                         />
                         :
-                        <List>
+                        <List >
 
                             <u>Name</u>: {selectedMarker.name}<br />
                             {/* <u>Lat</u>: {selectedMarker.getPosition().lat()}<br />
@@ -511,10 +513,8 @@ class PersistentDrawerLeft extends React.Component {
                                     onClose={this.handleModalClose}
                                 >
                                     <div style={getModalStyle()} className={classes.paper}>
-
+                                       
                                         <CardHeader
-
-
                                             title={selectedMarker.userUP}
                                             subheader={selectedMarker.timestamp}
                                         />

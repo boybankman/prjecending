@@ -101,6 +101,7 @@ class UploadForm extends Component {
             });
 
         }
+        //console.log(tempUploadFilesObj)
 
 
     }
@@ -116,6 +117,9 @@ class UploadForm extends Component {
         };
         var thisSpecialStrref = this;
         var uploadTask = this.strRef.child(`images/${fileName}`).put(file, metadata);
+        var stateCopy1 = Object.assign({}, this.state);
+        stateCopy1.uploadFilesObj[fileObjKey].uploadTask = uploadTask
+        this.setState(stateCopy1)
         uploadTask.on("state_changed", (snapshot) => {
             // Progress handling
             var progressFix = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
@@ -123,9 +127,9 @@ class UploadForm extends Component {
             console.log(`Upload #${index} is ${progressPercent}% done`);
             var stateCopy = Object.assign({}, this.state);
             stateCopy.uploadFilesObj[fileObjKey].progressPercent = progressPercent;
-            stateCopy.uploadFilesObj[fileObjKey].uploadTask = uploadTask
-            this.setState(stateCopy);
 
+            this.setState(stateCopy);
+            console.log(snapshot.state)
             switch (snapshot.state) {
                 case fire.storage.TaskState.PAUSED:
                     console.log('Upload is paused');
@@ -140,14 +144,25 @@ class UploadForm extends Component {
             }
         }, (error) => {
             switch (error.code) {
+                case 'storage/unauthorized':
+                    // User doesn't have permission to access the object
+                    break;
+
                 case 'storage/canceled':
-                    alert('Upload is cancel')
+                    console.log('Canceled')
                     this.props.closeDrawerafterup()
                     this.props.btncancel()
+                    break;
+
+                case 'storage/unknown':
+                    // Unknown error occurred, inspect error.serverResponse
+                    break;
             }
-            console.log(error);
             var stateCopy = Object.assign({}, this.state);
-            this.setState(stateCopy);
+            delete stateCopy.uploadFilesObj[fileObjKey];
+            thisSpecialStrref.setState(stateCopy);
+            // Error handling
+            console.log(error);
 
         }, () => {
             // Complete handling
@@ -159,10 +174,7 @@ class UploadForm extends Component {
                 delete stateCopy.uploadFilesObj[fileObjKey];
                 thisSpecialStrref.setState(stateCopy);
             }, 2000)
-
-
             this.CheckUrl(fileName);
-
         });
 
 
@@ -212,7 +224,6 @@ class UploadForm extends Component {
         var uploadTaskS = Object.assign({}, this.state);
         var uploadTask = uploadTaskS.uploadFilesObj[fileId].uploadTask;
         uploadTask.cancel();
-
     }
     btnPlay(fileId) {
         // console.log(fileId)
@@ -267,6 +278,7 @@ class UploadForm extends Component {
                 <div class="barPro">
                     {
                         Object.keys(uploadFilesObj).map((key, index) => {
+                            //const updateKey = `file${index}`;
                             const fileObj = uploadFilesObj[key];
                             return (
                                 <div key={index}>

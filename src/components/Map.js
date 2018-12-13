@@ -29,18 +29,6 @@ class Map extends Component {
         this.setState({
             isLoad: true
         })
-        var test = ['a', 'c', 'b']
-        // var r = test.sort(function (a, b) {
-        //     if (a > b) {
-        //         return 1;
-        //       }
-        //       if (a < b) {
-        //         return -1;
-        //       }
-        //       return 0;
-        // })
-       var r = test.sort()
-        console.log(r)
     }
 
 
