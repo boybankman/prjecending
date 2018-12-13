@@ -309,7 +309,7 @@ class PersistentDrawerLeft extends React.Component {
         this.setState({ resetOpen: false })
     }
     handleOpenDel = (delMarker) => {
-        this.setState({ delOpen: true,delMarker: delMarker })
+        this.setState({ delOpen: true, delMarker: delMarker })
     }
     handleClosedel = () => {
         this.setState({ delOpen: false })
@@ -344,7 +344,7 @@ class PersistentDrawerLeft extends React.Component {
         if (value === 'name') {
             sortresult = showFiltermark.sort(function (a, b) {
                 const nameA = a.name
-                const nameB =b.name
+                const nameB = b.name
                 if (nameA > nameB) {
                     return 1;
                 }
@@ -469,7 +469,7 @@ class PersistentDrawerLeft extends React.Component {
             .catch((error) => {
                 console.log("Delete data error : ", error.message);
             });
-            this.setState({ delOpen: false})
+        this.setState({ delOpen: false })
 
     }
 
@@ -487,6 +487,7 @@ class PersistentDrawerLeft extends React.Component {
                             btncancel={this.btncancel}
                             slatlong={slatlong}
                             drawerPage={drawerPage}
+                            removeMarker={this.removeMarker}
                         />
                         :
                         <List>
@@ -589,7 +590,7 @@ class PersistentDrawerLeft extends React.Component {
                     >
                         <div style={getModalStyle()} className={classes.paperRegister}>
                             <p>Do you want to delete this mark?</p>
-                            <Button type="submit" onClick={() => {this.removeMarker(delMarker)}} variant="outlined" >Send</Button>
+                            <Button type="submit" onClick={() => { this.removeMarker(delMarker) }} variant="outlined" >Send</Button>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleClosedel} variant="outlined" >Back</Button>
                             <br /> <br />
 

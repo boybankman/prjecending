@@ -105,8 +105,8 @@ class UploadForm extends Component {
 
     }
     //new muti upload C.
-  
-    
+
+
     uploadFile(file, index) {
         const id = shortid.generate()
         const fileName = id + file.name
@@ -123,6 +123,7 @@ class UploadForm extends Component {
             console.log(`Upload #${index} is ${progressPercent}% done`);
             var stateCopy = Object.assign({}, this.state);
             stateCopy.uploadFilesObj[fileObjKey].progressPercent = progressPercent;
+            stateCopy.uploadFilesObj[fileObjKey].uploadTask = uploadTask
             this.setState(stateCopy);
 
             switch (snapshot.state) {
@@ -134,17 +135,16 @@ class UploadForm extends Component {
                     console.log('Upload is running');
                     this.setState(stateCopy);
                     break;
-                case fire.storage.TaskState.CANCELED:
-                    console.log('test')
-                    delete stateCopy.uploadFilesObj[fileObjKey];
-                    this.setState(stateCopy);
-                    break;
                 default:
                     console.log('No default');
             }
         }, (error) => {
-            alert('Upload Fail');
-            // Error handling
+            switch (error.code) {
+                case 'storage/canceled':
+                    alert('Upload is cancel')
+                    this.props.closeDrawerafterup()
+                    this.props.btncancel()
+            }
             console.log(error);
             var stateCopy = Object.assign({}, this.state);
             this.setState(stateCopy);
@@ -188,7 +188,7 @@ class UploadForm extends Component {
                     namepic: originalName,
                     userUP: user.email,
                     timestamp: new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(new Date())
-                                
+
                 }
 
                 const databaseRef = fire.database().ref('/Marker');
