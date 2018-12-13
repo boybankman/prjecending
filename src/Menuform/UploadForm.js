@@ -286,13 +286,12 @@ class UploadForm extends Component {
 
 
 
-                                    {fileObj.progressPercent}
+                                
 
                                     <br />
                                     <br />
-                                    {/* <progress value={fileObj.progressPercent} max="100"></progress>&nbsp; &nbsp;{fileObj.progressPercent}% */}
-
-
+                                    <progress value={fileObj.progressPercent} max="100"></progress>&nbsp; &nbsp;{fileObj.progressPercent}%
+                                        <br/>
                                     <Popup trigger={<button className="button"> <img src={IconCancel} className="IconCancel" alt="Icon" height="10" weight="10" /> </button>} modal>
                                         {close => (
                                             <div className="Dmodal">

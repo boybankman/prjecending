@@ -32,6 +32,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CardContent from '@material-ui/core/CardContent';
 import ListMarker from '../Menuform/ListMarker';
+import ListMarkerForAdmin from '../Menuform/ListMarkerForAdmin';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -40,7 +41,7 @@ import Radio from '@material-ui/core/Radio';
 import FormLabel from '@material-ui/core/FormLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@material-ui/core/Avatar';
-
+import './Formup.css'
 
 
 
@@ -189,7 +190,7 @@ class PersistentDrawerLeft extends React.Component {
             showFiltermark: [],
             delOpen: false,
             sortMKT: 'date',
-            
+            adminUser: "admin1234@gmail.com"
         }
     }
     componentWillMount() {
@@ -476,7 +477,7 @@ class PersistentDrawerLeft extends React.Component {
     }
 
     renderDrawerPage = () => {
-        const { drawerPage, selectedMarker, slatlong, delMarker, user } = this.state
+        const { drawerPage, selectedMarker, slatlong, delMarker, user,adminUser } = this.state
         const { classes, keym } = this.props
         switch (drawerPage) {
             case 'information':
@@ -513,7 +514,7 @@ class PersistentDrawerLeft extends React.Component {
                                     onClose={this.handleModalClose}
                                 >
                                     <div style={getModalStyle()} className={classes.paper}>
-                                       
+
                                         <CardHeader
                                             title={selectedMarker.userUP}
                                             subheader={selectedMarker.timestamp}
@@ -575,12 +576,22 @@ class PersistentDrawerLeft extends React.Component {
                         </RadioGroup>
                     </FormGroup> <br />
                     <Divider /><br />
-                    <ListMarker
-                        gotoMarker={this.gotoMarker}
-                        removeMarker={this.removeMarker}
-                        handleOpenDel={this.handleOpenDel}
-                        {...this.state}
-                    />
+                    {user.email === adminUser ?
+                        <ListMarkerForAdmin
+                            gotoMarker={this.gotoMarker}
+                            removeMarker={this.removeMarker}
+                            handleOpenDel={this.handleOpenDel}
+                            {...this.state}
+                        />
+                        :
+                        <ListMarker
+                            gotoMarker={this.gotoMarker}
+                            removeMarker={this.removeMarker}
+                            handleOpenDel={this.handleOpenDel}
+                            {...this.state}
+                        />
+                    }
+
 
                     <Modal
                         aria-labelledby="simple-modal-title"
@@ -590,8 +601,8 @@ class PersistentDrawerLeft extends React.Component {
                     >
                         <div style={getModalStyle()} className={classes.paperRegister}>
                             <p>Do you want to delete this mark?</p>
-                            <Button type="submit" onClick={() => { this.removeMarker(delMarker) }} variant="outlined" >Send</Button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleClosedel} variant="outlined" >Back</Button>
+                            <Button type="submit" onClick={() => { this.removeMarker(delMarker) }} variant="outlined" >YES</Button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleClosedel} variant="outlined" >Cancel</Button>
                             <br /> <br />
 
                         </div></Modal>
