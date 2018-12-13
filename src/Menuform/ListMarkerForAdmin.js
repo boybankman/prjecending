@@ -63,8 +63,8 @@ class ListMarkerForAdmin extends Component {
                     >
 
 
-                        <Grid item xs zeroMinWidth >
-                            <Typography noWrap><ListItemText primary={marker.name} /></Typography>
+                          <Grid item xs={9}>
+                            <Typography noWrap>{marker.name}</Typography>
                         </Grid>
 
 

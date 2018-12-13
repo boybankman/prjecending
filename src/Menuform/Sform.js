@@ -46,7 +46,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@material-ui/core/Avatar';
 
-
+import Card from '@material-ui/core/Card';
 
 
 const drawerWidth = 300;
@@ -165,6 +165,12 @@ const styles = theme => ({
     },
     demo: {
         backgroundColor: theme.palette.background.paper,
+    },
+    textField: {
+        width: 700,
+        height: 200,
+      
+        
     },
     title: {
         margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`,
@@ -499,59 +505,68 @@ class PersistentDrawerLeft extends React.Component {
                         />
                         :
                         <List >
-                            <Chip
-                                icon={<FaceIcon />}
-                                label={selectedMarker.name}
-                                className={classes.chip}
-                                color="secondary"
-                            />
+                            <Card className={classes.card}>
+                                <Chip
+                                    icon={<FaceIcon />}
+                                    label={selectedMarker.name}
+                                    className={classes.chip}
+                                    color="secondary"
+                                />
 
-                            {/* <u>Name</u>: {selectedMarker.name}<br /> */}
-                            {/* <u>Lat</u>: {selectedMarker.getPosition().lat()}<br />
+                                {/* <u>Name</u>: {selectedMarker.name}<br /> */}
+                                {/* <u>Lat</u>: {selectedMarker.getPosition().lat()}<br />
                             <u>Lng</u>: {selectedMarker.getPosition().lng()}<br />
                             <u>Descriptions</u>: {selectedMarker.desc}<br /><br />
                             {selectedMarker.key}<br/> */}
 
 
-                            <div className="Dmodal">
-                                <br />
-                                <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" /><br /><br />
+                                <div className="Dmodal">
+                                    <br />
+                                    <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" /><br /><br />
 
-                                <Button variant="contained" color="primary" onClick={this.handleModalOpen}>Information</Button>
-                                <Modal
+                                    <Button variant="contained" color="primary" onClick={this.handleModalOpen}>Information</Button>
+                                    <Modal
 
-                                    aria-labelledby="simple-modal-title"
-                                    aria-describedby="simple-modal-description"
-                                    open={this.state.modalOpen}
-                                    onClose={this.handleModalClose}
-                                >
-                                    <div style={getModalStyle()} className={classes.paper}>
+                                        aria-labelledby="simple-modal-title"
+                                        aria-describedby="simple-modal-description"
+                                        open={this.state.modalOpen}
+                                        onClose={this.handleModalClose}
+                                    >
+                                        <div style={getModalStyle()} className={classes.paper}>
 
-                                        <CardHeader
-                                            title={selectedMarker.userUP}
-                                            subheader={selectedMarker.timestamp}
-                                        />
+                                            <CardHeader
+                                                title={selectedMarker.userUP}
+                                                subheader={selectedMarker.timestamp}
+                                            />
 
-                                        <CardMedia
-                                            className={classes.media}
-                                            image={selectedMarker.pic}
+                                            <CardMedia
+                                                className={classes.media}
+                                                image={selectedMarker.pic}
 
-                                        />
-                                        <CardContent>
-                                            <Typography component="p">
-                                                Description : {selectedMarker.desc}
-                                            </Typography>
-                                        </CardContent>
+                                            />
+                                            <CardContent>
+                                                <TextField
+                                                    id="filled-multiline-static"
+                                                    
+                                                    multiline
+                                                    rows="4"
+                                                    defaultValue={selectedMarker.desc}
+                                                    className={classes.textField}
+                                                    margin="normal"
+                                                    variant="filled"
+                                                    disabled= {true}
+                                                />
+                                            </CardContent>
 
-                                    </div>
-                                </Modal>
-                                <br /> <br />
-                                <Button variant="contained" color="secondary" className={classes.button} onClick={this.backToMenu}>
-                                    Back
+                                        </div>
+                                    </Modal>
+                                    <br /> <br />
+                                    <Button variant="contained" color="secondary" className={classes.button} onClick={this.backToMenu}>
+                                        Back
                                 </Button>
 
-                            </div>
-
+                                </div>
+                            </Card>
 
                         </List>
                 )

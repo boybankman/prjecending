@@ -253,6 +253,7 @@ class UploadForm extends Component {
                         value={this.state.fname}
                         onChange={this.handleChange}
                         margin="normal"
+                        maxlength="30"
                     />
                     <form onSubmit={this.uploadSubmit}>
                         <div class="inpc">
