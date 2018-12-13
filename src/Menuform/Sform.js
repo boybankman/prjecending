@@ -32,6 +32,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CardContent from '@material-ui/core/CardContent';
 import ListMarker from '../Menuform/ListMarker';
+import SearchBox from '../Menuform/SearchBox';
 import ListMarkerForAdmin from '../Menuform/ListMarkerForAdmin';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -44,7 +45,7 @@ import DoneIcon from '@material-ui/icons/Done';
 import FormLabel from '@material-ui/core/FormLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@material-ui/core/Avatar';
-import './Formup.css'
+
 
 
 
@@ -481,7 +482,7 @@ class PersistentDrawerLeft extends React.Component {
     }
 
     renderDrawerPage = () => {
-        const { drawerPage, selectedMarker, slatlong, delMarker, user,adminUser } = this.state
+        const { drawerPage, selectedMarker, slatlong, delMarker, user, adminUser } = this.state
         const { classes, keym } = this.props
         switch (drawerPage) {
             case 'information':
@@ -557,14 +558,14 @@ class PersistentDrawerLeft extends React.Component {
             case 'homePage': return (
                 <div>
 
-                    <br/>
+                    <br />
                     <Chip
                         label={this.state.user.email}
                         className={classes.chip}
                         color="primary"
                     />
-                    <br/><br/>
-                    
+                    <br /><br />
+
                     {<Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>}      <br />
 
                     <FormGroup
@@ -773,7 +774,7 @@ class PersistentDrawerLeft extends React.Component {
                     {/* <div className={classes.drawerHeader} /> */}
                     <Map    {...this.state}>
 
-
+                        <SearchBox />
                         <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.btnmarker} >Add marker</Button>
                     </Map>
                 </main>
