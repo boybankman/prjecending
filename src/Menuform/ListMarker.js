@@ -23,7 +23,7 @@ import Location from '@material-ui/icons/LocationOn';
 import Popup from "reactjs-popup";
 import Grid from '@material-ui/core/Grid';
 const styles = theme => ({
-    
+
     button: {
         margin: theme.spacing.unit,
     },
@@ -76,8 +76,11 @@ class ListMarker extends Component {
                     >
 
 
-                        <Grid item xs zeroMinWidth >
-                            <Typography noWrap><ListItemText primary={marker.name} /></Typography>
+                        {/* <Grid item xs zeroMinWidth >
+                            <Typography noWrap><ListItemText primary={} /></Typography>
+                        </Grid> */}
+                        <Grid item xs={9}>
+                            <Typography noWrap>{marker.name}</Typography>
                         </Grid>
 
 

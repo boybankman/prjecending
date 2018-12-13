@@ -38,6 +38,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
+import Chip from '@material-ui/core/Chip';
+import FaceIcon from '@material-ui/icons/Face';
+import DoneIcon from '@material-ui/icons/Done';
 import FormLabel from '@material-ui/core/FormLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@material-ui/core/Avatar';
@@ -425,7 +428,8 @@ class PersistentDrawerLeft extends React.Component {
     addMarkerListener = (marker) => {
         var self = this
         var infowindow = new window.google.maps.InfoWindow({
-            content: `${marker.name}<br/><img src=${marker.pic} width=100 height=100/>`
+
+            content: `ชื่อ : ${marker.name}<br/><img src=${marker.pic} width=100 height=100/>`
         })
         window.google.maps.event.addListener(marker, 'click', function (event) {
             self.setSelectedMarker(marker)
@@ -449,7 +453,7 @@ class PersistentDrawerLeft extends React.Component {
         bounds.extend({ lat: m.position.lat(), lng: m.position.lng() })
         window.map.fitBounds(bounds)
         var infowindow = new window.google.maps.InfoWindow({
-            content: `${m.name}<br/><img src=${m.pic} width=100 height=100/>`
+            content: `ชื่อ : ${m.name}<br/><img src=${m.pic} width=100 height=100/>`
         })
         infowindow.open(m.get('map'), m);
     }
@@ -494,8 +498,14 @@ class PersistentDrawerLeft extends React.Component {
                         />
                         :
                         <List >
+                            <Chip
+                                icon={<FaceIcon />}
+                                label={selectedMarker.name}
+                                className={classes.chip}
+                                color="secondary"
+                            />
 
-                            <u>Name</u>: {selectedMarker.name}<br />
+                            {/* <u>Name</u>: {selectedMarker.name}<br /> */}
                             {/* <u>Lat</u>: {selectedMarker.getPosition().lat()}<br />
                             <u>Lng</u>: {selectedMarker.getPosition().lng()}<br />
                             <u>Descriptions</u>: {selectedMarker.desc}<br /><br />
@@ -503,6 +513,7 @@ class PersistentDrawerLeft extends React.Component {
 
 
                             <div className="Dmodal">
+                                <br />
                                 <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" /><br /><br />
 
                                 <Button variant="contained" color="primary" onClick={this.handleModalOpen}>Information</Button>
@@ -546,9 +557,14 @@ class PersistentDrawerLeft extends React.Component {
             case 'homePage': return (
                 <div>
 
-                    <br />
-
-                    <p className="sansserif">{this.state.user.email}</p>
+                    <br/>
+                    <Chip
+                        label={this.state.user.email}
+                        className={classes.chip}
+                        color="primary"
+                    />
+                    <br/><br/>
+                    
                     {<Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>}      <br />
 
                     <FormGroup
@@ -602,7 +618,7 @@ class PersistentDrawerLeft extends React.Component {
                         <div style={getModalStyle()} className={classes.paperRegister}>
                             <p>Do you want to delete this mark?</p>
                             <Button type="submit" onClick={() => { this.removeMarker(delMarker) }} variant="outlined" >YES</Button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleClosedel} variant="outlined" >Cancel</Button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleClosedel} variant="outlined" >CANCEL</Button>
                             <br /> <br />
 
                         </div></Modal>
