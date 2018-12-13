@@ -22,7 +22,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Location from '@material-ui/icons/LocationOn';
 import Popup from "reactjs-popup";
 const styles = theme => ({
-
+    
     button: {
         margin: theme.spacing.unit,
     },
@@ -73,7 +73,7 @@ class ListMarker extends Component {
                         button
                         onClick={() => this.props.gotoMarker(marker)}
                     >
-                        <ListItemText primary={marker.name} />
+                        <ListItemText  primary={marker.name} />
                         <ListItemSecondaryAction>
                             <IconButton aria-label="Location">
                                 <Location
