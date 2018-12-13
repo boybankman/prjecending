@@ -136,10 +136,12 @@ const styles = theme => ({
     },
     card: {
         maxWidth: 800,
+        overflow: 'flex'
     },
     media: {
         height: 0,
-        paddingTop: '100%', // 16:9
+        paddingTop: '56.25%', // 16:9
+
     },
     actions: {
         display: 'flex',
@@ -169,8 +171,8 @@ const styles = theme => ({
     textField: {
         width: 700,
         height: 200,
-      
-        
+
+
     },
     title: {
         margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`,
@@ -463,6 +465,8 @@ class PersistentDrawerLeft extends React.Component {
             content: `ชื่อ : ${m.name}<br/><img src=${m.pic} width=100 height=100/>`
         })
         infowindow.open(m.get('map'), m);
+        this.setSelectedMarker(m)
+        this.setState({ open: true, drawerPage: 'information' })
     }
     removeMarker = (m) => {
 
@@ -505,68 +509,71 @@ class PersistentDrawerLeft extends React.Component {
                         />
                         :
                         <List >
-                            <Card className={classes.card}>
-                                <Chip
-                                    icon={<FaceIcon />}
-                                    label={selectedMarker.name}
-                                    className={classes.chip}
-                                    color="secondary"
-                                />
 
-                                {/* <u>Name</u>: {selectedMarker.name}<br /> */}
-                                {/* <u>Lat</u>: {selectedMarker.getPosition().lat()}<br />
+                            <Chip
+                                icon={<FaceIcon />}
+                                label={selectedMarker.name}
+                                className={classes.chip}
+                                color="secondary"
+                            />
+
+                            {/* <u>Name</u>: {selectedMarker.name}<br /> */}
+                            {/* <u>Lat</u>: {selectedMarker.getPosition().lat()}<br />
                             <u>Lng</u>: {selectedMarker.getPosition().lng()}<br />
                             <u>Descriptions</u>: {selectedMarker.desc}<br /><br />
                             {selectedMarker.key}<br/> */}
 
 
-                                <div className="Dmodal">
-                                    <br />
-                                    <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" /><br /><br />
+                            <div className="Dmodal">
+                                <br />
+                                <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" /><br /><br />
 
-                                    <Button variant="contained" color="primary" onClick={this.handleModalOpen}>Information</Button>
-                                    <Modal
+                                <Button variant="contained" color="primary" onClick={this.handleModalOpen}>Information</Button>
+                                <Modal
 
-                                        aria-labelledby="simple-modal-title"
-                                        aria-describedby="simple-modal-description"
-                                        open={this.state.modalOpen}
-                                        onClose={this.handleModalClose}
-                                    >
-                                        <div style={getModalStyle()} className={classes.paper}>
-
+                                    aria-labelledby="simple-modal-title"
+                                    aria-describedby="simple-modal-description"
+                                    open={this.state.modalOpen}
+                                    onClose={this.handleModalClose}
+                                >
+                                    <div style={getModalStyle()} className={classes.paper}>
+                                        <Card className={classes.card}>
                                             <CardHeader
                                                 title={selectedMarker.userUP}
                                                 subheader={selectedMarker.timestamp}
                                             />
 
                                             <CardMedia
+                                            
                                                 className={classes.media}
                                                 image={selectedMarker.pic}
 
                                             />
                                             <CardContent>
+
                                                 <TextField
                                                     id="filled-multiline-static"
-                                                    
+                                                    label="Description :"
                                                     multiline
                                                     rows="4"
                                                     defaultValue={selectedMarker.desc}
                                                     className={classes.textField}
                                                     margin="normal"
                                                     variant="filled"
-                                                    disabled= {true}
+                                                    disabled={true}
                                                 />
                                             </CardContent>
+                                        </Card>
+                                    </div>
 
-                                        </div>
-                                    </Modal>
-                                    <br /> <br />
-                                    <Button variant="contained" color="secondary" className={classes.button} onClick={this.backToMenu}>
-                                        Back
+                                </Modal>
+                                <br /> <br />
+                                <Button variant="contained" color="secondary" className={classes.button} onClick={this.backToMenu}>
+                                    Back
                                 </Button>
 
-                                </div>
-                            </Card>
+                            </div>
+
 
                         </List>
                 )
