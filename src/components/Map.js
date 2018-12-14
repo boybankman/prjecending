@@ -29,6 +29,7 @@ class Map extends Component {
         this.setState({
             isLoad: true
         })
+        
     }
 
 

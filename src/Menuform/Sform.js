@@ -42,6 +42,7 @@ import FaceIcon from '@material-ui/icons/Face';
 import DoneIcon from '@material-ui/icons/Done';
 import FormLabel from '@material-ui/core/FormLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
+import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 
 
@@ -133,11 +134,13 @@ const styles = theme => ({
         padding: theme.spacing.unit * 4,
     },
     card: {
-        maxWidth: 800,
+        maxWidth: 500,
     },
     media: {
+
         height: 0,
         paddingTop: '100%', // 16:9
+
     },
     actions: {
         display: 'flex',
@@ -205,11 +208,19 @@ class PersistentDrawerLeft extends React.Component {
         });
         this.getMarker()
     }
+    componentDidMount() {
+        setTimeout(() => {
+            this.markerCluster = new window.MarkerClusterer(window.map, [],
+                { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' })
+        }, 1000);
+
+    }
     getMarker() {
         var self = this
         const dataref = firebase.database().ref('Marker')
         dataref.on('value', (snapshot) => {
             let marks = [];
+            this.markerCluster.clearMarkers()
             snapshot.forEach(function (childSnapshot) {
                 marks.push({
                     key: childSnapshot.key,
@@ -243,8 +254,7 @@ class PersistentDrawerLeft extends React.Component {
                 //window.markerCluster.addMarker(marker)
                 return marker
             })
-            var markerCluster = new window.MarkerClusterer(window.map, marcus,
-                { imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m' })
+            this.markerCluster.addMarkers(marcus)
             this.setState({ marks, marcus }, () => { this.filterShowMarker() });
         })
     }
@@ -371,13 +381,12 @@ class PersistentDrawerLeft extends React.Component {
 
     btncancel = () => {
         const { selectedMarker } = this.state
-        selectedMarker.setMap(null)
+        this.markerCluster.removeMarker(selectedMarker)
         this.setState({ open: false, isAddMarkerClickAble: false })
     }
     closeDrawerafterup = () => {
+        //this.markerCluster.clearMarkers()
         this.setState({ open: true, isAddMarkerClickAble: false, drawerPage: 'homePage' })
-        const { selectedMarker, marcus } = this.state
-        selectedMarker.setOptions({ source: 'server', })
     }
     backToMenu = () => {
         var self = this
@@ -411,9 +420,9 @@ class PersistentDrawerLeft extends React.Component {
                 clickable: true,
                 draggable: false,
                 source: 'local',
-                map: window.map
+                //map: window.map
             })
-            // window.markerCluster.addMarker(marker)
+            self.markerCluster.addMarker(marker)
             self.addMarkerListener(marker)
             self.setSelectedMarker(marker)
             self.setState({ slatlong: event.latLng, open: true, drawerPage: 'information', isAddMarkerClickAble: true })
@@ -458,7 +467,8 @@ class PersistentDrawerLeft extends React.Component {
     }
     removeMarker = (m) => {
 
-        m.setMap(null);
+        //this.markerCluster.clearMarker()
+        
         (console.log(m.namepic))
         const storageRef = firebase.storage().ref(`images/${m.namepic}`);
         storageRef.delete().then(() => {
@@ -476,6 +486,7 @@ class PersistentDrawerLeft extends React.Component {
                 console.log("Delete data error : ", error.message);
             });
         this.setState({ delOpen: false })
+        window.map.setZoom(7);
 
     }
 
@@ -528,16 +539,17 @@ class PersistentDrawerLeft extends React.Component {
                                             title={selectedMarker.userUP}
                                             subheader={selectedMarker.timestamp}
                                         />
+                                        <div style={{ width: 400, height: 400 }}>
+                                            <CardMedia
+                                                className={classes.media}
+                                                image={selectedMarker.pic}
+                                            />
+                                        </div>
 
-                                        <CardMedia
-                                            className={classes.media}
-                                            image={selectedMarker.pic}
-
-                                        />
                                         <CardContent>
-                                            <Typography component="p">
-                                                Description : {selectedMarker.desc}
-                                            </Typography>
+                                            <Grid item xs={6}>
+                                                <Typography>Description : {selectedMarker.desc}</Typography>
+                                            </Grid>
                                         </CardContent>
 
                                     </div>
@@ -555,14 +567,14 @@ class PersistentDrawerLeft extends React.Component {
             case 'homePage': return (
                 <div>
 
-                    <br/>
+                    <br />
                     <Chip
                         label={this.state.user.email}
                         className={classes.chip}
                         color="primary"
                     />
-                    <br/><br/>
-                    
+                    <br /><br />
+
                     {<Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>}      <br />
 
                     <FormGroup

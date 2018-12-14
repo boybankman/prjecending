@@ -39,7 +39,7 @@ class App extends Component {
           {...this.state}
         >
 
-        
+
 
         </Sform>
       </div>
@@ -63,6 +63,7 @@ function new_script(src) {
   })
 };
 // Promise Interface can ensure load the script only once
- new_script('https://maps.googleapis.com/maps/api/js?&libraries=geometry,drawing,places,visualization&key=&callback=initMap');
- new_script('https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js')
- 
+new_script('https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js')
+new_script('https://maps.googleapis.com/maps/api/js?&libraries=geometry,drawing,places,visualization&key=&callback=initMap');
+
+
