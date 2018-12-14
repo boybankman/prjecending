@@ -139,11 +139,6 @@ class UploadForm extends Component {
                     console.log('Upload is running');
                     this.setState(stateCopy);
                     break;
-                case fire.storage.TaskState.CANCELED:
-                    console.log('test')
-                    delete stateCopy.uploadFilesObj[fileObjKey];
-                    this.setState(stateCopy);
-                    break;
                 default:
                     console.log('No default');
             }
@@ -155,6 +150,8 @@ class UploadForm extends Component {
 
                 case 'storage/canceled':
                     console.log('Canceled')
+                    this.props.closeDrawerafterup()
+                    this.props.btncancel()
                     break;
 
                 case 'storage/unknown':
@@ -256,6 +253,7 @@ class UploadForm extends Component {
                         value={this.state.fname}
                         onChange={this.handleChange}
                         margin="normal"
+                        maxlength="30"
                     />
                     <form onSubmit={this.uploadSubmit}>
                         <div class="inpc">
@@ -289,13 +287,12 @@ class UploadForm extends Component {
 
 
 
-                                    {fileObj.progressPercent}
+                                
 
                                     <br />
                                     <br />
-                                    {/* <progress value={fileObj.progressPercent} max="100"></progress>&nbsp; &nbsp;{fileObj.progressPercent}% */}
-
-
+                                    <progress value={fileObj.progressPercent} max="100"></progress>&nbsp; &nbsp;{fileObj.progressPercent}%
+                                        <br/>
                                     <Popup trigger={<button className="button"> <img src={IconCancel} className="IconCancel" alt="Icon" height="10" weight="10" /> </button>} modal>
                                         {close => (
                                             <div className="Dmodal">

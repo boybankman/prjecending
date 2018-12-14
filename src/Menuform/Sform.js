@@ -32,6 +32,8 @@ import CardHeader from '@material-ui/core/CardHeader';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import CardContent from '@material-ui/core/CardContent';
 import ListMarker from '../Menuform/ListMarker';
+import SearchBox from '../Menuform/SearchBox';
+import ListMarkerForAdmin from '../Menuform/ListMarkerForAdmin';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -45,7 +47,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 
-
+import Card from '@material-ui/core/Card';
 
 
 const drawerWidth = 300;
@@ -167,6 +169,12 @@ const styles = theme => ({
     demo: {
         backgroundColor: theme.palette.background.paper,
     },
+    textField: {
+        width: 700,
+        height: 200,
+
+
+    },
     title: {
         margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`,
     },
@@ -195,7 +203,7 @@ class PersistentDrawerLeft extends React.Component {
             showFiltermark: [],
             delOpen: false,
             sortMKT: 'date',
-
+            adminUser: "admin1234@gmail.com"
         }
     }
     componentWillMount() {
@@ -464,6 +472,8 @@ class PersistentDrawerLeft extends React.Component {
             content: `ชื่อ : ${m.name}<br/><img src=${m.pic} width=100 height=100/>`
         })
         infowindow.open(m.get('map'), m);
+        this.setSelectedMarker(m)
+        this.setState({ open: true, drawerPage: 'information' })
     }
     removeMarker = (m) => {
 
@@ -491,7 +501,7 @@ class PersistentDrawerLeft extends React.Component {
     }
 
     renderDrawerPage = () => {
-        const { drawerPage, selectedMarker, slatlong, delMarker, user } = this.state
+        const { drawerPage, selectedMarker, slatlong, delMarker, user, adminUser } = this.state
         const { classes, keym } = this.props
         switch (drawerPage) {
             case 'information':
@@ -504,9 +514,11 @@ class PersistentDrawerLeft extends React.Component {
                             btncancel={this.btncancel}
                             slatlong={slatlong}
                             drawerPage={drawerPage}
+                            removeMarker={this.removeMarker}
                         />
                         :
                         <List >
+
                             <Chip
                                 icon={<FaceIcon />}
                                 label={selectedMarker.name}
@@ -534,25 +546,34 @@ class PersistentDrawerLeft extends React.Component {
                                     onClose={this.handleModalClose}
                                 >
                                     <div style={getModalStyle()} className={classes.paper}>
+                                        <Card className={classes.card}>
+                                            <CardHeader
+                                                title={selectedMarker.userUP}
+                                                subheader={selectedMarker.timestamp}
+                                            />
 
-                                        <CardHeader
-                                            title={selectedMarker.userUP}
-                                            subheader={selectedMarker.timestamp}
-                                        />
-                                        <div style={{ width: 400, height: 400 }}>
                                             <CardMedia
+                                            
                                                 className={classes.media}
                                                 image={selectedMarker.pic}
+
                                             />
-                                        </div>
-
-                                        <CardContent>
-                                            <Grid item xs={6}>
-                                                <Typography>Description : {selectedMarker.desc}</Typography>
-                                            </Grid>
-                                        </CardContent>
-
+                                            <CardContent>
+                                                <TextField
+                                                    id="filled-multiline-static"
+                                                    label="Description :"
+                                                    multiline
+                                                    rows="4"
+                                                    defaultValue={selectedMarker.desc}
+                                                    className={classes.textField}
+                                                    margin="normal"
+                                                    variant="filled"
+                                                    disabled={true}
+                                                />
+                                            </CardContent>
+                                        </Card>
                                     </div>
+
                                 </Modal>
                                 <br /> <br />
                                 <Button variant="contained" color="secondary" className={classes.button} onClick={this.backToMenu}>
@@ -602,12 +623,22 @@ class PersistentDrawerLeft extends React.Component {
                         </RadioGroup>
                     </FormGroup> <br />
                     <Divider /><br />
-                    <ListMarker
-                        gotoMarker={this.gotoMarker}
-                        removeMarker={this.removeMarker}
-                        handleOpenDel={this.handleOpenDel}
-                        {...this.state}
-                    />
+                    {user.email === adminUser ?
+                        <ListMarkerForAdmin
+                            gotoMarker={this.gotoMarker}
+                            removeMarker={this.removeMarker}
+                            handleOpenDel={this.handleOpenDel}
+                            {...this.state}
+                        />
+                        :
+                        <ListMarker
+                            gotoMarker={this.gotoMarker}
+                            removeMarker={this.removeMarker}
+                            handleOpenDel={this.handleOpenDel}
+                            {...this.state}
+                        />
+                    }
+
 
                     <Modal
                         aria-labelledby="simple-modal-title"
@@ -773,7 +804,7 @@ class PersistentDrawerLeft extends React.Component {
                     {/* <div className={classes.drawerHeader} /> */}
                     <Map    {...this.state}>
 
-
+                        <SearchBox />
                         <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.btnmarker} >Add marker</Button>
                     </Map>
                 </main>
