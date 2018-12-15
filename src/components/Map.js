@@ -29,7 +29,24 @@ class Map extends Component {
         this.setState({
             isLoad: true
         })
-        
+        var infoWindow = new window.google.maps.InfoWindow;
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+
+                infoWindow.setPosition(pos);
+                infoWindow.setContent('คุณอยู่ตรงนี้');
+                infoWindow.open(window.map);
+                window.map.setCenter(pos);
+                setTimeout(function() {
+                    infoWindow.close(window.map)
+                }, 3000);
+            });
+        }
+
     }
 
 

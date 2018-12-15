@@ -46,7 +46,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
-
+import FindLocation from '../Menuform/FindLocation'
 import Card from '@material-ui/core/Card';
 
 
@@ -123,7 +123,7 @@ const styles = theme => ({
     },
     paper: {
         position: 'absolute',
-        width: theme.spacing.unit * 100,
+
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
@@ -131,6 +131,20 @@ const styles = theme => ({
     paperRegister: {
         position: 'absolute',
         width: theme.spacing.unit * 50,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing.unit * 4,
+    },
+    paperDelete: {
+        position: 'absolute',
+        width: theme.spacing.unit * 40,
+        backgroundColor: theme.palette.background.paper,
+        boxShadow: theme.shadows[5],
+        padding: theme.spacing.unit * 4,
+    },
+    paperReset: {
+        position: 'absolute',
+        width: theme.spacing.unit * 45,
         backgroundColor: theme.palette.background.paper,
         boxShadow: theme.shadows[5],
         padding: theme.spacing.unit * 4,
@@ -403,7 +417,7 @@ class PersistentDrawerLeft extends React.Component {
     }
     registerU = (e) => {
         e.preventDefault()
-        if (this.state.passwordregis == this.state.passwordregis2) {
+        if (this.state.passwordregis === this.state.passwordregis2) {
             firebase.auth().createUserWithEmailAndPassword(this.state.emailregis, this.state.passwordregis).then((u) => {
                 alert('Success!!');
                 this.setState({ emailregis: null, passwordregis: null, passwordregis2: null, registerOpen: false })
@@ -415,8 +429,10 @@ class PersistentDrawerLeft extends React.Component {
         }
     }
     resetPassword = () => {
+        var self = this
         firebase.auth().sendPasswordResetEmail(this.state.emailAddress).then((e) => {
             alert('Please Check in Email')
+            self.handleCloseReset()
         })
     }
     btnmarker = () => {
@@ -478,7 +494,7 @@ class PersistentDrawerLeft extends React.Component {
     removeMarker = (m) => {
 
         //this.markerCluster.clearMarker()
-        
+
         (console.log(m.namepic))
         const storageRef = firebase.storage().ref(`images/${m.namepic}`);
         storageRef.delete().then(() => {
@@ -525,19 +541,19 @@ class PersistentDrawerLeft extends React.Component {
                                 className={classes.chip}
                                 color="secondary"
                             />
-
-                            {/* <u>Name</u>: {selectedMarker.name}<br /> */}
+                            <CardHeader
+                                subheader={selectedMarker.timestamp}
+                            />
                             {/* <u>Lat</u>: {selectedMarker.getPosition().lat()}<br />
                             <u>Lng</u>: {selectedMarker.getPosition().lng()}<br />
-                            <u>Descriptions</u>: {selectedMarker.desc}<br /><br />
+                          
                             {selectedMarker.key}<br/> */}
-
-
                             <div className="Dmodal">
                                 <br />
                                 <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" /><br /><br />
-
-                                <Button variant="contained" color="primary" onClick={this.handleModalOpen}>Information</Button>
+                                <u>Descriptions</u><br /> {selectedMarker.desc}<br /><br />
+                                <Button variant="contained" color="primary" onClick={this.handleModalOpen}>Full Image</Button><br/><br/>
+                                <a href={selectedMarker.pic} target="_blank"><font color="#C7C7C7">Original Image</font></a> 
                                 <Modal
 
                                     aria-labelledby="simple-modal-title"
@@ -546,34 +562,9 @@ class PersistentDrawerLeft extends React.Component {
                                     onClose={this.handleModalClose}
                                 >
                                     <div style={getModalStyle()} className={classes.paper}>
-                                        <Card className={classes.card}>
-                                            <CardHeader
-                                                title={selectedMarker.userUP}
-                                                subheader={selectedMarker.timestamp}
-                                            />
-
-                                            <CardMedia
-                                            
-                                                className={classes.media}
-                                                image={selectedMarker.pic}
-
-                                            />
-                                            <CardContent>
-                                                <TextField
-                                                    id="filled-multiline-static"
-                                                    label="Description :"
-                                                    multiline
-                                                    rows="4"
-                                                    defaultValue={selectedMarker.desc}
-                                                    className={classes.textField}
-                                                    margin="normal"
-                                                    variant="filled"
-                                                    disabled={true}
-                                                />
-                                            </CardContent>
-                                        </Card>
+                                        <img src={selectedMarker.pic} alt="Full Size" width='1200' height='800' mode='fit' />
                                     </div>
-
+                                  
                                 </Modal>
                                 <br /> <br />
                                 <Button variant="contained" color="secondary" className={classes.button} onClick={this.backToMenu}>
@@ -646,10 +637,10 @@ class PersistentDrawerLeft extends React.Component {
                         open={this.state.delOpen}
                         onClose={this.handleClosedel}
                     >
-                        <div style={getModalStyle()} className={classes.paperRegister}>
+                        <div style={getModalStyle()} className={classes.paperDelete}>
                             <p>Do you want to delete this mark?</p>
                             <Button type="submit" onClick={() => { this.removeMarker(delMarker) }} variant="outlined" >YES</Button>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleClosedel} variant="outlined" >CANCEL</Button>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleClosedel} variant="outlined" >CANCEL</Button>
                             <br /> <br />
 
                         </div></Modal>
@@ -786,7 +777,32 @@ class PersistentDrawerLeft extends React.Component {
 
                                     </div></Modal>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Button onClick={this.handleOpenReset} variant="outlined" >Reset</Button>
-                                {/* ******************************************************************************************************************** */}
+                                <Modal
+                                    aria-labelledby="simple-modal-title"
+                                    aria-describedby="simple-modal-description"
+                                    open={this.state.resetOpen}
+                                    onClose={this.handleCloseReset}
+                                >
+
+                                    <div style={getModalStyle()} className={classes.paperReset}>
+
+                                        <p class="headRegis">
+                                            <Typography variant="h4" gutterBottom> ****** Reset ****** </Typography>
+                                        </p>
+                                        <div class="form-group">
+
+                                            <Typography variant="h6" gutterBottom>Email address</Typography>
+
+                                            <TextField value={this.state.emailAddress} onChange={this.handleChange} type="email" name="emailAddress" class="form-control"
+                                                id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+
+                                        </div><br />
+                                      
+                                        <Button type="submit" onClick={this.resetPassword} variant="outlined" >Send</Button>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleCloseReset} variant="outlined" >Cancel</Button>
+                                        <br /> <br />
+
+                                    </div></Modal>
 
                                 &nbsp;&nbsp;&nbsp;&nbsp;
           <br /><br />
@@ -803,7 +819,7 @@ class PersistentDrawerLeft extends React.Component {
                 >
                     {/* <div className={classes.drawerHeader} /> */}
                     <Map    {...this.state}>
-
+                        <FindLocation {...this.state} />
                         <SearchBox />
                         <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.btnmarker} >Add marker</Button>
                     </Map>
