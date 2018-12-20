@@ -544,6 +544,13 @@ class PersistentDrawerLeft extends React.Component {
                             <CardHeader
                                 subheader={selectedMarker.timestamp}
                             />
+                            <u>Upload BY</u><br /> <br />
+                            <Chip
+                                label={selectedMarker.userUP}
+                                className={classes.chip}
+                                color="primary"
+                            />
+                            {/* <u>Upload BY</u><br /> <br /> */}
                             {/* <u>Lat</u>: {selectedMarker.getPosition().lat()}<br />
                             <u>Lng</u>: {selectedMarker.getPosition().lng()}<br />
                           
@@ -552,8 +559,8 @@ class PersistentDrawerLeft extends React.Component {
                                 <br />
                                 <img src={selectedMarker.pic} width='250' height='250' alt="pic64*64" /><br /><br />
                                 <u>Descriptions</u><br /> {selectedMarker.desc}<br /><br />
-                                <Button variant="contained" color="primary" onClick={this.handleModalOpen}>Full Image</Button><br/><br/>
-                                <a href={selectedMarker.pic} target="_blank"><font color="#C7C7C7">Original Image</font></a> 
+                                <Button variant="contained" color="primary" onClick={this.handleModalOpen}>Full Image</Button><br /><br />
+                                <a href={selectedMarker.pic} target="_blank"><font color="#C7C7C7">Original Image</font></a>
                                 <Modal
 
                                     aria-labelledby="simple-modal-title"
@@ -564,7 +571,7 @@ class PersistentDrawerLeft extends React.Component {
                                     <div style={getModalStyle()} className={classes.paper}>
                                         <img src={selectedMarker.pic} alt="Full Size" width='1200' height='800' mode='fit' />
                                     </div>
-                                  
+
                                 </Modal>
                                 <br /> <br />
                                 <Button variant="contained" color="secondary" className={classes.button} onClick={this.backToMenu}>
@@ -797,7 +804,7 @@ class PersistentDrawerLeft extends React.Component {
                                                 id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
 
                                         </div><br />
-                                      
+
                                         <Button type="submit" onClick={this.resetPassword} variant="outlined" >Send</Button>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Button onClick={this.handleCloseReset} variant="outlined" >Cancel</Button>
                                         <br /> <br />
