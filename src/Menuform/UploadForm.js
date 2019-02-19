@@ -10,6 +10,7 @@ import IconCancel from '../IconCancel.png';
 import IconPause from '../IconPause.png';
 import IconPlay from '../IconPlay.png';
 import Popup from "reactjs-popup";
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 var shortid = require('shortid');
 
@@ -247,6 +248,7 @@ class UploadForm extends Component {
                     <TextField
                         type="text"
                         name="fname"
+                        placeholder="*โปรดตั้งชื่อให้เหมาะสม"
                         id="standard-name"
                         label="Name"
                         className={classes.textField}
@@ -266,7 +268,7 @@ class UploadForm extends Component {
                         </div>
                         <br />
                         <textarea rows="10" cols="30" value={this.state.textnName}
-                            onChange={this.handleDescription} type="text" placeholder="เพิ่มข้อมูล" ></textarea><br />
+                            onChange={this.handleDescription} type="text" placeholder="เพิ่มข้อมูลที่สำคัญของพื้นที่ เช่น ที่อยู่ ลักษณะพิ้นที่และข้อมูลที่มีประโยชน์กับการขุดเจาะบาดาลเป็นต้น" ></textarea><br />
                         <br />
                         <Button variant="contained" color="primary" className="loginBtn2 loginBtn--U" type="submit">
                             Upload</Button>
@@ -287,12 +289,15 @@ class UploadForm extends Component {
 
 
 
-                                
 
+
+                                    
+                                    <br />
+                                    {/* <progress value={fileObj.progressPercent} max="100"></progress> */}
+                                    <LinearProgress variant="determinate" value={fileObj.progressPercent} />
+                                    <br />{fileObj.progressPercent}%
                                     <br />
                                     <br />
-                                    <progress value={fileObj.progressPercent} max="100"></progress>&nbsp; &nbsp;{fileObj.progressPercent}%
-                                        <br/>
                                     <Popup trigger={<button className="button"> <img src={IconCancel} className="IconCancel" alt="Icon" height="10" weight="10" /> </button>} modal>
                                         {close => (
                                             <div className="Dmodal">
@@ -315,9 +320,9 @@ class UploadForm extends Component {
                                             </div>
                                         )}</Popup>
 
-                                    <button type="button"><img src={IconPause} className="IconCancel" onClick={() => this.btnPause(key)} alt="Icon" height="10" weight="10" /></button>
+                                    <button type="button"><img src={IconPause}  className="IconCancel" onClick={() => this.btnPause(key)} alt="Icon" height="10" weight="10" /></button>
                                     <button type="button"><img src={IconPlay} className="IconCancel" onClick={() => this.btnPlay(key)} alt="Icon" height="10" weight="10" /></button>
-                                    <p>{fileObj.fileName}</p>
+                                    {/* <p>{fileObj.fileName}</p> */}
                                     <br />
                                 </div>
                             );
