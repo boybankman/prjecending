@@ -7,8 +7,15 @@ import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Cancel from '@material-ui/icons/Cancel';
 import Button from '@material-ui/core/Button';
+import GpsFixed from '@material-ui/icons/GpsFixed';
+import Fab from '@material-ui/core/Fab';
+import PropTypes from 'prop-types';
+const styles = theme => ({
 
-
+  fab: {
+      margin: theme.spacing.unit,
+  }
+})
 
 class FindLocation extends React.PureComponent {
   constructor(props) {
@@ -41,8 +48,16 @@ class FindLocation extends React.PureComponent {
       const { isAddMarkerClickAble } = this.state
     const { classes,user } = this.props
     return (
-        <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={() => {this.btnLocation()}} >My Location</Button>
+        // <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={() => {this.btnLocation()}} ><LocationSearching/></Button>
+        <Fab color="primary" size="small" aria-label="Add" className={classes.fab} onClick={() => {this.btnLocation()}}  >
+        <GpsFixed />
+    </Fab>
     )
   }
 }
-export default FindLocation
+FindLocation.propTypes = {
+  classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles, { withTheme: true })(FindLocation);

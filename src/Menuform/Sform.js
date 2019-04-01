@@ -30,7 +30,7 @@ import red from '@material-ui/core/colors/red';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardHeader from '@material-ui/core/CardHeader';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import CardContent from '@material-ui/core/CardContent';
+import Fab from '@material-ui/core/Fab';
 import ListMarker from '../Menuform/ListMarker';
 import SearchBox from '../Menuform/SearchBox';
 import ListMarkerForAdmin from '../Menuform/ListMarkerForAdmin';
@@ -41,16 +41,12 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Radio from '@material-ui/core/Radio';
 import Chip from '@material-ui/core/Chip';
 import FaceIcon from '@material-ui/icons/Face';
-import DoneIcon from '@material-ui/icons/Done';
-import FormLabel from '@material-ui/core/FormLabel';
-import LockIcon from '@material-ui/icons/LockOutlined';
-import Grid from '@material-ui/core/Grid';
-import Avatar from '@material-ui/core/Avatar';
 import FindLocation from '../Menuform/FindLocation'
-import Card from '@material-ui/core/Card';
 import EyeDropper from 'react-eyedropper'
 import pikaju from '../025.png'
 import pikachu from '../paprika.png'
+import AddIcon from '@material-ui/icons/Add';
+import ShowDetail from '../Menuform/ShowDetail'
 const drawerWidth = 300;
 
 function getModalStyle() {
@@ -63,11 +59,11 @@ function getModalStyle() {
         transform: `translate(-${top}%, -${left}%)`,
     };
 }
-
-
 const styles = theme => ({
 
-
+    fab: {
+        margin: theme.spacing.unit,
+    },
     root: {
         display: 'flex',
     },
@@ -211,7 +207,7 @@ class PersistentDrawerLeft extends React.Component {
             drawerPage: 'homePage',
             isWaitingForUserResult: true,
             selectedMarker: null,
-            center: { lat: 13.7648, lng: 100.5381 },
+            center: { lat: 15.1531125, lng: 104.4433855 },
             marcus: [],
             isAddMarkerClickAble: false,
             myUp: false,
@@ -406,7 +402,7 @@ class PersistentDrawerLeft extends React.Component {
     btncancel = () => {
         const { selectedMarker } = this.state
         this.markerCluster.removeMarker(selectedMarker)
-        this.setState({ open: false, isAddMarkerClickAble: false })
+        this.setState({ open: false, isAddMarkerClickAble: false, drawerPage: 'homePage' })
     }
     closeDrawerafterup = () => {
         //this.markerCluster.clearMarkers()
@@ -439,29 +435,29 @@ class PersistentDrawerLeft extends React.Component {
         })
     }
     ShowOverlay = () => {
-        if(this.state.CheckOverlay === false){
+        if (this.state.CheckOverlay === false) {
             var imageBounds = {
-                north: 16.166301    ,
-                south: 14.214607,
-                east: 105.897751,
-                west: 104.390427
-              };
+                north: 16.105015,
+                south: 14.386233,
+                east: 105.747751,
+                west: 104.379675
+            };
             var historicalOverlay;
             historicalOverlay = new window.google.maps.GroundOverlay(
                 pikachu,
                 imageBounds);
             historicalOverlay.setMap(window.map);
-            this.setState({ imgHide : historicalOverlay,CheckOverlay : true })
-        }else{
+            this.setState({ imgHide: historicalOverlay, CheckOverlay: true })
+        } else {
             this.state.imgHide.setMap(null)
-            this.setState({CheckOverlay : false})
+            this.setState({ CheckOverlay: false })
         }
 
-       
+
     }
     HideOverlay = () => {
-       
-        
+
+
     }
     btnmarker = () => {
 
@@ -860,11 +856,15 @@ class PersistentDrawerLeft extends React.Component {
                 >
                     {/* <div className={classes.drawerHeader} /> */}
                     <Map    {...this.state}>HideOverlay
-                        <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.ShowOverlay} >Show/Hide</Button>
+                        <Button variant="contained" size="medium" color="primary" disabled={user ? isAddMarkerClickAble : true} onClick={this.ShowOverlay} >Show/Hide</Button>
                         {/* <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.HideOverlay} >Hide</Button> */}
-                        <FindLocation {...this.state} />
                         <SearchBox />
-                        <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.btnmarker} >Add marker</Button>
+                        {/* <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.btnmarker} >Add marker</Button> */}
+                        <Fab color="primary" size="small" aria-label="Add" className={classes.fab} disabled={user ? isAddMarkerClickAble : true} onClick={this.btnmarker} >
+                            <AddIcon />
+                        </Fab>
+                        <FindLocation {...this.state} />
+                        <ShowDetail />
                     </Map>
                 </main>
             </div >

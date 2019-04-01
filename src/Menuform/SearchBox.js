@@ -6,8 +6,9 @@ import classNames from 'classnames';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Cancel from '@material-ui/icons/Cancel';
-
-
+import PropTypes from 'prop-types';
+import Paper from '@material-ui/core/Paper';
+import InputBase from '@material-ui/core/InputBase';
 const styles = theme => ({
   root: {
     display: 'flex',
@@ -22,7 +23,24 @@ const styles = theme => ({
   textField: {
     flexBasis: 200,
   },
-
+  root: {
+    padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'center',
+    width: 400,
+  },
+  input: {
+    marginLeft: 8,
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  },
+  divider: {
+    width: 1,
+    height: 28,
+    margin: 4,
+  },
 });
 
 class SearchBox extends React.PureComponent {
@@ -101,6 +119,19 @@ class SearchBox extends React.PureComponent {
   render() {
     const { classes } = this.props
     return (
+    //   <Paper className={classes.root} elevation={1}>
+    //   <InputBase className={classes.input}  id="pac-input"
+    //     className={classNames(classes.margin, classes.textField)}
+    //     //className={classes.margin}
+    //     type="text"
+    //     variant="outlined"
+    //     placeholder="ค้นหาสถานที่"
+    //     value={this.state.searchText}
+    //     onChange={this.onChange}
+    //     name='searchText'
+    //     margin="normal" />
+    //   <Divider className={classes.divider} />
+    // </Paper>
       <TextField
         id="pac-input"
         className={classNames(classes.margin, classes.textField)}
@@ -131,4 +162,7 @@ class SearchBox extends React.PureComponent {
     )
   }
 }
+SearchBox.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 export default withStyles(styles)(SearchBox)

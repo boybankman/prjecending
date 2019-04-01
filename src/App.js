@@ -64,6 +64,6 @@ function new_script(src) {
 };
 // Promise Interface can ensure load the script only once
 new_script('https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js')
-new_script('https://maps.googleapis.com/maps/api/js?&libraries=geometry,drawing,places,visualization&key=AIzaSyCsfR9JevM9V0tyZ6cjfb1RWSLAvcmr3Ic&callback=initMap');
+new_script('https://maps.googleapis.com/maps/api/js?&libraries=geometry,drawing,places,visualization&key=AIzaSyCCVW7cPKvdEu6HneVzZ5x7COskURXpC2s&callback=initMap');
 
 
