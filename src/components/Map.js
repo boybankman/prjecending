@@ -1,7 +1,7 @@
 //import React from 'react';
 import '../App.css';
 import React, { Component } from 'react';
-
+import pikachu from './paprika.png'
 
 class Map extends Component {
     constructor(props) {
@@ -41,13 +41,24 @@ class Map extends Component {
                 infoWindow.setContent('คุณอยู่ตรงนี้');
                 infoWindow.open(window.map);
                 window.map.setCenter(pos);
-                setTimeout(function() {
+                setTimeout(function () {
                     infoWindow.close(window.map)
                 }, 3000);
             });
         }
-
+        // var imageBounds = {
+        //     north: 16.166301    ,
+        //     south: 14.214607,
+        //     east: 105.897751,
+        //     west: 104.390427
+        //   };
+        // var historicalOverlay;
+        // historicalOverlay = new window.google.maps.GroundOverlay(
+        //     pikachu,
+        //     imageBounds);
+        // historicalOverlay.setMap(window.map);
     }
+   
 
 
 

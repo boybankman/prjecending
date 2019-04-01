@@ -48,8 +48,9 @@ import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
 import FindLocation from '../Menuform/FindLocation'
 import Card from '@material-ui/core/Card';
-
-
+import EyeDropper from 'react-eyedropper'
+import pikaju from '../025.png'
+import pikachu from '../paprika.png'
 const drawerWidth = 300;
 
 function getModalStyle() {
@@ -217,7 +218,8 @@ class PersistentDrawerLeft extends React.Component {
             showFiltermark: [],
             delOpen: false,
             sortMKT: 'date',
-            adminUser: "admin1234@gmail.com"
+            adminUser: "admin1234@gmail.com",
+            CheckOverlay: false
         }
     }
     componentWillMount() {
@@ -417,6 +419,7 @@ class PersistentDrawerLeft extends React.Component {
     }
     registerU = (e) => {
         e.preventDefault()
+        console.log(this.state.passwordregis, this.state.emailregis)
         if (this.state.passwordregis === this.state.passwordregis2) {
             firebase.auth().createUserWithEmailAndPassword(this.state.emailregis, this.state.passwordregis).then((u) => {
                 alert('Success!!');
@@ -434,6 +437,31 @@ class PersistentDrawerLeft extends React.Component {
             alert('Please Check in Email')
             self.handleCloseReset()
         })
+    }
+    ShowOverlay = () => {
+        if(this.state.CheckOverlay === false){
+            var imageBounds = {
+                north: 16.166301    ,
+                south: 14.214607,
+                east: 105.897751,
+                west: 104.390427
+              };
+            var historicalOverlay;
+            historicalOverlay = new window.google.maps.GroundOverlay(
+                pikachu,
+                imageBounds);
+            historicalOverlay.setMap(window.map);
+            this.setState({ imgHide : historicalOverlay,CheckOverlay : true })
+        }else{
+            this.state.imgHide.setMap(null)
+            this.setState({CheckOverlay : false})
+        }
+
+       
+    }
+    HideOverlay = () => {
+       
+        
     }
     btnmarker = () => {
 
@@ -514,6 +542,10 @@ class PersistentDrawerLeft extends React.Component {
         this.setState({ delOpen: false })
         window.map.setZoom(7);
 
+    }
+    setColor = (e) => {
+        //{ r, g, b }
+        console.log(e)
     }
 
     renderDrawerPage = () => {
@@ -619,6 +651,8 @@ class PersistentDrawerLeft extends React.Component {
                             <FormControlLabel value="date" control={<Radio />} label="วันที่" />
                             <FormControlLabel value="name" control={<Radio />} label="ชื่อ" />
                         </RadioGroup>
+                        <EyeDropper initializedColor={this.setColor} />    <br />
+                        <img src={pikaju} />
                     </FormGroup> <br />
                     <Divider /><br />
                     {user.email === adminUser ?
@@ -825,7 +859,9 @@ class PersistentDrawerLeft extends React.Component {
                     })}
                 >
                     {/* <div className={classes.drawerHeader} /> */}
-                    <Map    {...this.state}>
+                    <Map    {...this.state}>HideOverlay
+                        <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.ShowOverlay} >Show/Hide</Button>
+                        {/* <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.HideOverlay} >Hide</Button> */}
                         <FindLocation {...this.state} />
                         <SearchBox />
                         <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.btnmarker} >Add marker</Button>

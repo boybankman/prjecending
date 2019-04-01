@@ -11,6 +11,7 @@
     "popup": "0.0.3",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
+    "react-eyedropper": "0.0.9",
     "react-geocode": "^0.1.2",
     "react-google-autocomplete": "^1.0.18",
     "react-google-maps": "^9.4.5",
