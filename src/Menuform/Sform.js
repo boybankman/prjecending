@@ -856,7 +856,7 @@ class PersistentDrawerLeft extends React.Component {
                 >
                     {/* <div className={classes.drawerHeader} /> */}
                     <Map    {...this.state}>HideOverlay
-                        <Button variant="contained" size="medium" color="primary" disabled={user ? isAddMarkerClickAble : true} onClick={this.ShowOverlay} >Show/Hide</Button>
+                        <Button variant="contained" size="medium" color="primary" onClick={this.ShowOverlay} >Show/Hide</Button>
                         {/* <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.HideOverlay} >Hide</Button> */}
                         <SearchBox />
                         {/* <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.btnmarker} >Add marker</Button> */}

@@ -1,12 +1,12 @@
 import firebase from 'firebase';
 
 const config = {
-  apiKey: "AIzaSyCCVW7cPKvdEu6HneVzZ5x7COskURXpC2s",
-  authDomain: "projectending-6ccb3.firebaseapp.com",
-  databaseURL: "https://projectending-6ccb3.firebaseio.com",
-  projectId: "projectending-6ccb3",
-  storageBucket: "projectending-6ccb3.appspot.com",
-  messagingSenderId: "615153267440"
+  apiKey: "AIzaSyDEowZ7DmGBHbZgxLaKL5vd-geJVu7hcn8",
+  authDomain: "waterresource-112d9.firebaseapp.com",
+  databaseURL: "https://waterresource-112d9.firebaseio.com",
+  projectId: "waterresource-112d9",
+  storageBucket: "waterresource-112d9.appspot.com",
+  messagingSenderId: "517742537472"
 };
 firebase.initializeApp(config);
 export const ref = firebase.database().ref()
