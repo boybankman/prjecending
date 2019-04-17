@@ -44,7 +44,9 @@ import FaceIcon from '@material-ui/icons/Face';
 import FindLocation from '../Menuform/FindLocation'
 import EyeDropper from 'react-eyedropper'
 import pikaju from '../025.png'
-import pikachu from '../paprika.png'
+import mapall from './testAll.png'
+import GeoMap from './testMapG.png'
+import HydroMap from './testmapH.png'
 import AddIcon from '@material-ui/icons/Add';
 import ShowDetail from '../Menuform/ShowDetail'
 const drawerWidth = 300;
@@ -437,14 +439,14 @@ class PersistentDrawerLeft extends React.Component {
     ShowOverlay = () => {
         if (this.state.CheckOverlay === false) {
             var imageBounds = {
-                north: 16.105015,
+                north: 16.107015,
                 south: 14.386233,
                 east: 105.747751,
                 west: 104.379675
             };
             var historicalOverlay;
             historicalOverlay = new window.google.maps.GroundOverlay(
-                pikachu,
+                mapall,
                 imageBounds);
             historicalOverlay.setMap(window.map);
             this.setState({ imgHide: historicalOverlay, CheckOverlay: true })
@@ -455,10 +457,46 @@ class PersistentDrawerLeft extends React.Component {
 
 
     }
-    HideOverlay = () => {
-
+    ShowOverlay2 = () => {
+        if (this.state.CheckOverlay2 === false) {
+            var imageBounds = {
+                north: 16.117015,
+                south: 14.386233,
+                east: 105.747751,
+                west: 104.379675
+            };
+            var historicalOverlay;
+            historicalOverlay = new window.google.maps.GroundOverlay(
+                GeoMap,
+                imageBounds);
+            historicalOverlay.setMap(window.map);
+            this.setState({ imgHide: historicalOverlay, CheckOverlay2: true })
+        } else {
+            this.state.imgHide.setMap(null)
+            this.setState({ CheckOverlay2: false })
+        }
 
     }
+    ShowOverlay3 = () => {
+        if (this.state.CheckOverlay3 === false) {
+            var imageBounds = {
+                north: 16.117015,
+                south: 14.386233,
+                east: 105.747751,
+                west: 104.379675
+            };
+            var historicalOverlay;
+            historicalOverlay = new window.google.maps.GroundOverlay(
+                HydroMap,
+                imageBounds);
+            historicalOverlay.setMap(window.map);
+            this.setState({ imgHide: historicalOverlay, CheckOverlay3: true })
+        } else {
+            this.state.imgHide.setMap(null)
+            this.setState({ CheckOverlay3: false })
+        }   
+        
+            }
     btnmarker = () => {
 
         var self = this
@@ -857,6 +895,8 @@ class PersistentDrawerLeft extends React.Component {
                     {/* <div className={classes.drawerHeader} /> */}
                     <Map    {...this.state}>HideOverlay
                         <Button variant="contained" size="medium" color="primary" onClick={this.ShowOverlay} >Show/Hide</Button>
+                        <Button variant="contained" size="medium" color="primary" onClick={this.ShowOverlay2} >Show/Hide2</Button>
+                        <Button variant="contained" size="medium" color="primary" onClick={this.ShowOverlay3} >Show/Hide3</Button>
                         {/* <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.HideOverlay} >Hide</Button> */}
                         <SearchBox />
                         {/* <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.btnmarker} >Add marker</Button> */}
