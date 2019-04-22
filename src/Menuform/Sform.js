@@ -49,6 +49,9 @@ import GeoMap from './testMapG.png'
 import HydroMap from './testmapH.png'
 import AddIcon from '@material-ui/icons/Add';
 import ShowDetail from '../Menuform/ShowDetail'
+import FormLabel from '@material-ui/core/FormLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
 const drawerWidth = 300;
 
 function getModalStyle() {
@@ -356,6 +359,66 @@ class PersistentDrawerLeft extends React.Component {
         const checked = event.target.checked
         this.setState({ myUp: checked }, () => this.filterShowMarker());
     };
+    handleChangeOverlay1 = (event) => {
+        const checked = event.target.checked
+        console.log("test 1" + checked)
+        if (checked) {
+            var imageBounds = {
+                north: 16.107015,
+                south: 14.386233,
+                east: 105.747751,
+                west: 104.379675
+            };
+            var historicalOverlay;
+            historicalOverlay = new window.google.maps.GroundOverlay(
+                mapall,
+                imageBounds);
+            historicalOverlay.setMap(window.map);
+            this.setState({ imgHide: historicalOverlay })
+        } else {
+            this.state.imgHide.setMap(null)
+        }
+    };
+    handleChangeOverlay2 = (event) => {
+        const checked = event.target.checked
+        if (checked) {
+            var imageBounds = {
+                north: 16.117015,
+                south: 14.386233,
+                east: 105.747751,
+                west: 104.379675
+            };
+            var historicalOverlay;
+            historicalOverlay = new window.google.maps.GroundOverlay(
+                GeoMap,
+                imageBounds);
+            historicalOverlay.setMap(window.map);
+            this.setState({ imgHide2: historicalOverlay})
+        } else {
+            this.state.imgHide2.setMap(null)
+        }
+
+    };
+    handleChangeOverlay3 = (event) => {
+        const checked = event.target.checked
+        if (checked) {
+            var imageBounds = {
+                north: 16.117015,
+                south: 14.386233,
+                east: 105.747751,
+                west: 104.379675
+            };
+            var historicalOverlay;
+            historicalOverlay = new window.google.maps.GroundOverlay(
+                HydroMap,
+                imageBounds);
+            historicalOverlay.setMap(window.map);
+            this.setState({ imgHide3: historicalOverlay})
+        } else {
+            this.state.imgHide3.setMap(null)
+        }
+
+    };
     handleSortList = (event) => {
         this.setState({ sortMKT: event.target.value }, () => this.filterShowMarker());
     };
@@ -436,67 +499,67 @@ class PersistentDrawerLeft extends React.Component {
             self.handleCloseReset()
         })
     }
-    ShowOverlay = () => {
-        if (this.state.CheckOverlay === false) {
-            var imageBounds = {
-                north: 16.107015,
-                south: 14.386233,
-                east: 105.747751,
-                west: 104.379675
-            };
-            var historicalOverlay;
-            historicalOverlay = new window.google.maps.GroundOverlay(
-                mapall,
-                imageBounds);
-            historicalOverlay.setMap(window.map);
-            this.setState({ imgHide: historicalOverlay, CheckOverlay: true })
-        } else {
-            this.state.imgHide.setMap(null)
-            this.setState({ CheckOverlay: false })
-        }
+    // ShowOverlay = () => {
+    //     if (this.state.CheckOverlay === false) {
+    //         var imageBounds = {
+    //             north: 16.107015,
+    //             south: 14.386233,
+    //             east: 105.747751,
+    //             west: 104.379675
+    //         };
+    //         var historicalOverlay;
+    //         historicalOverlay = new window.google.maps.GroundOverlay(
+    //             mapall,
+    //             imageBounds);
+    //         historicalOverlay.setMap(window.map);
+    //         this.setState({ imgHide: historicalOverlay, CheckOverlay: true })
+    //     } else {
+    //         this.state.imgHide.setMap(null)
+    //         this.setState({ CheckOverlay: false })
+    //     }
 
 
-    }
-    ShowOverlay2 = () => {
-        if (this.state.CheckOverlay2 === false) {
-            var imageBounds = {
-                north: 16.117015,
-                south: 14.386233,
-                east: 105.747751,
-                west: 104.379675
-            };
-            var historicalOverlay;
-            historicalOverlay = new window.google.maps.GroundOverlay(
-                GeoMap,
-                imageBounds);
-            historicalOverlay.setMap(window.map);
-            this.setState({ imgHide: historicalOverlay, CheckOverlay2: true })
-        } else {
-            this.state.imgHide.setMap(null)
-            this.setState({ CheckOverlay2: false })
-        }
+    // }
+    // ShowOverlay2 = () => {
+    //     if (this.state.CheckOverlay2 === false) {
+    //         var imageBounds = {
+    //             north: 16.117015,
+    //             south: 14.386233,
+    //             east: 105.747751,
+    //             west: 104.379675
+    //         };
+    //         var historicalOverlay;
+    //         historicalOverlay = new window.google.maps.GroundOverlay(
+    //             GeoMap,
+    //             imageBounds);
+    //         historicalOverlay.setMap(window.map);
+    //         this.setState({ imgHide: historicalOverlay, CheckOverlay2: true })
+    //     } else {
+    //         this.state.imgHide.setMap(null)
+    //         this.setState({ CheckOverlay2: false })
+    //     }
 
-    }
-    ShowOverlay3 = () => {
-        if (this.state.CheckOverlay3 === false) {
-            var imageBounds = {
-                north: 16.117015,
-                south: 14.386233,
-                east: 105.747751,
-                west: 104.379675
-            };
-            var historicalOverlay;
-            historicalOverlay = new window.google.maps.GroundOverlay(
-                HydroMap,
-                imageBounds);
-            historicalOverlay.setMap(window.map);
-            this.setState({ imgHide: historicalOverlay, CheckOverlay3: true })
-        } else {
-            this.state.imgHide.setMap(null)
-            this.setState({ CheckOverlay3: false })
-        }   
-        
-            }
+    // }
+    // ShowOverlay3 = () => {
+    //     if (this.state.CheckOverlay3 === false) {
+    //         var imageBounds = {
+    //             north: 16.117015,
+    //             south: 14.386233,
+    //             east: 105.747751,
+    //             west: 104.379675
+    //         };
+    //         var historicalOverlay;
+    //         historicalOverlay = new window.google.maps.GroundOverlay(
+    //             HydroMap,
+    //             imageBounds);
+    //         historicalOverlay.setMap(window.map);
+    //         this.setState({ imgHide: historicalOverlay, CheckOverlay3: true })
+    //     } else {
+    //         this.state.imgHide.setMap(null)
+    //         this.setState({ CheckOverlay3: false })
+    //     }
+
+    // }
     btnmarker = () => {
 
         var self = this
@@ -660,8 +723,47 @@ class PersistentDrawerLeft extends React.Component {
                     />
                     <br /><br />
 
-                    {<Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>}      <br />
-
+                    {<Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>}      <br /><br />
+                    <Divider /><br />
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">Map Overlay List</FormLabel>
+                        <FormGroup>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={this.state.overlay1}
+                                        onChange={this.handleChangeOverlay1}
+                                        value="overlay1"
+                                    />
+                                }
+                                label="บริเวณที่เหมาะสมการขุดบ่อบาดาล"
+                                labelPlacement="start"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={this.state.overlay2}
+                                        onChange={this.handleChangeOverlay2}
+                                        value="overlay2"
+                                    />
+                                }
+                                label="Geology"
+                                labelPlacement="start"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={this.state.overlay3}
+                                        onChange={this.handleChangeOverlay3}
+                                        value="overlay3"
+                                    />
+                                }
+                                label="Hydrounit"
+                                labelPlacement="start"
+                            />
+                        </FormGroup>
+                    </FormControl>
+                    <Divider /><br />
                     <FormGroup
                         row
                     >
@@ -685,8 +787,8 @@ class PersistentDrawerLeft extends React.Component {
                             <FormControlLabel value="date" control={<Radio />} label="วันที่" />
                             <FormControlLabel value="name" control={<Radio />} label="ชื่อ" />
                         </RadioGroup>
-                        <EyeDropper initializedColor={this.setColor} />    <br />
-                        <img src={pikaju} />
+                        {/* <EyeDropper initial izedColor={this.setColor} />    <br />
+                        <img src={pikaju} /> */}
                     </FormGroup> <br />
                     <Divider /><br />
                     {user.email === adminUser ?
@@ -893,10 +995,10 @@ class PersistentDrawerLeft extends React.Component {
                     })}
                 >
                     {/* <div className={classes.drawerHeader} /> */}
-                    <Map    {...this.state}>HideOverlay
-                        <Button variant="contained" size="medium" color="primary" onClick={this.ShowOverlay} >Show/Hide</Button>
+                    <Map    {...this.state}>
+                        {/* <Button variant="contained" size="medium" color="primary" onClick={this.ShowOverlay} >Show/Hide</Button>
                         <Button variant="contained" size="medium" color="primary" onClick={this.ShowOverlay2} >Show/Hide2</Button>
-                        <Button variant="contained" size="medium" color="primary" onClick={this.ShowOverlay3} >Show/Hide3</Button>
+                        <Button variant="contained" size="medium" color="primary" onClick={this.ShowOverlay3} >Show/Hide3</Button> */}
                         {/* <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.HideOverlay} >Hide</Button> */}
                         <SearchBox />
                         {/* <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.btnmarker} >Add marker</Button> */}
