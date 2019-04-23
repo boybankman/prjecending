@@ -47,8 +47,8 @@ class ShowDetail extends React.Component {
             <div>
                
                 <Dialog
-                    open={this.state.openDetai1}
-                    onClose={this.handleClose}
+                    open={this.props.openDetai3}
+                    onClose={this.props.handleDialogClose3}
                     PaperComponent={PaperComponent}
                     aria-labelledby="draggable-dialog-title"
                 >
@@ -60,7 +60,7 @@ class ShowDetail extends React.Component {
                         <img src={waterScale} />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
+                        <Button onClick={this.props.handleDialogClose3} color="primary">
                             Close
              </Button>
                     </DialogActions>

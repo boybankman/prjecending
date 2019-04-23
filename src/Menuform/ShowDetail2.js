@@ -32,7 +32,7 @@ class ShowDetail extends React.Component {
     };
 
     handleClickOpen = () => {
-        this.setState({ openDetai1: true });
+        this.setState({ openDetai: true });
     };
 
     handleClose = () => {
@@ -45,8 +45,8 @@ class ShowDetail extends React.Component {
             <div>
               
                 <Dialog
-                    open={this.state.openDetai1}
-                    onClose={this.handleClose}
+                    open={this.props.openDetai2}
+                    onClose={this.props.handleDialogClose2}
                     PaperComponent={PaperComponent}
                     aria-labelledby="draggable-dialog-title"
                 >
@@ -58,7 +58,7 @@ class ShowDetail extends React.Component {
                         <img src={waterScale} />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
+                        <Button onClick={this.props.handleDialogClose2} color="primary">
                             Close
              </Button>
                     </DialogActions>

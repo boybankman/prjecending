@@ -686,6 +686,18 @@ class PersistentDrawerLeft extends React.Component {
     handleDialogClose = () => {
         this.setState({openDetai1 : false})
     }
+    handleDialog2 = () => {
+        this.setState({openDetai2 : true})
+    }
+    handleDialogClose2 = () => {
+        this.setState({openDetai2 : false})
+    }
+    handleDialog3  = () => {
+        this.setState({openDetai3 : true})
+    }
+    handleDialogClose3 = () => {
+        this.setState({openDetai3 : false})
+    }
     renderDrawerPage = () => {
         const { drawerPage, selectedMarker, slatlong, delMarker, user, adminUser } = this.state
         const { classes, keym } = this.props
@@ -807,11 +819,14 @@ class PersistentDrawerLeft extends React.Component {
                                 <IconButton
                                     //className={classes.button} 
                                     aria-label="Delete"
-                                    onClick={this.handleClickOpen} >
+                                    onClick={this.handleDialog2} >
                                     <HelpOutline />
                                 </IconButton>
 
-                                <ShowDetail2 />
+                                <ShowDetail2 
+                                openDetai2 = {this.state.openDetai2}
+                                handleDialogClose2 = {this.handleDialogClose2}
+                                />
 
                             </ListItemSecondaryAction>
                         </ListItem>
@@ -828,10 +843,13 @@ class PersistentDrawerLeft extends React.Component {
                                 <IconButton
                                     //className={classes.button} 
                                     aria-label="Delete"
-                                    onClick={this.handleClickOpen} >
+                                    onClick={this.handleDialog3} >
                                     <HelpOutline />
                                 </IconButton>
-                                <ShowDetail3 />
+                                <ShowDetail3 
+                                openDetai3 = {this.state.openDetai3}
+                                handleDialogClose3 = {this.handleDialogClose3}
+                                />
 
                             </ListItemSecondaryAction>
                         </ListItem>
