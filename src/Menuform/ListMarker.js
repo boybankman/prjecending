@@ -85,20 +85,18 @@ class ListMarker extends Component {
 
 
                         <ListItemSecondaryAction>
-                            <IconButton aria-label="Location">
-                                <Location
-                                    onClick={() => this.props.gotoMarker(marker)}
-                                />
+                            <IconButton 
+                            aria-label="Location"
+                            onClick={() => this.props.gotoMarker(marker)}
+                            >
+                                <Location/>
                             </IconButton>
                             {user.email === marker.userUP ?
 
-                                <IconButton aria-label="Delete">
-
-                                    <DeleteForeverIcon
-
-                                        onClick={() => this.props.handleOpenDel(marker)}
-                                    />
-
+                                <IconButton aria-label="Delete"
+                                onClick={() => this.props.handleOpenDel(marker)}
+                                >
+                                    <DeleteForeverIcon/>
                                 </IconButton>
                                 :
                                 null

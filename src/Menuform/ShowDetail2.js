@@ -8,20 +8,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Paper from '@material-ui/core/Paper';
 import Draggable from 'react-draggable';
 import HelpOutline from '@material-ui/icons/HelpOutline';
-import Fab from '@material-ui/core/Fab';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import waterScale from './waterScale.png'
 import IconButton from '@material-ui/core/IconButton';
-
 const styles = theme => ({
 
     fab: {
         margin: theme.spacing.unit,
-    },
-    button: {
-        margin: theme.spacing.unit,
-    },
+    }
 })
 function PaperComponent(props) {
     return (
@@ -32,7 +27,9 @@ function PaperComponent(props) {
 }
 
 class ShowDetail extends React.Component {
-
+    state = {
+        openDetai1: false,
+    };
 
     handleClickOpen = () => {
         this.setState({ openDetai1: true });
@@ -46,10 +43,10 @@ class ShowDetail extends React.Component {
         const { classes } = this.props
         return (
             <div>
-         
+              
                 <Dialog
-                    open={this.props.openDetai1}
-                    onClose={this.props.handleDialogClose}
+                    open={this.state.openDetai1}
+                    onClose={this.handleClose}
                     PaperComponent={PaperComponent}
                     aria-labelledby="draggable-dialog-title"
                 >
@@ -57,18 +54,16 @@ class ShowDetail extends React.Component {
                     <DialogContent>
                         <DialogContentText>
                             ระดับของสีในแมพเป็นการแสดงพื้นที่ที่มีความเหมาะสมสำหรับการเลือกขุดเจาะบ่อน้ำบาดาล วัดจาก..... มาคำนวณหาความเหมาะสม
-                </DialogContentText>
+            </DialogContentText>
                         <img src={waterScale} />
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.props.handleDialogClose} color="primary">
+                        <Button onClick={this.handleClose} color="primary">
                             Close
-                 </Button>
+             </Button>
                     </DialogActions>
                 </Dialog>
             </div>
-
-
         );
     }
 }

@@ -49,9 +49,14 @@ import GeoMap from './testMapG.png'
 import HydroMap from './testmapH.png'
 import AddIcon from '@material-ui/icons/Add';
 import ShowDetail from '../Menuform/ShowDetail'
+import ShowDetail2 from '../Menuform/ShowDetail2'
+import ShowDetail3 from '../Menuform/ShowDetail3'
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import HelpOutline from '@material-ui/icons/HelpOutline';
 const drawerWidth = 300;
 
 function getModalStyle() {
@@ -194,8 +199,9 @@ const styles = theme => ({
     title: {
         margin: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 2}px`,
     },
-
-
+    button: {
+        margin: theme.spacing.unit,
+    },
 });
 class PersistentDrawerLeft extends React.Component {
     constructor(props) {
@@ -220,7 +226,13 @@ class PersistentDrawerLeft extends React.Component {
             delOpen: false,
             sortMKT: 'date',
             adminUser: "admin1234@gmail.com",
-            CheckOverlay: false
+            CheckOverlay: false,
+            overlay1: false,
+            overlay2: false,
+            overlay3: false,
+            imgHide: null,
+            imgHide2: null,
+            imgHide3: null,
         }
     }
     componentWillMount() {
@@ -360,6 +372,7 @@ class PersistentDrawerLeft extends React.Component {
         this.setState({ myUp: checked }, () => this.filterShowMarker());
     };
     handleChangeOverlay1 = (event) => {
+        const { imgHide2, imgHide3 } = this.state
         const checked = event.target.checked
         console.log("test 1" + checked)
         if (checked) {
@@ -373,13 +386,21 @@ class PersistentDrawerLeft extends React.Component {
             historicalOverlay = new window.google.maps.GroundOverlay(
                 mapall,
                 imageBounds);
+            if (imgHide2) {
+                imgHide2.setMap(null)
+            }
+            if (imgHide3) {
+                imgHide3.setMap(null)
+            }
             historicalOverlay.setMap(window.map);
-            this.setState({ imgHide: historicalOverlay })
+            this.setState({ imgHide: historicalOverlay, overlay1: true, overlay2: false, overlay3: false })
         } else {
             this.state.imgHide.setMap(null)
+            this.setState({ overlay1: false })
         }
     };
     handleChangeOverlay2 = (event) => {
+        const { imgHide, imgHide3 } = this.state
         const checked = event.target.checked
         if (checked) {
             var imageBounds = {
@@ -393,13 +414,21 @@ class PersistentDrawerLeft extends React.Component {
                 GeoMap,
                 imageBounds);
             historicalOverlay.setMap(window.map);
-            this.setState({ imgHide2: historicalOverlay})
+            if (imgHide) {
+                imgHide.setMap(null)
+            }
+            if (imgHide3) {
+                imgHide3.setMap(null)
+            }
+            this.setState({ imgHide2: historicalOverlay, overlay2: true, overlay1: false, overlay3: false })
         } else {
             this.state.imgHide2.setMap(null)
+            this.setState({ overlay2: false })
         }
 
     };
     handleChangeOverlay3 = (event) => {
+        const { imgHide, imgHide2 } = this.state
         const checked = event.target.checked
         if (checked) {
             var imageBounds = {
@@ -413,9 +442,16 @@ class PersistentDrawerLeft extends React.Component {
                 HydroMap,
                 imageBounds);
             historicalOverlay.setMap(window.map);
-            this.setState({ imgHide3: historicalOverlay})
+            if (imgHide) {
+                imgHide.setMap(null)
+            }
+            if (imgHide2) {
+                imgHide2.setMap(null)
+            }
+            this.setState({ imgHide3: historicalOverlay, overlay3: true, overlay1: false, overlay2: false })
         } else {
             this.state.imgHide3.setMap(null)
+            this.setState({ overlay3: false })
         }
 
     };
@@ -644,7 +680,12 @@ class PersistentDrawerLeft extends React.Component {
         //{ r, g, b }
         console.log(e)
     }
-
+    handleDialog = () => {
+        this.setState({openDetai1 : true})
+    }
+    handleDialogClose = () => {
+        this.setState({openDetai1 : false})
+    }
     renderDrawerPage = () => {
         const { drawerPage, selectedMarker, slatlong, delMarker, user, adminUser } = this.state
         const { classes, keym } = this.props
@@ -724,45 +765,78 @@ class PersistentDrawerLeft extends React.Component {
                     <br /><br />
 
                     {<Button variant="contained" color="secondary" type="submit" onClick={this.logout}>logout</Button>}      <br /><br />
-                    <Divider /><br />
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">Map Overlay List</FormLabel>
-                        <FormGroup>
-                            <FormControlLabel
-                                control={
-                                    <Switch
-                                        checked={this.state.overlay1}
-                                        onChange={this.handleChangeOverlay1}
-                                        value="overlay1"
-                                    />
-                                }
-                                label="บริเวณที่เหมาะสมการขุดบ่อบาดาล"
-                                labelPlacement="start"
-                            />
-                            <FormControlLabel
-                                control={
-                                    <Switch
-                                        checked={this.state.overlay2}
-                                        onChange={this.handleChangeOverlay2}
-                                        value="overlay2"
-                                    />
-                                }
-                                label="Geology"
-                                labelPlacement="start"
-                            />
-                            <FormControlLabel
-                                control={
-                                    <Switch
-                                        checked={this.state.overlay3}
-                                        onChange={this.handleChangeOverlay3}
-                                        value="overlay3"
-                                    />
-                                }
-                                label="Hydrounit"
-                                labelPlacement="start"
-                            />
-                        </FormGroup>
-                    </FormControl>
+                    <Divider />
+
+                    <List component="nav">
+
+                        <ListItem
+                        >
+                            <ListItemText primary="บริเวณที่เหมาะสม" />
+                            <ListItemSecondaryAction>
+
+                                <Switch
+                                    checked={this.state.overlay1}
+                                    onChange={this.handleChangeOverlay1}
+                                    value="overlay1"
+                                />
+                                <IconButton
+                                    //className={classes.button} 
+                                    aria-label="Delete"
+                                    onClick={this.handleDialog} >
+                                    <HelpOutline />
+                                </IconButton>
+                                <ShowDetail 
+                                openDetai1 = {this.state.openDetai1}
+                                handleDialogClose = {this.handleDialogClose}
+                                />
+
+
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                        <ListItem
+                        >
+                            <ListItemText primary="Geology" />
+                            <ListItemSecondaryAction>
+
+
+                                <Switch
+                                    checked={this.state.overlay2}
+                                    onChange={this.handleChangeOverlay2}
+                                    value="overlay2"
+                                />
+                                <IconButton
+                                    //className={classes.button} 
+                                    aria-label="Delete"
+                                    onClick={this.handleClickOpen} >
+                                    <HelpOutline />
+                                </IconButton>
+
+                                <ShowDetail2 />
+
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                        <ListItem
+                        >
+                            <ListItemText primary="Hydrounit" />
+                            <ListItemSecondaryAction>
+
+                                <Switch
+                                    checked={this.state.overlay3}
+                                    onChange={this.handleChangeOverlay3}
+                                    value="overlay3"
+                                />
+                                <IconButton
+                                    //className={classes.button} 
+                                    aria-label="Delete"
+                                    onClick={this.handleClickOpen} >
+                                    <HelpOutline />
+                                </IconButton>
+                                <ShowDetail3 />
+
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    </List>
+
                     <Divider /><br />
                     <FormGroup
                         row
@@ -1006,7 +1080,7 @@ class PersistentDrawerLeft extends React.Component {
                             <AddIcon />
                         </Fab>
                         <FindLocation {...this.state} />
-                        <ShowDetail />
+
                     </Map>
                 </main>
             </div >
