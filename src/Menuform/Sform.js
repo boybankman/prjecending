@@ -377,10 +377,10 @@ class PersistentDrawerLeft extends React.Component {
         console.log("test 1" + checked)
         if (checked) {
             var imageBounds = {
-                north: 16.107015,
+                north: 16.097015,
                 south: 14.386233,
-                east: 105.747751,
-                west: 104.379675
+                east: 105.690751,
+                west: 104.325675
             };
             var historicalOverlay;
             historicalOverlay = new window.google.maps.GroundOverlay(
@@ -404,10 +404,10 @@ class PersistentDrawerLeft extends React.Component {
         const checked = event.target.checked
         if (checked) {
             var imageBounds = {
-                north: 16.117015,
+                north: 16.097015,
                 south: 14.386233,
-                east: 105.747751,
-                west: 104.379675
+                east: 105.690751,
+                west: 104.325675
             };
             var historicalOverlay;
             historicalOverlay = new window.google.maps.GroundOverlay(
@@ -432,10 +432,10 @@ class PersistentDrawerLeft extends React.Component {
         const checked = event.target.checked
         if (checked) {
             var imageBounds = {
-                north: 16.117015,
+                north: 16.097015,
                 south: 14.386233,
-                east: 105.747751,
-                west: 104.379675
+                east: 105.690751,
+                west: 104.325675
             };
             var historicalOverlay;
             historicalOverlay = new window.google.maps.GroundOverlay(

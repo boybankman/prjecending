@@ -11,7 +11,7 @@ import HelpOutline from '@material-ui/icons/HelpOutline';
 import Fab from '@material-ui/core/Fab';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import waterScale from './waterScale.png'
+import waterScale from './scaleWater.png'
 import IconButton from '@material-ui/core/IconButton';
 
 const styles = theme => ({
@@ -56,7 +56,8 @@ class ShowDetail extends React.Component {
                     <DialogTitle id="draggable-dialog-title">Tip</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            ระดับของสีในแมพเป็นการแสดงพื้นที่ที่มีความเหมาะสมสำหรับการเลือกขุดเจาะบ่อน้ำบาดาล วัดจาก..... มาคำนวณหาความเหมาะสม
+                            ระดับของสีในแผนที่เป็นการแสดงพื้นที่ที่มีความเหมาะสมสำหรับการเลือกขุดเจาะบ่อน้ำบาดาล วัดจาก ชนิดของชั้นหินใต้น้ำ(Hydrogeological Unit) ,หน่วยทางธรณีวิทยา(Geological Unit) 
+                            ,อัตตราการซึมของน้ำลงสู่ชั้นน้ำบาดาล ,ระดับน้ำบาดาล(Groundwater Level) ,ศักยภาพน้ำบาดาล(Groundwater Availability) มาคำนวณหาความเหมาะสม
                 </DialogContentText>
                         <img src={waterScale} />
                     </DialogContent>

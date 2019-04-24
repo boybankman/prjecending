@@ -10,7 +10,7 @@ import Draggable from 'react-draggable';
 import HelpOutline from '@material-ui/icons/HelpOutline';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import waterScale from './waterScale.png'
+import Geology from './Geology.PNG'
 import IconButton from '@material-ui/core/IconButton';
 const styles = theme => ({
 
@@ -53,9 +53,9 @@ class ShowDetail extends React.Component {
                     <DialogTitle id="draggable-dialog-title">Tip</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            ระดับของสีในแมพเป็นการแสดงพื้นที่ที่มีความเหมาะสมสำหรับการเลือกขุดเจาะบ่อน้ำบาดาล วัดจาก..... มาคำนวณหาความเหมาะสม
+                          
             </DialogContentText>
-                        <img src={waterScale} />
+                        <img src={Geology} />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.props.handleDialogClose2} color="primary">
