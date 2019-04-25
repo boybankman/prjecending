@@ -13,21 +13,18 @@ const styles = theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
+    alignItems: 'center',
+   
   },
   margin: {
     margin: theme.spacing.unit,
   },
+  
   withoutLabel: {
     marginTop: theme.spacing.unit * 3,
   },
   textField: {
-    flexBasis: 200,
-  },
-  root: {
-    padding: '2px 4px',
-    display: 'flex',
-    alignItems: 'center',
-    width: 400,
+    flexBasis: 200
   },
   input: {
     marginLeft: 8,
@@ -119,45 +116,45 @@ class SearchBox extends React.PureComponent {
   render() {
     const { classes } = this.props
     return (
-    //   <Paper className={classes.root} elevation={1}>
-    //   <InputBase className={classes.input}  id="pac-input"
-    //     className={classNames(classes.margin, classes.textField)}
-    //     //className={classes.margin}
-    //     type="text"
-    //     variant="outlined"
-    //     placeholder="ค้นหาสถานที่"
-    //     value={this.state.searchText}
-    //     onChange={this.onChange}
-    //     name='searchText'
-    //     margin="normal" />
-    //   <Divider className={classes.divider} />
-    // </Paper>
+      //   <Paper className={classes.root} elevation={1}>
+      //   <InputBase className={classes.input}  id="pac-input"
+      //     className={classNames(classes.margin, classes.textField)}
+      //     //className={classes.margin}
+      //     type="text"
+      //     variant="outlined"
+      //     placeholder="ค้นหาสถานที่"
+      //     value={this.state.searchText}
+      //     onChange={this.onChange}
+      //     name='searchText'
+      //     margin="normal" />
+      //   <Divider className={classes.divider} />
+      // </Paper>
       <TextField
         id="pac-input"
         className={classNames(classes.margin, classes.textField)}
-        //className={classes.margin}
         type="text"
         variant="outlined"
         placeholder="ค้นหาสถานที่"
         value={this.state.searchText}
         onChange={this.onChange}
         name='searchText'
-        margin="normal"
-        // InputProps={{
-        //   endAdornment: (
-        //     <InputAdornment position="end" className="Setsearchcancel">
 
-        //       {/* <IconButton
-        //         aria-label="Toggle password visibility"
-        //         onClick={this.onClearPlaceMarker}
 
-        //       >
-        //         <Cancel />
-        //       </IconButton> */}
+      // InputProps={{
+      //   endAdornment: (
+      //     <InputAdornment position="end" className="Setsearchcancel">
 
-        //     </InputAdornment>
-        //   ),
-        // }}
+      //       {/* <IconButton
+      //         aria-label="Toggle password visibility"
+      //         onClick={this.onClearPlaceMarker}
+
+      //       >
+      //         <Cancel />
+      //       </IconButton> */}
+
+      //     </InputAdornment>
+      //   ),
+      // }}
       />
     )
   }

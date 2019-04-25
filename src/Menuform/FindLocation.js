@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import GpsFixed from '@material-ui/icons/GpsFixed';
 import Fab from '@material-ui/core/Fab';
 import PropTypes from 'prop-types';
+import Tooltip from '@material-ui/core/Tooltip';
 const styles = theme => ({
 
   fab: {
@@ -49,9 +50,11 @@ class FindLocation extends React.PureComponent {
     const { classes,user } = this.props
     return (
         // <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={() => {this.btnLocation()}} ><LocationSearching/></Button>
+        <Tooltip title="My Location" aria-label="My Location">
         <Fab color="primary" size="small" aria-label="Add" className={classes.fab} onClick={() => {this.btnLocation()}}  >
         <GpsFixed />
     </Fab>
+    </Tooltip>
     )
   }
 }

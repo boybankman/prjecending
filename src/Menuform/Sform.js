@@ -18,6 +18,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
+import Tooltip from '@material-ui/core/Tooltip';
 import Map from '../components/Map'
 import ImageIcon from '@material-ui/icons/Image';
 import Button from '@material-ui/core/Button';
@@ -218,7 +219,7 @@ class PersistentDrawerLeft extends React.Component {
             drawerPage: 'homePage',
             isWaitingForUserResult: true,
             selectedMarker: null,
-            center: { lat: 15.1531125, lng: 104.4433855 },
+            center: { lat: 15.23844, lng: 104.84866 },
             marcus: [],
             isAddMarkerClickAble: false,
             myUp: false,
@@ -673,7 +674,7 @@ class PersistentDrawerLeft extends React.Component {
                 console.log("Delete data error : ", error.message);
             });
         this.setState({ delOpen: false })
-        window.map.setZoom(7);
+        window.map.setZoom(9);
 
     }
     setColor = (e) => {
@@ -941,7 +942,7 @@ class PersistentDrawerLeft extends React.Component {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography variant="h6" color="inherit" noWrap> Welcome! </Typography>
+                        <Typography variant="h6" color="inherit" noWrap> Map Water Resources </Typography>
                     </Toolbar>
                 </AppBar>
                 <Drawer
@@ -1094,9 +1095,11 @@ class PersistentDrawerLeft extends React.Component {
                         {/* <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.HideOverlay} >Hide</Button> */}
                         <SearchBox />
                         {/* <Button variant="contained" disabled={user ? isAddMarkerClickAble : true} onClick={this.btnmarker} >Add marker</Button> */}
+                        <Tooltip title="Add Location" aria-label="Add Location">
                         <Fab color="primary" size="small" aria-label="Add" className={classes.fab} disabled={user ? isAddMarkerClickAble : true} onClick={this.btnmarker} >
                             <AddIcon />
                         </Fab>
+                        </Tooltip>
                         <FindLocation {...this.state} />
 
                     </Map>
