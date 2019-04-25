@@ -91,7 +91,7 @@ class SearchBox extends React.PureComponent {
             title: place.name + ' ' + place.formatted_address,
             position: place.geometry.location
           }));
-
+          
           if (place.geometry.viewport) {
             // Only geocodes have viewport.
             self.bounds.union(place.geometry.viewport);
